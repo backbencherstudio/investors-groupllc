@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
 export default function DashboardHome() {
   return (
-    <div>Dashboard</div>
-  )
+    <div>
+      <h1>Dashboard HOme</h1>
+    </div>
+  );
 }
