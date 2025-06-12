@@ -27,10 +27,14 @@ body {
   color: var(--foreground); */
 }
 
+.font-plus-jakarta {
+  font-family: var(--font-plus-jakarta-sans);
+}
+
 @theme inline {
 
   --radius-sm: calc(var(--radius) - 4px);
-
+  --font-plus-jakarta: var(--font-plus-jakarta-sans); 
   --radius-md: calc(var(--radius) - 2px);
 
   --radius-lg: var(--radius);

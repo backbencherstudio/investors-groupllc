@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB]">
+    <div className="flex min-h-screen bg-[#f5f5f5] ">
       {/* Sidebar */}
       <AppSidebar isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
 
