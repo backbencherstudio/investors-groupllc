@@ -9,101 +9,86 @@ import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
-import { Paginations } from "./pagination";
+
 import { TablePagination } from "@/components/common/TablePagination";
 
-const tenantData = [
-  {
-    paidDate: "10/28/25",
-    payment: "Success",
-    recipient: "Kathryn Murphy",
-    id: "RP-3021",
-    property: "Trade Winds T.",
-    amount: "$16,920",
-    dueDate: "April 5",
-    status: "Paid",
-    action: "View",
-  },
-  {
-    paidDate: "10/28/25",
-    payment: "Success",
-    recipient: "Kathryn Murphy",
-    id: "RP-3022",
-    property: "Trade Winds T.",
-    amount: "$16,920",
-    dueDate: "April 5",
-    status: "Paid",
-    action: "View",
-  },
-  {
-    paidDate: "10/28/25",
-    payment: "Success",
-    recipient: "Kathryn Murphy",
-    id: "RP-3023",
-    property: "Trade Winds T.",
-    amount: "$16,920",
-    dueDate: "April 5",
-    status: "Paid",
-    action: "View",
-  },
-  {
-    paidDate: "-",
-    payment: "-",
-    recipient: "Guy Hawkins",
-    id: "RP-3024",
-    property: "Skylight Squa.",
-    amount: "$2,200",
-    dueDate: "April 5",
-    status: "Due",
-    action: "View",
-  },
-  {
-    paidDate: "-",
-    payment: "-",
-    recipient: "Guy Hawkins",
-      id: "RP-3026",
-    property: "Skylight Squa.",
-    amount: "$2,200",
-    dueDate: "April 5",
-    status: "Due",
-    action: "View",
-  },
-  {
-    paidDate: "-",
-    payment: "-",
-    recipient: "Guy Hawkins",
-    id: "RP-3027",
-    property: "Skylight Squa.",
-    amount: "$2,200",
-    dueDate: "April 5",
-    status: "Due",
-    action: "View",
-  },
-]; // fetched from backend
+interface WithdrawData {
+  reqDate: string;
+  name: string;
+  avatar: string;
+  phone: string;
+  id: string;
+  userType: string;
+  amount: string;
+  method: string;
+  status: "Approved" | "Pending" | "Rejected";
+}
 
-export default function TenantTable() {
+const withdrawData: WithdrawData[] = [
+  {
+    reqDate: "Apr 28, 2025",
+    name: "Kathryn Murphy",
+    avatar: "/avatars/kathryn.jpg",
+    phone: "+231 06-758207...",
+    id: "RW-24571",
+    userType: "Vendor",
+    amount: "$300",
+    method: "Bank Transfer",
+    status: "Approved",
+  },
+  {
+    reqDate: "Apr 28, 2025",
+    name: "Esther Howard",
+    avatar: "/avatars/esther.jpg",
+    phone: "+231 06-758207...",
+    id: "RW-24572",
+    userType: "Investor",
+    amount: "$450",
+    method: "Credit",
+    status: "Pending",
+  },
+  {
+    reqDate: "Apr 28, 2025",
+    name: "Esther Howard",
+    avatar: "/avatars/esther.jpg",
+    phone: "+231 06-758207...",
+    id: "RW-24573",
+    userType: "Vendor",
+    amount: "$450",
+    method: "Credit",
+    status: "Rejected",
+  },
+  {
+    reqDate: "Apr 28, 2025",
+    name: "Esther Howard",
+    avatar: "/avatars/esther.jpg",
+    phone: "+231 06-758207...",
+    id: "RW-24574",
+    userType: "Vendor",
+    amount: "$450",
+    method: "Credit",
+    status: "Rejected",
+  },
+];
+
+export default function WithdrawalTable() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
+  const [tenantDate, setTenantDate] = useState<Date>(new Date());
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(tenantData.length / itemsPerPage);
+  const totalPages = Math.ceil(withdrawData.length / itemsPerPage);
 
   // TODO: Replace with SWR/React Query call to your API
 
   // fetched from backend
 
-  const tenantColumns = [
-    { header: "Paid Date", accessor: "paidDate" },
+  const columns = [
+    { header: "Req date", accessor: "reqDate" as keyof WithdrawData },
     {
-      header: "Payment",
-      accessor: "payment",
-      render: (value: string) => <StatusBadge status={value} />,
-    },
-    {
-      header: "Recipient",
-      accessor: "recipient",
-      render: (value: string, row: any) => (
+      header: "Name",
+      accessor: "name" as keyof WithdrawData,
+      render: (value: string, row: WithdrawData) => (
         <div className="flex items-center gap-2">
           <Image
             src={row.avatar}
@@ -119,27 +104,18 @@ export default function TenantTable() {
         </div>
       ),
     },
-    { header: "ID", accessor: "id" },
-    {
-      header: "Property",
-      accessor: "property",
-      render: (value: string, row: any) => (
-        <div>
-          <div>{value}</div>
-          <div className="text-xs text-gray-500">{row.propertyAddress}</div>
-        </div>
-      ),
-    },
-    { header: "Amount", accessor: "amount" },
-    { header: "Due date", accessor: "dueDate" },
+    { header: "ID", accessor: "id" as keyof WithdrawData },
+    { header: "User Type", accessor: "userType" as keyof WithdrawData },
+    { header: "Amount", accessor: "amount" as keyof WithdrawData },
+    { header: "Method", accessor: "method" as keyof WithdrawData },
     {
       header: "Status",
-      accessor: "status",
-      render: (value: string) => <StatusBadge status={value} />,
+      accessor: "status" as keyof WithdrawData,
+      render: (value: WithdrawData["status"]) => <StatusBadge status={value} />,
     },
     {
       header: "Action",
-      accessor: "action",
+      accessor: "action" as any,
       render: () => (
         <button className="text-gray-600 hover:text-primary">
           <EyeIcon />
@@ -153,7 +129,7 @@ export default function TenantTable() {
       <Card className="w-full overflow-hidden p-6">
         <div className="">
           <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-            <h2 className="text-2xl font-semibold ">Tenant Rent Payment</h2>
+            <h2 className="text-2xl font-semibold ">Withdrawal list</h2>
             <div className="flex flex-wrap gap-4 ">
               <div className="w-full md:w-auto ">
                 <SearchInput value={tenantSearch} onChange={setTenantSearch} />
@@ -171,7 +147,7 @@ export default function TenantTable() {
             </div>
           </div>
           <div className="w-full overflow-hidden ">
-            <DashboardDataTable columns={tenantColumns} data={tenantData} />
+            <DashboardDataTable columns={columns} data={withdrawData} />
           </div>
 
           {/* paggination */}
@@ -179,7 +155,7 @@ export default function TenantTable() {
             totalPages={totalPages}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
-            totalResults={tenantData.length}
+            totalResults={withdrawData.length}
             pageSize={itemsPerPage}
           ></TablePagination>
         </div>
