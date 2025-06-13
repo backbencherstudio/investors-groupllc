@@ -3,6 +3,7 @@
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
 import React, { useState } from "react";
 import { TransferRequest } from "./transfer-request";
+import Link from "next/link";
 
 interface Tenant {
   avatar: string;
@@ -33,13 +34,6 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
             {/* Card */}
             <div className="bg-white rounded-xl p-6 mb-6 relative shadow-sm">
               <div className="flex items-start gap-4">
-                {/* <Image
-      src={tenant.avatar}
-      alt={tenant.name}
-      width={64}
-      height={64}
-      className="rounded-full object-cover w-16 h-16"
-    /> */}
                 <img
                   src={tenant.avatar}
                   className="rounded-full object-cover w-16 h-16"
@@ -174,9 +168,12 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                 <button className="bg-orange-100 text-orange-600 px-4 py-1 rounded font-medium text-sm">
                   Reminder
                 </button>
-                <button className="border border-zinc-200 px-4 py-1 rounded font-medium text-sm">
+                <Link
+                  href={"/dashboard/user-manage/tenant/paid-history"}
+                  className="border border-zinc-200 px-4 py-1 rounded font-medium text-sm"
+                >
                   History
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -198,9 +195,12 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                 ))}
               </div>
               <div className="mt-4">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded font-medium text-sm">
+                <Link
+                  href={"/dashboard/user-manage/tenant/maintenance-details"}
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded font-medium text-sm"
+                >
                   View All
-                </button>
+                </Link>
               </div>
             </div>
           </div>

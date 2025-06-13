@@ -23,7 +23,7 @@ export default function Page() {
         {"User Management"}{" "}
         <span className="text-[18px] font-semibold">{"> Tenant"}</span>
       </p>
-      <div className="w-full bg-transparent">
+      <div className="w-full bg-transparent overflow-x-auto">
         <nav className="flex border-b border-gray-200 bg-transparent">
           {tabs.map((tab) => (
             <Link

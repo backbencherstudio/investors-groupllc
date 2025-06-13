@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Paginations } from "../../_components/pagination";
 import Link from "next/link";
 
 const tenants = [
@@ -112,27 +111,12 @@ const rentStatusClass = (status: string) =>
     ? "bg-green-100 text-green-700"
     : "bg-red-100 text-red-500";
 
-const PAGE_SIZE = 7;
-
-export function DataTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(tenants.length / PAGE_SIZE);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const paginatedData = tenants.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
-
+export function MaintenanceList() {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       {/* search */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
-        <h2 className="text-xl font-semibold">Active Tenant List</h2>
+        <h2 className="text-xl font-semibold">Maintenance List</h2>
         <div className="flex gap-2 items-center w-full md:w-auto">
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
@@ -160,7 +144,21 @@ export function DataTable() {
           <div className="relative">
             <Select>
               <SelectTrigger className="w-[100px] md:w-[120px]">
-                <SelectValue placeholder="Select" />
+                <SelectValue placeholder="All Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="new">New</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="relative">
+            <Select>
+              <SelectTrigger className="w-[100px] md:w-[120px]">
+                <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -190,7 +188,7 @@ export function DataTable() {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((tenant, idx) => (
+            {tenants.map((tenant, idx) => (
               <tr
                 key={idx}
                 className="border-b last:border-b-0 hover:bg-gray-50"
@@ -231,22 +229,6 @@ export function DataTable() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* pagination */}
-      <div className="mt-4 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div className="text-sm text-zinc-500">
-          {`Showing ${
-            tenants.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
-          }–${Math.min(currentPage * PAGE_SIZE, tenants.length)} of ${
-            tenants.length
-          } results`}
-        </div>
-        <Paginations
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
       </div>
     </div>
   );

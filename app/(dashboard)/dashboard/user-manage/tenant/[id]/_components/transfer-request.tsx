@@ -62,7 +62,7 @@ export function TransferRequest() {
 
           <div className="flex-1 overflow-y-auto px-4">
             {/* Tenant & Property Header */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between gap-4 mb-6">
               {/* Tenant Info */}
               <div className="flex items-center gap-3">
                 <img
@@ -95,7 +95,7 @@ export function TransferRequest() {
               </div>
               <Button
                 variant="link"
-                className="text-orange-500 text-sm p-0 h-auto"
+                className="text-orange-500 text-sm p-0 h-auto  cursor-pointer"
               >
                 View Details
               </Button>
