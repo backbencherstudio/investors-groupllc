@@ -147,7 +147,7 @@ export default function NotificationDropdown() {
               >
                 <div
                   className={cn(
-                    "mt-1.5  p-2 text-amber-500 rounded-md border border-[#FCF1E6] ",
+                    "mt-1.5  p-2 text-amber-500 rounded-md border border-[#FCF1E6] bg-amber-100/50",
                     !notification.read && "bg-[#D80] text-white"
                   )}
                 >
