@@ -103,7 +103,7 @@ export function IncomeChart() {
     );
 
   return (
-    <div className="bg-white rounded-2xl p-8">
+    <div className="bg-white rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-gray-500">Over all income</p>
