@@ -3,9 +3,10 @@ import Analytics from "./_components/anlytics";
 // import IncomeChart from "./_components/income-chart";
 import InvestmentMaintenance from "./_components/investment-maintenance";
 import TenantTable from "./_components/tenant-table";
-  
+import InvestorTransectionTable from "./_components/investor-transection-table";
+import WithdrawalTable from "./_components/withdrawal-table";
+
 export default function DashboardHome() {
-  
   return (
     <div className="space-y-6">
       {/* <h1>Dashboard HOme</h1> */}
@@ -13,6 +14,8 @@ export default function DashboardHome() {
       {/* <IncomeChart /> */}
       <InvestmentMaintenance />
       <TenantTable />
+      <InvestorTransectionTable />
+      <WithdrawalTable />
     </div>
   );
 }

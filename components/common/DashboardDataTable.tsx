@@ -29,14 +29,19 @@ export function DashboardDataTable<T extends { id: string | number }>({
 }: DashboardDataTableProps<T>) {
   return (
     <div className="relative w-full">
-      <div className="rounded-md border">
-        <div className="w-full overflow-x-auto">
-          <div className="min-w-[800px] md:min-w-0">
+      <div className="rounded-md border overflow-hidden">
+        <div className="w-full overflow-x-auto ">
+          <div className="min-w-[800px] md:min-w-0 ">
             <Table>
-              <TableHeader>
+              <TableHeader className="bg-[#F5F5F5] rounded-t-md">
                 <TableRow>
                   {columns.map((col, idx) => (
-                    <TableHead key={idx} className={`${col.className || ""} whitespace-rnowap`}>
+                    <TableHead
+                      key={idx}
+                      className={`${
+                        col.className || ""
+                      } whitespace-rnowap text-[#707070]`}
+                    >
                       {col.header}
                     </TableHead>
                   ))}
@@ -46,7 +51,10 @@ export function DashboardDataTable<T extends { id: string | number }>({
                 {data.map((row) => (
                   <TableRow key={row.id}>
                     {columns.map((col, idx) => (
-                      <TableCell key={idx} className={`${col.className || ""} whitespace-nowrap`}>
+                      <TableCell
+                        key={idx}
+                        className={`${col.className || ""} whitespace-nowrap`}
+                      >
                         {col.render
                           ? col.render(row[col.accessor], row)
                           : (row[col.accessor] as React.ReactNode)}

@@ -17,7 +17,7 @@ export default function SelectDropDown({
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className=" md:w-[140px]">
+      <SelectTrigger className="w-full md:w-[140px]">
         <SelectValue placeholder="All Status" />
       </SelectTrigger>
       <SelectContent>
