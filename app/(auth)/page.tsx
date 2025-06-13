@@ -1,10 +1,10 @@
-import React from 'react'
-import SignUp from './_components/sign-up'
+import React from "react";
+import Login from "./_components/login";
 
 export default function Home() {
   return (
     <div>
-        <SignUp />
+      <Login />
     </div>
-  )
+  );
 }
