@@ -7,7 +7,7 @@ export default function LoginLogo() {
   return (
     <div className="flex-1 bg-[#191D20F5] flex flex-col items-center justify-center min-h-[250px] md:min-h-screen w-full relative overflow-hidden">
       {/* Black overlay with opacity */}
-      <div className="absolute inset-0 bg-black opacity-80 z-0" />
+      <div className="absolute inset-0 bg-black opacity-95 z-0" />
       {/* Background image with opacity */}
       <Image
         src={image}
