@@ -30,9 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Page content */}
         <main className="flex-1 px-4 md:px-6 py-4 md:py-6 overflow-x-hidden">
-          <div className="max-w-full">
-            {children}
-          </div>
+          <div className="max-w-full">{children}</div>
         </main>
       </div>
     </div>
