@@ -4,6 +4,7 @@ import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
 import React, { useState } from "react";
 import { TransferRequest } from "./transfer-request";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Tenant {
   avatar: string;
@@ -34,10 +35,12 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
             {/* Card */}
             <div className="bg-white rounded-xl p-6 mb-6 relative shadow-sm">
               <div className="flex items-start gap-4">
-                <img
+                <Image
                   src={tenant.avatar}
+                  alt={tenant.name}
+                  width={64}
+                  height={64}
                   className="rounded-full object-cover w-16 h-16"
-                  alt=""
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
@@ -220,16 +223,20 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
         {/* Right Section */}
         <div className="xl:col-span-4">
           <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
               alt="Property"
+              width={160}
+              height={160}
               className="w-full h-40 object-cover rounded-lg mb-3"
             />
             <div className="flex gap-2 mb-3">
               {[1, 2, 3].map((_, i) => (
-                <img
+                <Image
                   key={i}
                   src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+                  width={48}
+                  height={48}
                   className="w-12 h-12 object-cover rounded-lg"
                   alt={`thumb${i}`}
                 />
@@ -269,9 +276,11 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
               <span className="text-neutral-400 text-sm absolute z-10">
                 Map
               </span>
-              <img
+              <Image
                 src="https://maps.googleapis.com/maps/api/staticmap?center=Austin,TX&zoom=13&size=300x100&key=AIzaSyDUMMY"
                 alt="map"
+                width={300}
+                height={100}
                 className="w-full h-full object-cover opacity-60"
               />
             </div>

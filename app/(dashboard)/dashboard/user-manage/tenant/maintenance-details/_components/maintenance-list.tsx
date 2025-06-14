@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MaintenanceDetails } from "./maintenance-details";
+import Image from "next/image";
 
 const tenants = [
   {
@@ -264,9 +264,11 @@ export function MaintenanceList() {
                 <td className="px-4 py-3 text-gray-800">{row.id}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <img
+                    <Image
                       src={row.assignee.avatar}
                       alt={row.assignee.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full object-cover"
                     />
                     <div>

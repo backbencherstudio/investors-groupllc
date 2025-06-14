@@ -12,6 +12,7 @@ import {
 import { Paginations } from "../../../_components/pagination";
 import Link from "next/link";
 import { Eye } from "lucide-react";
+import Image from "next/image";
 
 const investors = [
   {
@@ -185,9 +186,11 @@ export function InvestorTable() {
                 className="border-b last:border-b-0 hover:bg-gray-50"
               >
                 <td className="py-3 px-4 flex items-center gap-3">
-                  <img
+                  <Image
                     src={investor.avatar}
                     alt={investor.name}
+                    width={40}
+                    height={40}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <div>

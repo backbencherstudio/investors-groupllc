@@ -8,6 +8,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import Image from "next/image";
 
 export function InvestmentPerformance() {
   return (
@@ -39,9 +40,11 @@ export function InvestmentPerformance() {
               {/* Property Card */}
               <div className="bg-white rounded-xl border border-zinc-100 p-4 mb-6">
                 <div className="relative mb-4">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
                     alt="property"
+                    width={600}
+                    height={144}
                     className="w-full h-36 object-cover rounded-lg"
                   />
                   <span className="absolute top-3 left-3 bg-white/80 text-xs text-zinc-700 px-2 py-0.5 rounded flex items-center gap-1">

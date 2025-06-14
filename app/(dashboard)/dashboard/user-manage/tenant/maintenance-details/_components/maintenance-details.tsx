@@ -10,6 +10,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { X, Phone, Mail, EyeIcon } from "lucide-react";
+import Image from "next/image";
 
 interface PropertyInfo {
   image: string;
@@ -72,9 +73,11 @@ export function MaintenanceDetails({
           {/* Property Info */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src={property.image}
                 alt={property.name}
+                width={40}
+                height={40}
                 className="w-10 h-10 rounded-lg object-cover"
               />
               <div>
@@ -161,9 +164,11 @@ export function MaintenanceDetails({
           {/* Thumbnails */}
           <div className="flex gap-3">
             {taskDetails.media.map((media, index) => (
-              <img
+              <Image
                 key={index}
                 src={media}
+                width={80}
+                height={80}
                 className="w-20 h-20 rounded object-cover"
                 alt={`Issue ${index + 1}`}
               />

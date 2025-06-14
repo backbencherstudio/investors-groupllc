@@ -11,121 +11,103 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-
 import Link from "next/link";
-import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
+import { Paginations } from "../../../_components/pagination";
 import Image from "next/image";
 
-const vendors = [
+const landlords = [
   {
     id: 1,
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Seattle, WA",
-    rent: "Active",
+    properties: [
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80",
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=80&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+    ],
+    subscription: "Basic",
+    joinedDate: "May 2, 2025",
   },
   {
     id: 2,
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Miami, FL",
-    rent: "Inactive",
+    properties: [
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=80&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80",
+    ],
+    subscription: "Premium",
+    joinedDate: "April 15, 2026",
   },
   {
     id: 3,
     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Denver, CO",
-    rent: "Active",
+    properties: [],
+    subscription: "",
+    joinedDate: "July 4, 2023",
   },
   {
     id: 4,
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Portland, OR",
-    rent: "Active",
+    properties: [],
+    subscription: "Basic",
+    joinedDate: "November 30, 2024",
   },
   {
     id: 5,
-    avatar: "https://randomuser.me/api/portraits/women/5.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Chicago, IL",
-    rent: "Active",
+    properties: [
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80",
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=80&q=80",
+    ],
+    subscription: "Premium",
+    joinedDate: "February 14, 2027",
   },
   {
     id: 6,
-    avatar: "https://randomuser.me/api/portraits/men/6.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "San Diego, CA",
-    rent: "Active",
+    properties: [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+    ],
+    subscription: "Basic",
+    joinedDate: "September 1, 2025",
   },
   {
     id: 7,
-    avatar: "https://randomuser.me/api/portraits/men/7.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
     name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
     contact: "+231 06-75820711",
-    location: "Boston, MA",
-    rent: "Active",
-  },
-  {
-    id: 8,
-    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-    name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
-    contact: "+231 06-75820711",
-    location: "Miami, FL",
-    rent: "Inactive",
-  },
-  {
-    id: 9,
-    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-    name: "Audry hawq",
-    subtitle: "vendor",
-    email: "abcde123@gmail.com",
-    contact: "+231 06-75820711",
-    location: "Denver, CO",
-    rent: "Active",
+    properties: [
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=80&q=80",
+    ],
+    subscription: "Basic",
+    joinedDate: "March 21, 2025",
   },
 ];
 
-const rentStatusClass = (status: string) =>
-  status === "Active"
-    ? "bg-green-100 text-green-700"
-    : "bg-red-100 text-red-500";
-
 const PAGE_SIZE = 7;
 
-export function VendorTable() {
+export function LandlordTable() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(vendors.length / PAGE_SIZE);
+  const totalPages = Math.ceil(landlords.length / PAGE_SIZE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const paginatedData = vendors.slice(
+  const paginatedData = landlords.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   );
@@ -134,7 +116,7 @@ export function VendorTable() {
     <div className="bg-white rounded-xl shadow p-6">
       {/* search */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
-        <h2 className="text-xl font-semibold">Active Vendor List</h2>
+        <h2 className="text-xl font-semibold">Active Landlord List</h2>
         <div className="flex gap-2 items-center w-full md:w-auto">
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
@@ -162,7 +144,7 @@ export function VendorTable() {
           <div className="relative">
             <Select>
               <SelectTrigger className="w-[100px] md:w-[120px]">
-                <SelectValue placeholder="Select" />
+                <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -182,52 +164,77 @@ export function VendorTable() {
           <thead>
             <tr className="bg-gray-100 text-gray-500 text-sm ">
               <th className="py-3 px-4 text-left font-medium">Name</th>
-              <th className="py-3 px-4 text-left font-medium">Email</th>
               <th className="py-3 px-4 text-left font-medium">Contact</th>
-              <th className="py-3 px-4 text-left font-medium">
-                Current Location
-              </th>
-              <th className="py-3 px-4 text-left font-medium">Rent</th>
+              <th className="py-3 px-4 text-left font-medium">Property</th>
+              <th className="py-3 px-4 text-left font-medium">Subscription</th>
+              <th className="py-3 px-4 text-left font-medium">Joined Date</th>
               <th className="py-3 px-4 text-left font-medium">Action</th>
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((vendor, idx) => (
+            {paginatedData.map((landlord, idx) => (
               <tr
                 key={idx}
                 className="border-b last:border-b-0 hover:bg-gray-50"
               >
                 <td className="py-3 px-4 flex items-center gap-3">
                   <Image
-                    src={vendor.avatar}
-                    alt={vendor.name}
+                    src={landlord.avatar}
+                    alt={landlord.name}
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <div>
                     <div className="font-medium text-gray-900 leading-tight">
-                      {vendor.name}
+                      {landlord.name}
                     </div>
-                    <div className="text-xs text-gray-400">
-                      {vendor.subtitle}
-                    </div>
+                    <div className="text-xs text-gray-400">Landlord</div>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-gray-700">{vendor.email}</td>
-                <td className="py-3 px-4 text-gray-700">{vendor.contact}</td>
-                <td className="py-3 px-4 text-gray-700">{vendor.location}</td>
+                <td className="py-3 px-4 text-gray-700">{landlord.contact}</td>
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-1">
+                    {Array.isArray(landlord.properties) &&
+                    landlord.properties.length > 0 ? (
+                      <>
+                        {landlord.properties.slice(0, 2).map((img, i) => (
+                          <Image
+                            key={i}
+                            src={img}
+                            alt="property"
+                            width={32}
+                            height={32}
+                            className="w-8 h-8 rounded object-cover border border-white -ml-2 first:ml-0"
+                          />
+                        ))}
+                        {landlord.properties.length > 2 && (
+                          <span className="w-8 h-8 bg-zinc-100 rounded flex items-center justify-center text-xs text-neutral-600 font-semibold -ml-2">
+                            +{landlord.properties.length - 2}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-zinc-400">-</span>
+                    )}
+                  </div>
+                </td>
                 <td className="py-3 px-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${rentStatusClass(
-                      vendor.rent
-                    )}`}
+                    className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                      landlord.subscription === "Premium"
+                        ? "bg-blue-50 text-blue-600"
+                        : "bg-orange-50 text-orange-500"
+                    }`}
                   >
-                    {vendor.rent}
+                    {landlord.subscription}
                   </span>
                 </td>
+                <td className="py-3 px-4 text-gray-700">
+                  {landlord.joinedDate}
+                </td>
                 <td className="py-3 px-4 text-center">
-                  <Link href={`/dashboard/user-manage/vendor/${vendor.id}`}>
+                  <Link href={`/dashboard/user-manage/landlord/${landlord.id}`}>
                     <Eye className="w-5 h-5 text-gray-400 cursor-pointer" />
                   </Link>
                 </td>
@@ -241,9 +248,9 @@ export function VendorTable() {
       <div className="mt-4 flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="text-sm text-zinc-500">
           {`Showing ${
-            vendors.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
-          }–${Math.min(currentPage * PAGE_SIZE, vendors.length)} of ${
-            vendors.length
+            landlords.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
+          }–${Math.min(currentPage * PAGE_SIZE, landlords.length)} of ${
+            landlords.length
           } results`}
         </div>
         <Paginations

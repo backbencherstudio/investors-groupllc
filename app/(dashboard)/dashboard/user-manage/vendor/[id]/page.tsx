@@ -1,6 +1,7 @@
 "use client";
 
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface Tenant {
@@ -44,10 +45,12 @@ export default function VendorDetails() {
             {/* Card */}
             <div className="bg-white rounded-xl p-6 mb-6 relative shadow-sm">
               <div className="flex items-start gap-4">
-                <img
+                <Image
                   src={tenant.avatar}
                   className="rounded-full object-cover w-16 h-16"
                   alt=""
+                  width={64}
+                  height={64}
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
@@ -191,9 +194,11 @@ export default function VendorDetails() {
           <div className="space-y-3 max-h-90 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
             {/* Card 1 */}
             <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
                 alt="property"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-lg object-cover"
               />
               <div className="flex-1 min-w-0">
@@ -215,9 +220,11 @@ export default function VendorDetails() {
             </div>
             {/* Card 2 */}
             <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
                 alt="property"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-lg object-cover"
               />
               <div className="flex-1 min-w-0">
@@ -239,9 +246,11 @@ export default function VendorDetails() {
             </div>
             {/* Card 3 */}
             <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
                 alt="property"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-lg object-cover"
               />
               <div className="flex-1 min-w-0">

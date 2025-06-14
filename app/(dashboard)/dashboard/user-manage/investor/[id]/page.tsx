@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "recharts";
 import { InvestmentPerformance } from "./_components/investment-performance";
+import Image from "next/image";
 
 interface Tenant {
   avatar: string;
@@ -86,9 +87,11 @@ export default function InvestorDetails() {
             {/* Card */}
             <div className="bg-white rounded-xl p-6 mb-6 relative shadow-sm">
               <div className="flex items-start gap-4">
-                <img
+                <Image
                   src={tenant.avatar}
                   className="rounded-full object-cover w-16 h-16"
+                  width={64}
+                  height={64}
                   alt=""
                 />
                 <div className="flex-1 min-w-0">
@@ -477,13 +480,15 @@ export default function InvestorDetails() {
               {/* Card 1 */}
               <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80"
                     alt="property"
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between font-semibold text-base text-neutral-900 flex items-center gap-2">
+                    <div className="flex justify-between font-semibold text-base text-neutral-900 gap-2">
                       Murphy House{" "}
                       <span className="px-2 py-0.5 rounded text-xs font-semibold bg-green-50 text-green-500 border border-green-100">
                         Passive
@@ -504,13 +509,15 @@ export default function InvestorDetails() {
               {/* Card 2 */}
               <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80"
                     alt="property"
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between font-semibold text-base text-neutral-900 flex items-center gap-2">
+                    <div className="flex justify-between font-semibold text-base text-neutral-900 gap-2">
                       Murphy House{" "}
                       <span className="px-2 py-0.5 rounded text-xs font-semibold bg-green-50 text-green-500 border border-green-100">
                         Passive
@@ -531,9 +538,11 @@ export default function InvestorDetails() {
               {/* Card 3 */}
               <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80"
                     alt="property"
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                   <div className="flex-1 min-w-0">

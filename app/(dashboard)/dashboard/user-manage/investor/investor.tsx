@@ -1,7 +1,6 @@
 import React from "react";
 
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
-import { DataTable } from "../_components/table";
 import Card from "../_components/card";
 import { InvestorTable } from "./_components/investor-table";
 

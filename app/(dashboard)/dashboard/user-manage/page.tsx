@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Tenant from "./tenant/tenant";
 import Vendor from "./vendor/vendor";
 import Investor from "./investor/investor";
+import Landlord from "./landlord/landlord";
 
 const tabs = [
   { label: "Tenant", value: "tenant" },
@@ -49,7 +50,7 @@ export default function Page() {
         {activeTab === "tenant" && <Tenant />}
         {activeTab === "vendor" && <Vendor />}
         {activeTab === "investor" && <Investor />}
-        {activeTab === "landlord" && <div>Landlord Content</div>}
+        {activeTab === "landlord" && <Landlord />}
       </div>
     </div>
   );

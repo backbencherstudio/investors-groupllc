@@ -2,6 +2,7 @@
 
 import PropertyIcon from "@/public/icons/property";
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface Tenant {
@@ -28,10 +29,12 @@ export default function BeforePurchase({ tenant }: { tenant: Tenant }) {
       {/* Tenant Info Card */}
       <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
         <div className="flex items-start gap-4">
-          <img
+          <Image
             src={tenant.avatar}
-            className="rounded-full object-cover w-16 h-16"
             alt={tenant.name}
+            width={64}
+            height={64}
+            className="rounded-full object-cover w-16 h-16"
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">

@@ -7,17 +7,17 @@ import { VendorTable } from "./_components/vendor-table";
 const cardData = [
   {
     icon: ClipboardList,
-    value: 52,
+    value: 33,
     label: "Total Tenant",
   },
   {
     icon: UserCheck,
-    value: 32,
+    value: 91,
     label: "Active",
   },
   {
     icon: UserPlus,
-    value: 20,
+    value: 53,
     label: "New",
   },
 ];

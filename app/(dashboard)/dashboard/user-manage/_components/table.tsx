@@ -13,6 +13,7 @@ import {
 
 import { Paginations } from "../../_components/pagination";
 import Link from "next/link";
+import Image from "next/image";
 
 const tenants = [
   {
@@ -196,11 +197,14 @@ export function DataTable() {
                 className="border-b last:border-b-0 hover:bg-gray-50"
               >
                 <td className="py-3 px-4 flex items-center gap-3">
-                  <img
+                  <Image
                     src={tenant.avatar}
                     alt={tenant.name}
-                    className="w-10 h-10 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                    className="rounded-lg"
                   />
+
                   <div>
                     <div className="font-medium text-gray-900 leading-tight">
                       {tenant.name}

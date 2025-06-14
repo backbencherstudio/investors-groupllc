@@ -13,6 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import Image from "next/image";
 
 export function TransferRequest() {
   const tenant = {
@@ -65,9 +66,11 @@ export function TransferRequest() {
             <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between gap-4 mb-6">
               {/* Tenant Info */}
               <div className="flex items-center gap-3">
-                <img
+                <Image
                   src={tenant.avatar}
                   alt={tenant.name}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
@@ -79,9 +82,11 @@ export function TransferRequest() {
               </div>
               {/* Property Info */}
               <div className="flex items-center justify-end gap-3">
-                <img
+                <Image
                   src={property.image}
                   alt={property.name}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-lg object-cover"
                 />
                 <div className="text-right">

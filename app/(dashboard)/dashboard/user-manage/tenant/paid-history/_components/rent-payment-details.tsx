@@ -12,6 +12,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import Image from "next/image";
+
 
 export function RentPaymentDetails() {
   const tenant = {
@@ -63,9 +65,11 @@ export function RentPaymentDetails() {
           {/* Tenant Info */}
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src={tenant.avatar}
                 alt={tenant.name}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div>
@@ -93,9 +97,11 @@ export function RentPaymentDetails() {
             </div>
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-3">
-                <img
+                <Image
                   src={property.image}
                   alt={property.name}
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-lg object-cover"
                 />
                 <div>
