@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import Booking from "./sub-tab/booking";
+import Transfer from "./sub-tab/transfer";
 
 interface Subtab {
   label: string;
@@ -9,9 +10,9 @@ interface Subtab {
 
 const loadSubtabContent = (subtabValue: string) => {
   if (subtabValue === "booking") {
-    return <div>Booking</div>;
+    return <Booking />;
   } else if (subtabValue === "transfer") {
-    return <div>Transfer</div>;
+    return <Transfer />;
   } else if (subtabValue === "maintenance") {
     return <div>Maintenance</div>;
   } else if (subtabValue === "property-tour") {
@@ -43,7 +44,7 @@ export default function TenantRequests({
         }}
         className=""
       >
-        <TabsList className="flex gap-4 bg-transparent p-0 border-none">
+        <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4">
           {subtabs.map((subtab) => (
             <TabsTrigger
               key={subtab.value}

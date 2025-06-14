@@ -1,6 +1,6 @@
 import React from "react";
 import Analytics from "./_components/anlytics";
-// import IncomeChart from "./_components/income-chart";
+import IncomeChart from "./_components/income-chart";
 import InvestmentMaintenance from "./_components/investment-maintenance";
 import TenantTable from "./_components/tenant-table";
 import InvestorTransectionTable from "./_components/investor-transection-table";
@@ -11,7 +11,7 @@ export default function DashboardHome() {
     <div className="space-y-6">
 
       <Analytics /> 
-      {/* <IncomeChart /> */}
+      <IncomeChart />
       <InvestmentMaintenance />
       <TenantTable />
       <InvestorTransectionTable />

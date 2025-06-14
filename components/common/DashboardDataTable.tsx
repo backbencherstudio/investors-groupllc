@@ -9,9 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+// import { TablePagination } from "./TablePagination";
 // import { StatusBadge } from "./StatusBadge";
 
-type Column<T> = {
+export type Column<T> = {
   header: string;
   accessor: keyof T;
   render?: (value: T[keyof T], row: T) => React.ReactNode;

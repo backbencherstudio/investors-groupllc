@@ -64,9 +64,9 @@ export default function NotificationDropdown() {
     },
   ]);
 
-  const unreadCount = notifications.filter(
-    (notification) => !notification.read
-  ).length;
+  // const unreadCount = notifications.filter(
+  //   (notification) => !notification.read
+  // ).length;
 
   const markAllAsRead = () => {
     setNotifications(

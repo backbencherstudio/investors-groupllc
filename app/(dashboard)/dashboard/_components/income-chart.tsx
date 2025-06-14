@@ -36,8 +36,14 @@ const COLORS = {
   roi: "#FCF1E6",
 };
 
+type TooltipPayload = {
+  value: number;
+  dataKey: string;
+  name: string;
+}[];
+
 // Custom Tooltip to include ROI
-const CustomTooltip = ({ active, payload, label }: { active: boolean, payload: any, label: string } ) => {
+const CustomTooltip = ({ active, payload, label }: { active: boolean, payload: TooltipPayload, label: string } ) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-4 rounded-xl shadow-lg border text-sm">
@@ -141,7 +147,7 @@ export function IncomeChart() {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={360}>
-        <BarChart
+        {/* <BarChart
           data={data}
           margin={{ top: 20, right: 20, left: 0, bottom: 30 }}
           barCategoryGap="40%"
@@ -200,14 +206,61 @@ export function IncomeChart() {
             shape={(props: any) => (
               <rect
                 {...props}
-                y={props.y - 16} // offset upward by the gap amount
+                y={props.y ? props.y - 16 : 0} // offset upward by the gap amount
                 height={props.height}
                 rx={4}
                 fill="#FCF1E6"
               />
             )}
           />
-        </BarChart>
+        </BarChart> */}
+
+<BarChart
+  data={data}
+  margin={{ top: 20, right: 20, left: 0, bottom: 30 }}
+  barCategoryGap="40%"
+  barGap={0}
+>
+  <CartesianGrid
+    vertical={false}
+    strokeDasharray="5 5"
+    stroke="#ececec"
+  />
+  <XAxis
+    axisLine={false}
+    dataKey="month" // This should go in the XAxis, not in any DOM element.
+    tickLine={false}
+    padding={{ left: 10, right: 10 }}
+    dy={15}
+  />
+  <YAxis
+    axisLine={false}
+    tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
+  />
+  <Tooltip content={<CustomTooltip active={true} payload={[]} label={""} />} />
+  <Bar
+    dataKey="earn" // Apply dataKey to Recharts component, not to a DOM element.
+    stackId="a"
+    fill={COLORS.earn}
+    radius={[4, 4, 4, 4]}
+    barSize={12}
+  />
+  <Bar
+    dataKey="profit"
+    stackId="a"
+    fill={COLORS.profit}
+    radius={[4, 4, 4, 4]}
+    barSize={12}
+  />
+  <Bar
+    dataKey="roi"
+    stackId="a"
+    fill={COLORS.roi}
+    radius={[4, 4, 4, 4]}
+    barSize={12}
+  />
+</BarChart>
+
       </ResponsiveContainer>
     </div>
   );

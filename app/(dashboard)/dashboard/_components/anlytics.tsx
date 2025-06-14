@@ -25,6 +25,13 @@ async function fetchAnalyticsData() {
   });
 }
 
+interface AnalyticsData {
+  totalTenants: number;
+  totalProperties: number;
+  totalLeases: number;
+  totalIncome: number;
+}
+
 export default function Analytics() {
   const [analyticsData, setAnalyticsData] = useState({
     totalTenants: 0,
@@ -40,7 +47,7 @@ export default function Analytics() {
       setLoading(true);
       try {
         const data = await fetchAnalyticsData(); // Fetch the mocked data
-        setAnalyticsData(data);
+        setAnalyticsData(data as AnalyticsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
