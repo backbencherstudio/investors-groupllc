@@ -219,9 +219,11 @@ export default function LandlordDetails() {
                   className="bg-white rounded-lg border border-zinc-100 p-4 flex flex-col gap-2"
                 >
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
                       alt="property"
+                      width={100}
+                      height={100}
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <span className="absolute top-2 left-2 bg-green-100 text-green-600 px-2 py-0.5 rounded text-xs font-semibold">
