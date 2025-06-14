@@ -2,6 +2,15 @@
 
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
 import React, { useState } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+import { InvestmentPerformance } from "./_components/investment-performance";
 
 interface Tenant {
   avatar: string;
@@ -26,6 +35,39 @@ const tenant: Tenant = {
   jobTitle: "Business",
   salary: "$10,000-$20,000",
 };
+
+const data = [
+  {
+    name: "Jan",
+
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Feb",
+
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Mar",
+
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Apr",
+
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "May",
+
+    pv: 4800,
+    amt: 2181,
+  },
+];
 
 export default function InvestorDetails() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -383,92 +425,135 @@ export default function InvestorDetails() {
 
         {/* Right Section */}
         <div className="bg-white rounded-xl p-4 shadow-sm w-full col-span-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg">Maintenance List</h3>
-            <span className="text-sm text-neutral-500 flex items-center gap-1 cursor-pointer select-none">
-              All Status
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path
-                  d="M6 9l6 6 6-6"
-                  stroke="#888"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
+          <div>
+            <LineChart
+              width={500}
+              height={300}
+              data={data}
+              margin={{
+                top: 12,
+                right: 45,
+                left: 0,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              {/* <Legend /> */}
+              <Line
+                type="monotone"
+                dataKey="pv"
+                stroke="#D80"
+                strokeDasharray="5 5"
+              />
+              {/* <Line
+                type="monotone"
+                dataKey="uv"
+                stroke="#82ca9d"
+                strokeDasharray="3 4 5 2"
+              /> */}
+            </LineChart>
           </div>
-          <div className="space-y-3 max-h-90 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
-            {/* Card 1 */}
-            <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
-                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
-                alt="property"
-                className="w-12 h-12 rounded-lg object-cover"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-base text-neutral-900">
-                  Murphy House
-                </div>
-                <div className="text-xs text-neutral-500 mb-1">
-                  4140 Parker Rd. Allentown, New Mexi
-                </div>
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-neutral-500">Status</span>
-                  <span className="font-medium text-orange-500">On going</span>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-neutral-400">Accepted Assignment</span>
-                  <span className="text-neutral-500">July 12, 2025</span>
-                </div>
-              </div>
+          {/* Invested Property Section */}
+          <div className="bg-white rounded-xl p-4 shadow-sm mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg">Invested Property</h3>
+              <span className="text-sm text-neutral-500 flex items-center gap-1 cursor-pointer select-none">
+                All Type
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="#888"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
             </div>
-            {/* Card 2 */}
-            <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
-                src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
-                alt="property"
-                className="w-12 h-12 rounded-lg object-cover"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-base text-neutral-900">
-                  Murphy House
+            <div className="space-y-4 h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
+              {/* Card 1 */}
+              <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80"
+                    alt="property"
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between font-semibold text-base text-neutral-900 flex items-center gap-2">
+                      Murphy House{" "}
+                      <span className="px-2 py-0.5 rounded text-xs font-semibold bg-green-50 text-green-500 border border-green-100">
+                        Passive
+                      </span>
+                    </div>
+                    <div className="text-xs text-neutral-400">
+                      Start date: Jan 01, 2025
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-neutral-500 mb-1">
-                  4140 Parker Rd. Allentown, New Mexi
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Investment Amount</span>
+                  <span className="text-neutral-900 font-medium">$5,000</span>
                 </div>
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-neutral-500">Status</span>
-                  <span className="font-medium text-blue-500">In Review</span>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-neutral-400">Accepted Assignment</span>
-                  <span className="text-neutral-500">July 12, 2025</span>
-                </div>
+                {/* Drawer */}
+                <InvestmentPerformance />
               </div>
-            </div>
-            {/* Card 3 */}
-            <div className="bg-white rounded-lg p-3 border border-zinc-100 flex gap-3 items-start">
-              <img
-                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
-                alt="property"
-                className="w-12 h-12 rounded-lg object-cover"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-base text-neutral-900">
-                  Murphy House
+              {/* Card 2 */}
+              <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80"
+                    alt="property"
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between font-semibold text-base text-neutral-900 flex items-center gap-2">
+                      Murphy House{" "}
+                      <span className="px-2 py-0.5 rounded text-xs font-semibold bg-green-50 text-green-500 border border-green-100">
+                        Passive
+                      </span>
+                    </div>
+                    <div className="text-xs text-neutral-400">
+                      Start date: Jan 01, 2025
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-neutral-500 mb-1">
-                  4140 Parker Rd. Allentown, New Mexi
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Investment Amount</span>
+                  <span className="text-neutral-900 font-medium">$5,000</span>
                 </div>
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-neutral-500">Status</span>
-                  <span className="font-medium text-orange-500">On going</span>
+                {/* Drawer */}
+                <InvestmentPerformance />
+              </div>
+              {/* Card 3 */}
+              <div className="bg-white rounded-lg p-4 border border-zinc-100 flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=80&q=80"
+                    alt="property"
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between font-semibold text-base text-neutral-900  gap-2">
+                      Murphy House{" "}
+                      <span className="px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-600 border border-blue-200">
+                        Active
+                      </span>
+                    </div>
+                    <div className="text-xs text-neutral-400">
+                      Start date: Jan 01, 2025
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-neutral-400">Accepted Assignment</span>
-                  <span className="text-neutral-500">July 12, 2025</span>
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Investment Amount</span>
+                  <span className="text-neutral-900 font-medium">$5,000</span>
                 </div>
+                {/* Drawer */}
+                <InvestmentPerformance />
               </div>
             </div>
           </div>
