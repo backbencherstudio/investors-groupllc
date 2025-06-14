@@ -8,7 +8,7 @@ import {
 } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-import DatePicker from "@/components/common/DatePicker";
+// import DatePicker from "@/components/common/DatePicker";    
 import { TablePagination } from "@/components/common/TablePagination";
 import TenantRequestDetails from "../others/tenant-request-details";
 
@@ -77,9 +77,10 @@ const bookingData: BookingData[] = [
 ];
 
 export default function Booking() {
-  const [tenantStatus, setTenantStatus] = useState("");
-  const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
+  const [propertyStatus, setPropertyStatus] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [propertySearch, setPropertySearch] = useState("");
+  // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(bookingData.length / itemsPerPage);
