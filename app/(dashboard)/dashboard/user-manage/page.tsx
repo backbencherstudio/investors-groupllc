@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Tenant from "./tenant/tenant";
+import Vendor from "./vendor/vendor";
+import Investor from "./investor/investor";
 
 const tabs = [
   { label: "Tenant", value: "tenant" },
@@ -49,8 +51,8 @@ export default function Page() {
       <div className="mt-5">
         {/* Render content based on activeTab here */}
         {activeTab === "tenant" && <Tenant />}
-        {activeTab === "vendor" && <div>Vendor Content</div>}
-        {activeTab === "investor" && <div>Investor Content</div>}
+        {activeTab === "vendor" && <Vendor />}
+        {activeTab === "investor" && <Investor />}
         {activeTab === "landlord" && <div>Landlord Content</div>}
       </div>
     </div>
