@@ -1,7 +1,9 @@
 import React from "react";
-import Card from "../../_components/card";
+
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
-import { MaintenanceList } from "./_components/maintenance-list";
+import { DataTable } from "../_components/table";
+import Card from "../_components/card";
+
 
 const cardData = [
   {
@@ -16,16 +18,16 @@ const cardData = [
   },
   {
     icon: UserPlus,
-    value: 202,
+    value: 20,
     label: "New",
   },
 ];
 
-export default function MaintenanceDetail() {
+export default function Vendor() {
   return (
     <div className="space-y-6">
       <Card cardData={cardData} />
-      <MaintenanceList />
+      <DataTable />
     </div>
   );
 }
