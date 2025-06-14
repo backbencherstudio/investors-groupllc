@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils"; // make sure you have cn helper
+import logo from "../../../../public/logo.svg"
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -74,10 +75,10 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
           {/* Logo */}
           <div className="mb-6 px-2">
             <Image
-              src="/logo.svg" // Replace with your logo
+              src={logo} // Replace with your logo
               alt="Investors Group LLC"
               width={160}
-              height={50}
+              height={80}
             />
           </div>
 
