@@ -12,14 +12,19 @@ const statusStyles: Record<string, string> = {
   Pending: "bg-orange-100 text-orange-600",
   Rejected: "bg-red-100 text-red-600",
   Assigned: "bg-green-100 text-green-700",
+  Basic: "bg-green-100 text-green-700",
+  Trial: "bg-gray-100 text-gray-700",
+  Premium: "bg-blue-100 text-blue-700",
 };
 
-export default  function StatusBadge({ status }: { status: string }) {
+export default function StatusBadge({ status }: { status: string }) {
   return (
-    <span className={cn(
-      "text-xs font-semibold px-3 py-1 rounded inline-block",
-      statusStyles[status] || "bg-gray-100 text-gray-700"
-    )}>
+    <span
+      className={cn(
+        "text-xs font-semibold px-3 py-1 rounded inline-block",
+        statusStyles[status] || "bg-gray-100 text-gray-700"
+      )}
+    >
       {status}
     </span>
   );
