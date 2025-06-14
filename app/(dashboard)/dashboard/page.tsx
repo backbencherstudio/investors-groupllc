@@ -9,8 +9,7 @@ import WithdrawalTable from "./_components/withdrawal-table";
 export default function DashboardHome() {
   return (
     <div className="space-y-6">
-
-      <Analytics /> 
+      <Analytics />
       <IncomeChart />
       <InvestmentMaintenance />
       <TenantTable />

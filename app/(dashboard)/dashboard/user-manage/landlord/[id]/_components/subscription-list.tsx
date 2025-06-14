@@ -3,15 +3,10 @@
 import { Eye } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
+
 
 const subscriptionData = [
   {
