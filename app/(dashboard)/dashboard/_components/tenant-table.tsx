@@ -9,7 +9,6 @@ import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
-import { Paginations } from "./pagination";
 import { TablePagination } from "@/components/common/TablePagination";
 
 const tenantData = [
