@@ -2,6 +2,8 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Booking from "./sub-tab/booking";
 import Transfer from "./sub-tab/transfer";
+import MaintenanceRequests from "./sub-tab/maintenance";
+import PropertyTour from "./sub-tab/property-tour";
 
 interface Subtab {
   label: string;
@@ -14,9 +16,9 @@ const loadSubtabContent = (subtabValue: string) => {
   } else if (subtabValue === "transfer") {
     return <Transfer />;
   } else if (subtabValue === "maintenance") {
-    return <div>Maintenance</div>;
+    return <MaintenanceRequests />;
   } else if (subtabValue === "property-tour") {
-    return <div>Property Tour</div>;
+    return <PropertyTour />;
   } else {
     return <div>Invalid Subtab</div>;
   }

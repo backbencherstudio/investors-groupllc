@@ -11,6 +11,7 @@ const statusStyles: Record<string, string> = {
   Approved: "bg-blue-100 text-blue-700",
   Pending: "bg-orange-100 text-orange-600",
   Rejected: "bg-red-100 text-red-600",
+  Assigned: "bg-green-100 text-green-700",
 };
 
 export default  function StatusBadge({ status }: { status: string }) {
