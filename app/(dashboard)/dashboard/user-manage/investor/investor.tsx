@@ -1,33 +1,33 @@
 import React from "react";
-import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
-import Card from "../_components/card";
-import { VendorTable } from "./_components/vendor-table";
 
+import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
+import { DataTable } from "../_components/table";
+import Card from "../_components/card";
+import { InvestorTable } from "./_components/investor-table";
 
 const cardData = [
   {
     icon: ClipboardList,
-    value: 52,
+    value: 86,
     label: "Total Tenant",
   },
   {
     icon: UserCheck,
-    value: 32,
+    value: 18,
     label: "Active",
   },
   {
     icon: UserPlus,
-    value: 20,
+    value: 64,
     label: "New",
   },
 ];
 
-
-export default function Vendor() {
+export default function Investor() {
   return (
     <div className="space-y-6">
       <Card cardData={cardData} />
-      <VendorTable />
+      <InvestorTable />
     </div>
   );
 }
