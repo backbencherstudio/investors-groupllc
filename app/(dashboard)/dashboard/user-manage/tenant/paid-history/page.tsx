@@ -41,7 +41,7 @@ interface Column<T> {
 export default function PaidHistory() {
   const [tenantStatus, setTenantStatus] = useState("Due");
   const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | null>(null);
+  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
 
   const PAGE_SIZE = 2;

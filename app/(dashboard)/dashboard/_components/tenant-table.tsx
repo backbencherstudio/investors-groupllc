@@ -4,14 +4,29 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState } from "react";
-import { DashboardDataTable } from "@/components/common/DashboardDataTable";
+import { DashboardDataTable, Column } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 
-const tenantData = [
+interface TenantData {
+  paidDate: string;
+  payment: string;
+  recipient: string;
+  id: string;
+  property: string;
+  amount: string;
+  dueDate: string;
+  status: string;
+  action: string;
+  avatar?: string;
+  phone?: string;
+  propertyAddress?: string;
+}
+
+const tenantData: TenantData[] = [
   {
     paidDate: "10/28/25",
     payment: "Success",
@@ -92,28 +107,30 @@ export default function TenantTable() {
 
   // fetched from backend
 
-  const tenantColumns = [
+  const tenantColumns: Column<TenantData>[] = [
     { header: "Paid Date", accessor: "paidDate" },
     {
       header: "Payment",
       accessor: "payment",
-      render: (value: string) => <StatusBadge status={value} />,
+      render: (value: string | undefined) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Recipient",
       accessor: "recipient",
-      render: (value: string, row: any) => (
+      render: (value: string | undefined, row: TenantData) => (
         <div className="flex items-center gap-2">
-          <Image
-            src={row.avatar}
-            alt={value}
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
+          {row.avatar && (
+            <Image
+              src={row.avatar}
+              alt={value || ""}
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+          )}
           <div>
             <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.phone}</div>
+            {row.phone && <div className="text-xs text-gray-500">{row.phone}</div>}
           </div>
         </div>
       ),
@@ -122,10 +139,12 @@ export default function TenantTable() {
     {
       header: "Property",
       accessor: "property",
-      render: (value: string, row: any) => (
+      render: (value: string | undefined, row: TenantData) => (
         <div>
           <div>{value}</div>
-          <div className="text-xs text-gray-500">{row.propertyAddress}</div>
+          {row.propertyAddress && (
+            <div className="text-xs text-gray-500">{row.propertyAddress}</div>
+          )}
         </div>
       ),
     },
@@ -134,7 +153,7 @@ export default function TenantTable() {
     {
       header: "Status",
       accessor: "status",
-      render: (value: string) => <StatusBadge status={value} />,
+      render: (value: string | undefined) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Action",

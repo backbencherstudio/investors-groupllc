@@ -14,7 +14,7 @@ import {
 type Column<T> = {
   header: string;
   accessor: keyof T;
-render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
   className?: string;
 };
 
