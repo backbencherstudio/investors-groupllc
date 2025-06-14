@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function InvestmentApplication() {
+export default function InvestmentApplications() {
   return (
-    <div>Investment Application</div>
+    <div>Investment Application from component</div>
   )
 }

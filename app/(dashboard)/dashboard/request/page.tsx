@@ -8,8 +8,10 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
 import { useState } from "react";
+import TenantRequests from "./_components/tenant-reqeust";
+import InvestmentApplications from "./_components/investment-application";
+import PropertyListingRequest from "./_components/property-listing-reqest";
 
 // Main tabs data
 const tabs = [
@@ -17,7 +19,6 @@ const tabs = [
   { label: "Investment Applications", value: "investment-applications" },
   { label: "Property Listing Requests", value: "property-listing-requests" },
 ];
-
 // Sub-tabs data
 const subtabs = [
   { label: "Booking", value: "booking" },
@@ -25,31 +26,55 @@ const subtabs = [
   { label: "Maintenance", value: "maintenance" },
   { label: "Property Tour", value: "property-tour" },
 ];
-
 export default function RequestPage() {
   const [activeTab, setActiveTab] = useState("tenant-requests");
-  // const [activeSubtab, setActiveSubtab] = useState("booking");
+  const [activeSubtab, setActiveSubtab] = useState("booking");
+
+  // Function to load content dynamically based on tab value
+  const loadTabContent = (tabValue: string) => {
+    switch (tabValue) {
+      case "tenant-requests":
+        return (
+          <TenantRequests
+            subtabs={subtabs}
+            activeSubtab={activeSubtab}
+            setActiveSubtab={setActiveSubtab}
+          />
+        );
+      case "investment-applications":
+        return <InvestmentApplications />;
+      case "property-listing-requests":
+        return <PropertyListingRequest />;
+      default:
+        return <div>Invalid Tab</div>;
+    }
+  };
 
   return (
-    <div className="bg-[#FAFAFA] p-6">
+    <div className="p-2 ">
       {/* Breadcrumb */}
       <Breadcrumb className="mb-6">
-        <BreadcrumbList className=" text-lg ">
+        <BreadcrumbList className="md:text-lg">
           <BreadcrumbItem>
             <BreadcrumbLink href="/dashboard/request">Request</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/dashboard/request/`}>
-              {activeTab}
-            </BreadcrumbLink>
+            {/* <BreadcrumbLink href={`/dashboard/request/`}> */}
+            {tabs.find((tab) => tab.value === activeTab)?.label}
+            {/* </BreadcrumbLink> */}
           </BreadcrumbItem>
 
           {activeTab === "tenant-requests" && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Test</BreadcrumbPage>
+                <BreadcrumbPage>
+                  {
+                    subtabs.find((subtab) => subtab.value === activeSubtab)
+                      ?.label
+                  }
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </>
           )}
@@ -57,20 +82,19 @@ export default function RequestPage() {
       </Breadcrumb>
 
       {/* Main Tabs */}
-
       <Tabs
-        defaultValue={activeTab}
-        className="bg-white rounded-md p-1 shadow-none border border-gray-200"
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className=" rounded-md relative"
       >
-        <TabsList>
+        <TabsList className="  rounded-none ">
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.value}
               value={tab.value}
-              onClick={() => setActiveTab(tab.value)}
-              className={`pb-3 text-base font-semibold transition-colors border-b-2 ${
+              className={`pb-3 md:pb-6 text-sm md:text-lg font-semibold transition-colors  ${
                 activeTab === tab.value
-                  ? "text-orange-700 border-orange-500"
+                  ? ""
                   : "text-zinc-400 border-transparent hover:text-orange-700"
               }`}
             >
@@ -78,36 +102,14 @@ export default function RequestPage() {
             </TabsTrigger>
           ))}
         </TabsList>
+        <hr className=" absolute h-1 inset-x-0 top-[32px] " />
         <TabsContent value={activeTab}>
-          <div className="pt-4">
-            <h2 className="text-lg font-semibold">Showing content for: </h2>
-            <span className="text-orange-500">{activeTab}</span>
+          <div className="pt-2">
+            {/* <h2 className="text-lg font-semibold">Showing content for: </h2> */}
+            <span className="text-orange-500">{loadTabContent(activeTab)}</span>
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Sub-tabs */}
-      {/* <div className="flex gap-2 mt-2 mb-4">
-        {subtabs.map((st) => (
-          <button
-            key={st.value}
-            onClick={() => setActiveSubtab(st.value)}
-            className={`px-4 py-1.5 rounded-full border text-sm font-medium transition ${
-              activeSubtab === st.value
-                ? "bg-orange-500 text-white border-orange-500"
-                : "bg-white text-zinc-600 border-zinc-200 hover:bg-orange-50"
-            }`}
-          >
-            {st.label}
-          </button>
-        ))}
-      </div> */}
-
-      {/* Page Content */}
-      <div className="pt-4">
-        <h2 className="text-lg font-semibold">Showing content for: </h2>
-        <span className="text-orange-500">{}</span>
-      </div>
     </div>
   );
 }
