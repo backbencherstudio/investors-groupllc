@@ -119,7 +119,9 @@ export default function Booking() {
           />
           <div>
             <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.fromPropertyAddress}</div>
+            <div className="text-xs text-gray-500">
+              {row.fromPropertyAddress}
+            </div>
           </div>
         </div>
       ),
@@ -138,7 +140,7 @@ export default function Booking() {
           />
           <div>
             <div className="font-semibold">{value}</div>
-                <div className="text-xs text-gray-500">{row.toPropertyAddress}</div>
+            <div className="text-xs text-gray-500">{row.toPropertyAddress}</div>
           </div>
         </div>
       ),
@@ -164,17 +166,26 @@ export default function Booking() {
           <h2 className="text-2xl font-semibold">Transfer Requests</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">
-              <SearchInput value={tenantSearch} onChange={setTenantSearch} />
+              <SearchInput
+                value={propertySearch}
+                onChange={setPropertySearch}
+              />
             </div>
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
-                value={tenantStatus}
-                onChange={setTenantStatus}
+                value={propertyStatus}
+                onChange={setPropertyStatus}
                 options={["In Review", "Approved", "Rejected"]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
-              <DatePicker value={tenantDate} onChange={setTenantDate} />
+              {/* <DatePicker value={propertyDate} onChange={setPropertyDate} /> */}
+
+              <SelectDropDown
+                value={propertyType}
+                onChange={setPropertyType}
+                options={["Property", "Room"]}
+              />
             </div>
           </div>
         </div>
