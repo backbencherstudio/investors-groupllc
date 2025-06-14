@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState } from "react";
-import { DashboardDataTable } from "@/components/common/DashboardDataTable";
+import { Column, DashboardDataTable } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
@@ -74,7 +74,7 @@ const withdrawData: WithdrawData[] = [
 export default function WithdrawalTable() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date>(new Date());
+  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(withdrawData.length / itemsPerPage);
@@ -83,16 +83,16 @@ export default function WithdrawalTable() {
 
   // fetched from backend
 
-  const columns = [
+  const columns: Column<WithdrawData>[]  = [
     { header: "Req date", accessor: "reqDate" as keyof WithdrawData },
     {
       header: "Name",
       accessor: "name" as keyof WithdrawData,
-      render: (value: string, row: WithdrawData) => (
+      render: (value: string | undefined, row: WithdrawData) => (
         <div className="flex items-center gap-2">
           <Image
             src={row.avatar}
-            alt={value}
+            alt={value || ""}
             width={32}
             height={32}
             className="rounded-full"
@@ -111,11 +111,13 @@ export default function WithdrawalTable() {
     {
       header: "Status",
       accessor: "status" as keyof WithdrawData,
-      render: (value: WithdrawData["status"]) => <StatusBadge status={value} />,
+      render: (value: string | undefined) => (
+        <StatusBadge status={value || ""} />
+      ),
     },
     {
       header: "Action",
-      accessor: "action" as any,
+      accessor: "action" as keyof WithdrawData,
       render: () => (
         <button className="text-gray-600 hover:text-primary">
           <EyeIcon />

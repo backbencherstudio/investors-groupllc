@@ -5,7 +5,7 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState } from "react";
 import StatusBadge from "@/components/common/StatusBadges";
-import { EyeIcon } from "lucide-react";
+// import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { Paginations } from "../../../_components/pagination";
 import {
@@ -42,7 +42,7 @@ interface Column<T> {
 export default function PaidHistory() {
   const [tenantStatus, setTenantStatus] = useState("Due");
   const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | null>(null);
+  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
 
   const PAGE_SIZE = 2;

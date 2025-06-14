@@ -117,7 +117,7 @@ const tenantData: TenantData[] = [
 export default function InvestorTransectionTable() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date>(new Date());
+  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(tenantData.length / itemsPerPage);

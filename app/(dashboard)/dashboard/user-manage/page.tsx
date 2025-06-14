@@ -22,7 +22,11 @@ export default function Page() {
     <div>
       <p className="pb-6">
         {"User Management"}{" "}
-        <span className="text-[18px] font-semibold">{"> Tenant"}</span>
+        <span className="text-[18px] font-semibold">
+          {" "}
+          <span className="font-normal mx-2">{">"}</span>
+          {activeTab}{" "}
+        </span>
       </p>
       <div className="w-full bg-transparent overflow-x-auto">
         <nav className="flex border-b border-gray-200 bg-transparent">

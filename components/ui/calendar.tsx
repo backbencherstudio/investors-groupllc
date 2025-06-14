@@ -19,14 +19,19 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  selected,
+  onSelect,
   ...props
-}: React.ComponentProps<typeof DayPicker> & {
+}: Omit<React.ComponentProps<typeof DayPicker>, 'mode' | 'selected' | 'onSelect'> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  selected?: Date | undefined
+  onSelect?: (date: Date | undefined) => void
 }) {
   const defaultClassNames = getDefaultClassNames()
 
   return (
     <DayPicker
+      mode="single"
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -164,6 +169,8 @@ function Calendar({
         },
         ...components,
       }}
+      selected={selected}
+      onSelect={onSelect}
       {...props}
     />
   )

@@ -47,7 +47,7 @@ function InvestmentCard() {
             className="flex justify-between items-center mb-2"
           >
             <span className="text-[#404040] font-medium">{item.label}</span>
-            <span
+            {/* <span
               className={
                 item?.danger
                   ? "text-red-500 font-bold"
@@ -55,7 +55,9 @@ function InvestmentCard() {
               }
             >
               {item.value}
-            </span>
+            </span> */}
+
+            <span className="text-red-600 font-sbold">{item.value}</span>
           </li>
         ))}
       </ul>
