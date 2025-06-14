@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 const subscriptionData = [
   {
     id: 1,
-    date: "Apr 28, 2025",
+    date: "Apr 28, 2024",
     planType: "Trial",
     amount: "Free",
     methods: "-",
@@ -24,7 +24,7 @@ const subscriptionData = [
   },
   {
     id: 2,
-    date: "May 28, 2025",
+    date: "May 28, 2024",
     planType: "Premium",
     amount: "$29",
     methods: "Credit Card",
@@ -32,7 +32,7 @@ const subscriptionData = [
   },
   {
     id: 3,
-    date: "Jun 28, 2025",
+    date: "Jun 28, 2024",
     planType: "Basic",
     amount: "Free",
     methods: "-",
