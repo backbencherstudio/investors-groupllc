@@ -95,7 +95,7 @@ export default function RequestPage() {
               className={`pb-3 md:pb-6 text-sm md:text-lg font-semibold transition-colors  ${
                 activeTab === tab.value
                   ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-700"
+                  : "text-zinc-400 border-transparent hover:text-orange-600"
               }`}
             >
               {tab.label}
