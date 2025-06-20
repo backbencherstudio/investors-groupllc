@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import ProfileEditForm from "../others/account-setting";
 
 // Define the structure for the subtabs
 interface Subtab {
@@ -23,14 +24,7 @@ export default function GeneralSettings() {
   const [activeSubtab, setActiveSubtab] = useState(subtabs[0].value); // Set initial active tab
 
   return (
-    <div className="">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">
-          General Settings:{" "}
-          {subtabs.find((subTab) => subTab.value === activeSubtab)?.label}
-        </h1>
-      </div>
-
+    <div className="my-4">
       <Tabs
         value={activeSubtab}
         onValueChange={(value) => setActiveSubtab(value)}
@@ -57,6 +51,8 @@ export default function GeneralSettings() {
             <p className="text-gray-500">
               Content related to account settings goes here.
             </p>
+
+            <ProfileEditForm></ProfileEditForm>
           </div>
         </TabsContent>
 

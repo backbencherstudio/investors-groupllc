@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import Link from "next/link"
+import Link from "next/link";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +9,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
 import React, { useState } from "react";
 import GeneralSettings from "./tabs/GeneralSettings";
@@ -46,26 +46,22 @@ export default function SettingPage() {
   return (
     <div>
       {/* Breadcrumb */}
-      <h3 className="text-lg font-medium my-6">
-        {tabsItems.find((item) => item.value === activeTab)?.label}
-      </h3>
+      <h3 className="text-lg font-medium my-6"></h3>
 
       <Breadcrumb>
-        <BreadcrumbList>
+        <BreadcrumbList className="text-lg mb-2 font-semibold">
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link href="/">Setting</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
+
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/components">Components</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+            <BreadcrumbPage className="font-medium">
+              {" "}
+              {tabsItems.find((item) => item.value === activeTab)?.label}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
