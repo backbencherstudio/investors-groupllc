@@ -40,9 +40,9 @@ export function DataTable<T extends { id: string | number }>({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((row) => (
+          {data?.map((row) => (
             <TableRow key={row.id}>
-              {columns.map((col, idx) => (
+              {columns?.map((col, idx) => (
                 <TableCell key={idx} className={col.className || ""}>
                   {col.render ? col.render(row[col.accessor], row) : row[col.accessor] as React.ReactNode}
                 </TableCell>
