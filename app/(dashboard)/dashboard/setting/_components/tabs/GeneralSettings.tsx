@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ProfileEditForm from "../others/account-setting";
+import ProfileEditForm from "./sub-tabs/account-setting";
+import PaymentSetting from "./sub-tabs/payment-setting";
 
 // Define the structure for the subtabs
 interface Subtab {
@@ -59,11 +60,13 @@ export default function GeneralSettings() {
         <TabsContent value="payment-setting">
           <div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Payment Settings Content
+              
             </h2>
             <p className="text-gray-500">
               Content related to payment settings goes here.
             </p>
+
+            <PaymentSetting/>
           </div>
         </TabsContent>
       </Tabs>
