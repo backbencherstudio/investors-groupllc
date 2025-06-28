@@ -57,7 +57,7 @@ function InvestmentCard() {
               {item.value}
             </span> */}
 
-            <span className="text-red-600 font-sbold">{item.value}</span>
+            <span className=" font-semibold">{item.value}</span>
           </li>
         ))}
       </ul>
