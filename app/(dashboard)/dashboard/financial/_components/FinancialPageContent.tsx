@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
+import TenantRentalPayments from "./tabs/tenant-rental-payments";
 
 export default function FinancialPageContent() {
   type TabKey =
@@ -54,19 +55,19 @@ export default function FinancialPageContent() {
           <TabsList className="gap-10">
             <TabsTrigger
               value="tenant-rental-payments"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-3 rounded-none"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
             >
               Tenant Rental Payments
             </TabsTrigger>
             <TabsTrigger
               value="investor-transaction"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-3 rounded-none"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none "
             >
               Investor Transaction
             </TabsTrigger>
             <TabsTrigger
               value="withdrawals"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-3 rounded-none"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
             >
               Withdrawals
             </TabsTrigger>
@@ -75,7 +76,10 @@ export default function FinancialPageContent() {
         </div>
 
         <TabsContent value="tenant-rental-payments">
-          <div>Content for Tenant Rental Payments</div>
+          <div>
+
+            <TenantRentalPayments/>
+          </div>
         </TabsContent>
         <TabsContent value="investor-transaction">
           <div>Content for Investor Transaction</div>

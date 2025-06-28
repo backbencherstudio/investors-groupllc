@@ -9,11 +9,11 @@ interface CardItem {
 
 export default function Card({ cardData }: { cardData: CardItem[] }) {
   return (
-    <div className="flex flex-col md:flex-row flex-wrap gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
       {cardData.map((item, idx) => (
         <div
           key={idx}
-          className="flex items-center bg-white rounded-xl shadow p-4 min-w-[240px] "
+          className="flex items-center bg-white  rounded-xl shadow p-4 lg:p-6 min-w-[240px] "
         >
           {/* Icon box */}
           <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-orange-50 mr-4">

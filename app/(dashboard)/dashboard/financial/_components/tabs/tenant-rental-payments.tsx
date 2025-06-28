@@ -1,0 +1,35 @@
+import React from "react";
+import Card from "../../../user-manage/_components/card";
+import BagMoney from "@/components/icons/BagMoney";
+import Pending from "@/components/icons/Pending";
+import RentPayment from "./withdrawal-list";
+
+const cardData = [
+  {
+    icon: BagMoney,
+    value: 52,
+    label: "Total Rent Collected",
+  },
+  {
+    icon: Pending,
+    value: 32,
+    label: "Due",
+  },
+];
+
+export default function TenantRentalPayments() {
+  return (
+    <div>
+
+      {/* Card stats */}
+      <section className="mt-4">
+        <Card cardData={cardData} />
+      </section>
+
+      {/* table */}
+      <section className="mt-6">
+        <RentPayment/>
+      </section>
+    </div>
+  );
+}
