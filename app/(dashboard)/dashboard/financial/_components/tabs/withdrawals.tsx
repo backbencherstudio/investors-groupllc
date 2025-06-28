@@ -1,33 +1,34 @@
-import React from "react";
+import CoinHand from "@/components/icons/finanacial/CoinHand";
 import Card from "../../../user-manage/_components/card";
-import Coins from "@/components/icons/finanacial/Coins";
-import Screen from "@/components/icons/finanacial/Screen";
-import InvestorTransectionTable from "../../../_components/investor-transection-table";
+import Tick from "@/components/icons/finanacial/Tick";
+import Request from "@/components/icons/finanacial/Request";
+import Info from "@/components/icons/finanacial/Info";
+import WithdrawalTable from "../../../_components/withdrawal-table";
 
 const cardData = [
   {
-    icon: Coins,
+    icon: CoinHand,
     value: "300M",
     label: "Total Invested",
   },
   {
-    icon: Screen,
+    icon: Tick,
     value: 832,
     label: "Withdraw",
   },
   {
-    icon: Screen,
+    icon: Request,
     value: 3,
     label: "Pending",
   },
   {
-    icon: Screen,
+    icon: Info,
     value: 327,
     label: "Property",
   },
 ];
 
-export default function InvestorTransection() {
+export default function Withdrawals() {
   return (
     <div>
       {/* Card stats */}
@@ -37,7 +38,7 @@ export default function InvestorTransection() {
 
       {/* table */}
       <section className="mt-6">
-        <InvestorTransectionTable/>
+        <WithdrawalTable/>
       </section>
     </div>
   );

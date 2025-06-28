@@ -188,7 +188,7 @@ export default function TenantTable() {
               </div>
             </div>
           </div>
-          <div className="w-full overflow-hidden ">
+          <div className="w-full overflow-hidden mb-6">
             <DashboardDataTable columns={tenantColumns} data={tenantData} />
           </div>
 
