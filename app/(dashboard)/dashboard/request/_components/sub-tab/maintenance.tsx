@@ -83,24 +83,24 @@ export default function MaintenanceRequests() {
 
   const tenantColumns: Column<MaintenanceData>[] = [
     {
-        header: "Request ID",
-        accessor: "name" as keyof MaintenanceData,
-        render: (value: string, row: MaintenanceData) => (
-          <div className="flex items-center gap-2">
-            <Image
-              src={row.avatar}
-              alt={value}
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            <div>
-              <div className="font-semibold">{value}</div>
-              <div className="text-xs text-gray-500">{row.requestId}</div>
-            </div>
+      header: "Request ID",
+      accessor: "name" as keyof MaintenanceData,
+      render: (value: string, row: MaintenanceData) => (
+        <div className="flex items-center gap-2">
+          <Image
+            src={row.avatar}
+            alt={value}
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+          <div>
+            <div className="font-semibold">{value}</div>
+            <div className="text-xs text-gray-500">{row.requestId}</div>
           </div>
-        ),
-      },
+        </div>
+      ),
+    },
     {
       header: "Maintenance ID",
       accessor: "maintenanceId" as keyof MaintenanceData,
@@ -138,7 +138,7 @@ export default function MaintenanceRequests() {
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-center ">
           <h2 className="text-2xl font-semibold">Maintenance Requests</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">

@@ -143,7 +143,7 @@ export default function Booking() {
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-center ">
           <h2 className="text-2xl font-semibold">Investor Transaction</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">

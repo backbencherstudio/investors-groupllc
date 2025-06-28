@@ -46,7 +46,7 @@ export default function TenantRequests({
         }}
         className=""
       >
-        <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4">
+        <TabsList className="flex gap-5 bg-transparent p-0 border-none mb-4">
           {subtabs.map((subtab) => (
             <TabsTrigger
               key={subtab.value}

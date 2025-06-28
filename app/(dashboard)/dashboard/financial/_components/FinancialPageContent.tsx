@@ -10,6 +10,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 import TenantRentalPayments from "./tabs/tenant-rental-payments";
+import InvestorTransection from "./tabs/investor-transection";
 
 export default function FinancialPageContent() {
   type TabKey =
@@ -77,12 +78,13 @@ export default function FinancialPageContent() {
 
         <TabsContent value="tenant-rental-payments">
           <div>
-
-            <TenantRentalPayments/>
+            <TenantRentalPayments />
           </div>
         </TabsContent>
         <TabsContent value="investor-transaction">
-          <div>Content for Investor Transaction</div>
+          <div>
+            <InvestorTransection></InvestorTransection>
+          </div>
         </TabsContent>
         <TabsContent value="withdrawals">
           <div>Content for Withdrawals</div>

@@ -13,7 +13,7 @@ export default function Card({ cardData }: { cardData: CardItem[] }) {
       {cardData.map((item, idx) => (
         <div
           key={idx}
-          className="flex items-center bg-white  rounded-xl shadow p-4 lg:p-6 min-w-[240px] "
+          className="flex items-center bg-white  rounded-xl shadow p-4 lg:p-6 min-w-[180px] "
         >
           {/* Icon box */}
           <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-orange-50 mr-4">
