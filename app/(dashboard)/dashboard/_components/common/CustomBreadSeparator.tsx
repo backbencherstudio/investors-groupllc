@@ -13,9 +13,9 @@ export default function CustomBreadSeparator() {
         <path
           d="M5.5 3L10.5 8L5.5 13"
           stroke="#383838"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </>
