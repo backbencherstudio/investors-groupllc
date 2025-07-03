@@ -26,22 +26,22 @@ interface SidebarProps {
 
 const mainMenu = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "User Manage", icon: Users, href: "/dashboard/user-manage" },
-  { label: "Request", icon: GitBranch, href: "/dashboard/request" },
-  { label: "VendorTask", icon: UserCog, href: "/dashboard/vendor-task" },
-  { label: "Property", icon: Building, href: "/dashboard/property" },
-  { label: "Massage", icon: MessageCircle, href: "/dashboard/massage" },
-  { label: "Financial", icon: CreditCard, href: "/dashboard/financial" },
+  { label: "User Manage", icon: Users, href: "/dashboard/admin-dashboard/user-manage" },
+  { label: "Request", icon: GitBranch, href: "/dashboard/admin-dashboard/request" },
+  { label: "VendorTask", icon: UserCog, href: "/dashboard/admin-dashboard/vendor-task" },
+  { label: "Property", icon: Building, href: "/dashboard/admin-dashboard/property/rental-property" },
+  { label: "Massage", icon: MessageCircle, href: "/dashboard/admin-dashboard/massage" },
+  { label: "Financial", icon: CreditCard, href: "/dashboard/admin-dashboard/financial" },
 ];
 
 const customMenu = [
   {
     label: "Team Permission",
     icon: ShieldPlus,
-    href: "/dashboard/team-permission",
+    href: "/dashboard/admin-dashboard/team-permission",
   },
-  { label: "Subscription", icon: Crown, href: "/dashboard/subscription" },
-  { label: "Setting", icon: Settings, href: "/dashboard/setting" },
+  { label: "Subscription", icon: Crown, href: "/dashboard/admin-dashboard/subscription" },
+  { label: "Setting", icon: Settings, href: "/dashboard/admin-dashboard/setting" },
 ];
 
 export function AppSidebar({ isOpen, onClose }: SidebarProps) {
