@@ -22,7 +22,7 @@ export function TablePagination({
   const endIdx = Math.min(currentPage * pageSize, totalResults);
 
   return (
-    <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div className=" flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="text-sm text-zinc-500">
         {`Showing ${startIdx}–${endIdx} of ${totalResults} results`}
       </div>

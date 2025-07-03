@@ -212,7 +212,7 @@ export default function InvestorTransectionTable() {
               </div>
             </div>
           </div>
-          <div className="w-full overflow-hidden ">
+          <div className="w-full overflow-hidden mb-6">
             <DashboardDataTable columns={tenantColumns} data={tenantData} />
           </div>
 

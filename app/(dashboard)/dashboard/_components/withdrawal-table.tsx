@@ -148,7 +148,7 @@ export default function WithdrawalTable() {
               </div>
             </div>
           </div>
-          <div className="w-full overflow-hidden ">
+          <div className="w-full overflow-hidden mb-6">
             <DashboardDataTable columns={columns} data={withdrawData} />
           </div>
 

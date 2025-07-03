@@ -53,20 +53,13 @@ export default function GeneralSettings() {
               Content related to account settings goes here.
             </p>
 
-            <ProfileEditForm></ProfileEditForm>
+            <ProfileEditForm />
           </div>
         </TabsContent>
 
         <TabsContent value="payment-setting">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
-              
-            </h2>
-            <p className="text-gray-500">
-              Content related to payment settings goes here.
-            </p>
-
-            <PaymentSetting/>
+            <PaymentSetting />
           </div>
         </TabsContent>
       </Tabs>
