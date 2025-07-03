@@ -1,20 +1,17 @@
 import Image from "next/image";
 import React from "react";
 import logo from "@/public/image/472cfc6e4c15a222412de54c421c313620f8e36b.png";
-import image from "@/public/image/deea6c9fbbbe6f8c3721233eafe509a675ac5f61.jpg";
+import image from "@/public/image/Rectangle 34625619.png";
 
 export default function LoginLogo() {
   return (
-    <div className="flex-1 bg-[#191D20F5] flex flex-col items-center justify-center min-h-[250px] md:min-h-screen w-full relative overflow-hidden">
-      {/* Black overlay with opacity */}
-      <div className="absolute inset-0 bg-black opacity-95 z-0" />
+    <div className="flex-1 flex flex-col items-center justify-center min-h-[250px] md:min-h-screen w-full relative overflow-hidden">
       {/* Background image with opacity */}
       <Image
         src={image}
         alt="Background"
         fill
-        style={{ objectFit: "cover", opacity: 0.1 }}
-        className="z-0"
+        className=""
       />
       {/* Logo overlay */}
       <div className="mb-6 z-10">

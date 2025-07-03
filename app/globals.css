@@ -28,13 +28,12 @@ body {
 }
 
 .font-plus-jakarta {
-  font-family: var(--font-plus-jakarta-sans);
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 @theme inline {
-
   --radius-sm: calc(var(--radius) - 4px);
-  --font-plus-jakarta: var(--font-plus-jakarta-sans); 
+  --font-plus-jakarta: var(--font-plus-jakarta-sans);
   --radius-md: calc(var(--radius) - 2px);
 
   --radius-lg: var(--radius);
@@ -105,7 +104,6 @@ body {
 }
 
 :root {
-
   --radius: 0.625rem;
 
   --background: oklch(1 0 0);
@@ -172,7 +170,6 @@ body {
 }
 
 .dark {
-
   --background: oklch(0.145 0 0);
 
   --foreground: oklch(0.985 0 0);

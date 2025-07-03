@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Image from "next/image";
+import Link from "next/link";
 
 
 export function PropertyCard({ property }: { property: any}) {
@@ -60,18 +61,20 @@ export function PropertyCard({ property }: { property: any}) {
           </div>
           {property.owner && (
             <div className="flex items-center gap-2 mt-2">
-              <img
+              <Image
                 src={property.owner.avatar}
                 alt={property.owner.name}
                 className="w-7 h-7 rounded-full"
+                width={100}
+                height={100}
               />
               <span className="text-xs text-gray-500">{property.ownerLabel}</span>
               <span className="text-xs font-medium">{property.owner.name}</span>
             </div>
           )}
-          <button className="mt-4 border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition">
+          <Link href={`/dashboard/property/rental-property/${property.id}`} className="mt-4 border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition text-center">
             Details
-          </button>
+          </Link>
         </div>
       </div>
     );

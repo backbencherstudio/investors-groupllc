@@ -14,7 +14,7 @@ const SuccessIcon: React.FC<SuccessIconProps> = ({ className }) => {
       fill="none"
       className={className}
     >
-      <g clip-path="url(#clip0_2324_45544)">
+      <g clipPath="url(#clip0_2324_45544)">
         <path
           d="M47.2578 93.7578C72.9391 93.7578 93.7578 72.9391 93.7578 47.2578C93.7578 21.5766 72.9391 0.757812 47.2578 0.757812C21.5766 0.757812 0.757812 21.5766 0.757812 47.2578C0.757812 72.9391 21.5766 93.7578 47.2578 93.7578Z"
           fill="#04A755"
