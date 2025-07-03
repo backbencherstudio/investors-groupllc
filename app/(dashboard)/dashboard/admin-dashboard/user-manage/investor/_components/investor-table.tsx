@@ -9,10 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Paginations } from "../../../_components/pagination";
+
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import Image from "next/image";
+import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
+
 
 const investors = [
   {

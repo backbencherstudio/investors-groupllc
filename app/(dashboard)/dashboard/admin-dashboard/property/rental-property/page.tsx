@@ -7,7 +7,7 @@ import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 import Card from "../../user-manage/_components/card";
-import { PropertyCard } from "./property-card";
+import { PropertyCard } from "./_components/property-card";
 
 const cardData = [
   {
@@ -142,13 +142,12 @@ const propertyList = [
 ];
 
 export default function RentalProperty() {
-
-    const [propertyType, setPropertyType] = useState("");
-    const [propertySearch, setPropertySearch] = useState("");
-    // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
-    const totalPages = Math.ceil(propertyList.length / itemsPerPage);
+  const [propertyType, setPropertyType] = useState("");
+  const [propertySearch, setPropertySearch] = useState("");
+  // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(propertyList.length / itemsPerPage);
 
   return (
     <div>
@@ -165,7 +164,7 @@ export default function RentalProperty() {
             </div>
 
             <Link
-              href="/dashboard/property/add-new-property"
+              href="/dashboard/admin-dashboard/property/rental-property/add-new-property"
               className="bg-[#DD8800] hover:bg-[#b97d05] text-white rounded-lg px-6 py-2 flex items-center gap-2 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
@@ -199,5 +198,5 @@ export default function RentalProperty() {
         />
       </div>
     </div>
-  )
+  );
 }

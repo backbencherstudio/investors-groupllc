@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/select";
 import { Plus, Upload } from "lucide-react";
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import PropertyImage from "@/app/(dashboard)/dashboard/_components/property-image";
 
-export default function AddNewProperty() {
+export default function AddInvestmentProperty() {
   const [showInput, setShowInput] = useState(false);
   const [showAmenityInput, setShowAmenityInput] = useState(false);
   const [bed, setBed] = useState(1);
@@ -30,9 +33,10 @@ export default function AddNewProperty() {
     "CCTV",
     "Balcony",
   ]);
-  const [showTitleInput, setShowTitleInput] = useState(false);
-  const [titleInput, setTitleInput] = useState("");
-  const [titles, setTitles] = useState<string[]>([]);
+  const [status, setStatus] = useState("active");
+  console.log(status);
+
+  const router = useRouter();
 
   function toggleAmenity(a: string) {
     setAmenities((prev) =>
@@ -58,14 +62,35 @@ export default function AddNewProperty() {
     }
   }
 
+  const steps = [
+    { label: "Step 1" },
+    { label: "Step 2" },
+    // Add more steps as needed
+  ];
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  // Calculate progress bar width
+  const progress = ((currentStep + 1) / steps.length) * 100;
+
+  const handleBack = () => {
+    router.back();
+  };
+
+  const handleContinue = () => {
+    if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
+  };
+
   return (
-    <div className="p-6 q">
+    <div className="p-6">
       <form>
         <div className="flex justify-between items-center mb-6">
           <div className="text-sm text-gray-500 flex flex-col md:flex-row justify-start items-center gap-2">
             <span>Property List</span>
             <span className="mx-1">&gt;</span>
-            <span className="text-gray-900 font-medium">Add New Property</span>
+            <span className="text-gray-900 font-medium">
+              Add Investment Property
+            </span>
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <Button
@@ -87,6 +112,9 @@ export default function AddNewProperty() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-xl shadow p-6">
           {/* Left column */}
           <div className="flex flex-col gap-6">
+            <div>
+              <PropertyImage />
+            </div>
             {/* Image upload */}
             <div>
               <div className="mb-2 font-medium">Property Image</div>
@@ -332,24 +360,7 @@ export default function AddNewProperty() {
               <div className="mb-2 font-medium">Property Name</div>
               <Input placeholder="Enter you name" className="" />
             </div>
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <div className="mb-2 font-medium">Price</div>
-                <Input placeholder="Enter Price" />
-              </div>
-              <div className="">
-                <div className="mb-2 font-medium">&nbsp;</div>
-                <Select defaultValue="USD">
-                  <SelectTrigger className="w-32">
-                    <SelectValue placeholder="USD" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            {/* Location */}
             <div>
               <div className="mb-2 font-medium">Location</div>
               <Input placeholder="Maple Grove 42 Elm St, Austin, TX" />
@@ -358,19 +369,20 @@ export default function AddNewProperty() {
                 <span>Map Placeholder</span>
               </div>
             </div>
+            {/* Investment Status */}
             <div>
-              <div className="mb-2 font-medium">Property Status</div>
-              <Select defaultValue="For Rent">
+              <div className="mb-2 font-medium">Investment Status</div>
+              <Select value={status} onValueChange={setStatus}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="For Rent" />
+                  <SelectValue placeholder="active" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="For Rent">For Rent</SelectItem>
-                  <SelectItem value="For Sale">For Sale</SelectItem>
-                  <SelectItem value="Rented">Rented</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="passive">Passive</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+            {/* Description */}
             <div>
               <div className="mb-2 font-medium">Description</div>
               <textarea
@@ -379,72 +391,58 @@ export default function AddNewProperty() {
                 className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#d48806] focus:border-[#d48806] min-h-[96px]"
               />
             </div>
-            <div>
-              <div className="mb-2 font-medium">
-                Automatic Lease Agreement Generation
-              </div>
-              <Input placeholder="Enter your lease agreement generation" />
-            </div>
-            <div>
-              <div className="mb-2 font-medium">No Credit Impact</div>
-              <Input placeholder="Enter" />
-            </div>
-            {/* Show added titles as label + input */}
-            {titles.map((title, idx) => (
-              <div key={idx} className="mt-2">
-                <span className="font-semibold w-full">{title}</span>
-                <Input className="flex-1 mt-2" placeholder={`Enter ${title}`} />
-              </div>
-            ))}
-            {/* Title Add Feature */}
-            <div className="mt-4">
-              {!showTitleInput ? (
-                <Button
-                  type="button"
-                  size="sm"
-                  className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
-                  onClick={() => setShowTitleInput(true)}
-                >
-                  Add <Plus className="w-4 h-4" />
-                </Button>
-              ) : (
-                <div className="flex gap-2 items-center">
-                  <Input
-                    placeholder="Title"
-                    value={titleInput}
-                    onChange={(e) => setTitleInput(e.target.value)}
-                    className="w-40 h-8 px-2 text-xs border-gray-200"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (titleInput.trim()) {
-                          setTitles([...titles, titleInput.trim()]);
-                          setTitleInput("");
-                          setShowTitleInput(false);
-                        }
-                      }
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    size="sm"
-                    className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
-                    onClick={() => {
-                      if (titleInput.trim()) {
-                        setTitles([...titles, titleInput.trim()]);
-                        setTitleInput("");
-                        setShowTitleInput(false);
-                      }
-                    }}
-                  >
-                    Add <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </form>
+
+      {/* Button side */}
+      <div className="w-full mt-8">
+        {/* Progress Bar */}
+        <div className="w-full h-1 bg-gray-200 rounded-full mb-4 relative">
+          <div
+            className="h-1 bg-[#d48806] rounded-full transition-all"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        {/* Navigation Buttons */}
+        <div className="flex justify-between items-center">
+          <button
+            onClick={handleBack}
+            className="bg-white border border-gray-300 rounded px-6 py-2 font-medium cursor-pointer"
+          >
+            Back
+          </button>
+          {status === "active" ? (
+            <Link
+              href={
+                "/dashboard/admin-dashboard/property/investment-property/add-investment-details-active"
+              }
+            >
+              <button
+                className="bg-[#d48806] text-white rounded px-8 py-2 font-medium flex items-center gap-2 cursor-pointer"
+                onClick={handleContinue}
+                disabled={currentStep === steps.length - 1}
+              >
+                Continue <span aria-hidden>→</span>
+              </button>
+            </Link>
+          ) : (
+            <Link
+            href={
+              "/dashboard/admin-dashboard/property/investment-property/add-investment-details-passive"
+            }
+          >
+            <button
+              className="bg-[#d48806] text-white rounded px-8 py-2 font-medium flex items-center gap-2 cursor-pointer"
+              onClick={handleContinue}
+              disabled={currentStep === steps.length - 1}
+            >
+              Continue <span aria-hidden>→</span>
+            </button>
+          </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
