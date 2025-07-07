@@ -1,74 +1,129 @@
 "use client";
-
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 import React, { useState, useEffect } from "react";
 import Tenant from "./tenant/tenant";
-import Vendor from "./vendor/vendor";
 import Investor from "./investor/investor";
+import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Vendor from "./vendor/vendor";
 import Landlord from "./landlord/landlord";
 
-const tabs = [
-  { label: "Tenant", value: "tenant" },
-  { label: "Vendor", value: "vendor" },
-  { label: "Investor", value: "investor" },
-  { label: "Landlord", value: "landlord" },
-];
-
 export default function Page() {
+  type TabKey = "tenant" | "vendor" | "investor" | "landlord";
+
   // Initialize the active tab with "tenant" as default
-  const [activeTab, setActiveTab] = useState("tenant");
+  const [activeTab, setActiveTab] = useState<TabKey>("tenant");
 
   // Update active tab when component is mounted or if query parameters change
   useEffect(() => {
     const savedTab = localStorage.getItem("activeTab");
-    if (savedTab) {
-      setActiveTab(savedTab);
+    if (
+      savedTab === "tenant" ||
+      savedTab === "vendor" ||
+      savedTab === "investor" ||
+      savedTab === "landlord"
+    ) {
+      setActiveTab(savedTab as TabKey);
     }
   }, []);
 
-  // Handle tab change
-  const handleTabChange = (tabValue : string) => {
-    setActiveTab(tabValue);
-    localStorage.setItem("activeTab", tabValue); // Save active tab in localStorage to persist state
+  // Breadcrumb title mapping
+  const breadcrumbTitle: Record<TabKey, string> = {
+    tenant: "Tenant",
+    vendor: "Vendor",
+    investor: "Investor",
+    landlord: "Landlord",
   };
 
   return (
     <div>
-      <p className="pb-6">
-        {"User Management"}{" "}
-        <span className="text-[18px] font-semibold">
-          {" "}
-          <span className="font-normal mx-2">{">"}</span>
-          {activeTab}{" "}
-        </span>
-      </p>
-
-      {/* Tab Navigation */}
-      <div className="w-full bg-transparent overflow-x-auto">
-        <nav className="flex border-b border-gray-200 bg-transparent">
-          {tabs.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => handleTabChange(tab.value)}
-              className={`relative px-6 py-3 text-[17px] font-semibold transition-colors duration-200
-                ${activeTab === tab.value ? "text-black" : "text-gray-500"}`}
+      {/* bread crumb */}
+      <Breadcrumb>
+        <BreadcrumbList className="text-lg mb-2 font-semibold">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              className="text-lg font-medium"
+              href="/dashboard/financial"
             >
-              {tab.label}
-              <span
-                className={`absolute left-0 -bottom-[1px] h-0.5 w-full bg-orange-500 transition-transform duration-200 origin-left
-                  ${activeTab === tab.value ? "scale-x-100" : "scale-x-0"}`}
-              />
-            </button>
-          ))}
-        </nav>
-      </div>
+              User Management
+            </BreadcrumbLink>
+          </BreadcrumbItem>
 
-      {/* Render the component based on the active tab */}
-      <div className="mt-5">
-        {activeTab === "tenant" && <Tenant />}
-        {activeTab === "vendor" && <Vendor />}
-        {activeTab === "investor" && <Investor />}
-        {activeTab === "landlord" && <Landlord />}
-      </div>
+          <CustomBreadSeparator />
+
+          <BreadcrumbItem>
+            <span className="capitalize font-semibold text-[#170A00]">
+              {breadcrumbTitle[activeTab]}
+            </span>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      {/* Tabs section */}
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => {
+          setActiveTab(value as TabKey);
+          localStorage.setItem("activeTab", value);
+        }}
+        className="my-6"
+      >
+        <div className="relative mb-6">
+          <TabsList className="gap-16">
+            <TabsTrigger
+              value="tenant"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
+            >
+              Tenant
+            </TabsTrigger>
+            <TabsTrigger
+              value="vendor"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none "
+            >
+              Vendor
+            </TabsTrigger>
+            <TabsTrigger
+              value="investor"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
+            >
+              Investor
+            </TabsTrigger>
+            <TabsTrigger
+              value="landlord"
+              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
+            >
+              Landlord
+            </TabsTrigger>
+          </TabsList>
+          <hr className=" absolute bottom-0.5 w-full" />
+        </div>
+
+        <TabsContent value="tenant">
+          <div>
+            <Tenant />
+          </div>
+        </TabsContent>
+        <TabsContent value="vendor">
+          <div>
+            <Vendor />
+          </div>
+        </TabsContent>
+        <TabsContent value="investor">
+          <div>
+            <Investor />
+          </div>
+        </TabsContent>
+        <TabsContent value="landlord">
+          <div>
+            <Landlord />
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
