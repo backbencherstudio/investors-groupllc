@@ -21,7 +21,7 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         add: "",
-        accept: "text-lg text-white bg-[#D80] cursor-pointer",
+        accept: "text-lg text-white bg-[#D80] cursor-pointer ",
         reject: "text-lg text-[#170A00] border cursor-pointer",
       },
       size: {
@@ -35,7 +35,7 @@ const buttonVariants = cva(
       {
         variant: "accept",
         size: "default",
-        class: "px-8 py-5",
+        class: "px-8 py-5 ",
       },
       {
         variant: "reject",

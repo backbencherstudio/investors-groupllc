@@ -76,7 +76,7 @@ export default function SettingPage() {
           onValueChange={setActiveTab}
           className="w-full "
         >
-          <div className="border-b-2 rounded-none h-11">
+          <div className="border-b-2 rounded-none h-11 overflow-x-auto overflow-y-hidden">
             <TabsList className="">
               {tabsItems.map((item) => (
                 <TabsTrigger
@@ -87,6 +87,8 @@ export default function SettingPage() {
                   {item.label}
                 </TabsTrigger>
               ))}
+
+            
             </TabsList>
           </div>
 

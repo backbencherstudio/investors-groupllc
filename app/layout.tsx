@@ -34,7 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${plusJakartaSans.variable} antialiased`}
     >
-      <body className="font-plus-jakarta">{children}</body>
+      <body className="font-plus-jakarta ">{children}</body>
     </html>
   );
 }
