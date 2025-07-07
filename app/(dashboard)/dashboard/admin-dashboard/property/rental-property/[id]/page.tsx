@@ -1,5 +1,6 @@
 "use client";
 
+import PropertyImage from "@/app/(dashboard)/dashboard/_components/property-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Plus, Upload } from "lucide-react";
 import React, { useState } from "react";
-import PropertyImage from "../../../_components/property-image";
 
 export default function PropertyDetails() {
   const [showInput, setShowInput] = useState(false);
