@@ -2,7 +2,8 @@ import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import StatusBadge from "@/components/common/StatusBadges";
 import { Switch } from "@/components/ui/switch";
 import React, { useState } from "react";
-import { PaymentMethodData } from "../payment.type";
+import { PaymentMethodData } from "./payment.type";
+
 // import axios from "axios";
 
 // Sample data to pass into the table
@@ -30,7 +31,7 @@ const paymentData: PaymentMethodData[] = [
   },
 ];
 
-export default function PaymentSending() {
+export default function PaymentReceiving() {
   // State to manage action for each row
   const [data, setData] = useState<PaymentMethodData[]>(paymentData);
 

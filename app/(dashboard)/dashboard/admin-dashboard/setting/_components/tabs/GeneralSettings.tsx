@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ProfileEditForm from "../others/account-setting";
-import PaymentSetting from "@/app/(dashboard)/dashboard/setting/_components/tabs/sub-tabs/payment-setting";
+import PaymentSetting from "../others/payment-setting";
 
 // Define the structure for the subtabs
 interface Subtab {
@@ -59,7 +59,6 @@ export default function GeneralSettings() {
 
         <TabsContent value="payment-setting">
           <div>
-          
             <PaymentSetting />
           </div>
         </TabsContent>
