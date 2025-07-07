@@ -37,7 +37,7 @@ export default function ProfileEditForm() {
       formData.append("newPassword", data.newPassword);
     }
 
-    console.log(formData)
+    console.log(formData);
     // try {
     //   const response = await axios.post("/api/updateProfile", formData, {
     //     headers: { "Content-Type": "multipart/form-data" },
@@ -59,8 +59,8 @@ export default function ProfileEditForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 p-6 bg-white rounded-lg shadow"
     >
-      <div className="flex items-center gap-6  border">
-        <Image src="" alt="Profile" className="w-16 h-16 rounded-full"></Image>
+      <div className="flex items-center gap-6">
+        <Image src="https://randomuser.me/img/creator_keith.png" width={320} height={320} alt="Profile" className="w-16 h-16 rounded-full"></Image>
 
         <div className="relative">
           <Label

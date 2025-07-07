@@ -13,6 +13,9 @@ import {
 
 import React, { useState } from "react";
 import GeneralSettings from "./tabs/GeneralSettings";
+import ManageNotification from "./tabs/ManageNotification";
+import ManageInformation from "./tabs/ManageInformation";
+import PrivacyPolicy from "./tabs/PrivacyPolicy";
 // import { Tabs, TabsList, TabsTrigger, TabsContent } from "";
 
 export default function SettingPage() {
@@ -27,17 +30,17 @@ export default function SettingPage() {
     {
       value: "manage-notification",
       label: "Manage Notification",
-      content: "Content for Manage Notification goes here.",
+      content: <ManageNotification/>,
     },
     {
       value: "manage-information",
       label: "Manage Information",
-      content: "Content for Manage Information goes here.",
+      content: <ManageInformation/>,
     },
     {
       value: "privacy-policy",
       label: "Privacy Policy",
-      content: "Content for Privacy Policy goes here.",
+      content: <PrivacyPolicy/>,
     },
   ];
 
@@ -57,9 +60,9 @@ export default function SettingPage() {
           </BreadcrumbItem>
 
           <BreadcrumbSeparator />
+          
           <BreadcrumbItem>
             <BreadcrumbPage className="font-medium">
-              {" "}
               {tabsItems.find((item) => item.value === activeTab)?.label}
             </BreadcrumbPage>
           </BreadcrumbItem>

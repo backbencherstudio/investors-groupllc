@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export default function Login() {
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-100">
-      <div className="flex-1 w-full rounded-lg py-8 px-4 sm:px-8 md:px-16 lg:px-56">
+    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-100 ">
+      <div className="flex-1 rounded-lg py-8 px-4 sm:px-8 md:px-16 lg:px-56 ">
         <h2 className="text-[32px] font-semibold text-center">
           Access Your Dashboard
         </h2>
@@ -14,7 +14,7 @@ export default function Login() {
           Enter your information to access your Admin panel
         </p>
 
-        <form>
+        <form className="mx-auto max-w-[600px]">
           {/* Name Field */}
           <div className="mb-4">
             <input

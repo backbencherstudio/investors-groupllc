@@ -7,7 +7,7 @@ interface CardItem {
   label: string;
 }
 
-export default function Card({ cardData }: { cardData: CardItem[] }) {
+export default function StatsCards({ cardData }: { cardData: CardItem[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
       {cardData.map((item, idx) => (

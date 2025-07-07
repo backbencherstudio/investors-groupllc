@@ -30,7 +30,7 @@ const paymentData: PaymentMethodData[] = [
   },
 ];
 
-export default function PaymentReceiving() {
+export default function PaymentSending() {
   // State to manage action for each row
   const [data, setData] = useState<PaymentMethodData[]>(paymentData);
 
