@@ -7,10 +7,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import FileIcon from "@/public/icons/file";
-import { LucideWatch, Mail, MessageCircle, Phone } from "lucide-react";
+import {
+  LucideWatch,
+  Mail,
+  MessageCircle,
+  Phone,
+  Plus,
+  Upload,
+} from "lucide-react";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const strategy = [
   {
@@ -70,6 +79,36 @@ export default function PropertyDetails() {
   const isActive = true;
   const [isSold, setIsSold] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showTitleInput, setShowTitleInput] = useState(false);
+  const [titleInput, setTitleInput] = useState("");
+  const [titles, setTitles] = useState<string[]>([]);
+  const [formState, setFormState] = useState({
+    acquisitionCost: "",
+    renovationCost: "",
+    totalProjectCost: "",
+    projectedSalePrice: "",
+    profit: "",
+    titles: [],
+  });
+  console.log(formState?.acquisitionCost);
+
+  const { register, handleSubmit } = useForm();
+
+  // Add new title
+  const handleAddTitle = () => {
+    if (titleInput.trim()) {
+      setTitles([...titles, titleInput.trim()]);
+      setTitleInput("");
+      setShowTitleInput(false);
+    }
+  };
+
+  // On form submit, store all data in state
+  const onSubmit = (data) => {
+    data.titles = titles.map((title, idx) => data[`title_${idx}`] || "");
+    setFormState(data);
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -169,17 +208,136 @@ export default function PropertyDetails() {
               </div>
               {/* Modal */}
               {showModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
-                    <div className="font-semibold text-lg mb-2">
-                      Confirm Sale
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+                >
+                  <div className="bg-white rounded-lg p-6 shadow-lg max-w-4xl w-full space-y-4">
+                    <div className="space-y-4">
+                      <h1 className="font-semibold">Add Investment Summary</h1>
+                      <div>
+                        {/* input */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <div className="mb-2">Acquisition Cost</div>
+                            <Input
+                              {...register("acquisitionCost")}
+                              placeholder="$50,000"
+                            />
+                          </div>
+                          <div>
+                            <div className="mb-2">Renovation Cost</div>
+                            <Input
+                              {...register("renovationCost")}
+                              placeholder="$25,000"
+                            />
+                          </div>
+                          {/* Show added titles as label + input */}
+                          {titles.map((title, idx) => (
+                            <div key={idx} className="mt-2">
+                              <span className="w-full">{title}</span>
+                              <Input
+                                className="flex-1 mt-2"
+                                placeholder={`Enter ${title}`}
+                                {...register(`title_${idx}`)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        {/* Title Add Feature */}
+                        <div className="mt-4">
+                          {!showTitleInput ? (
+                            <Button
+                              type="button"
+                              size="sm"
+                              className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
+                              onClick={() => setShowTitleInput(true)}
+                            >
+                              Add <Plus className="w-4 h-4" />
+                            </Button>
+                          ) : (
+                            <div className="flex gap-2 items-center">
+                              <Input
+                                placeholder="Title"
+                                value={titleInput}
+                                onChange={(e) => setTitleInput(e.target.value)}
+                                className="w-40 h-8 px-2 text-xs border-gray-200"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddTitle();
+                                  }
+                                }}
+                              />
+                              <Button
+                                type="button"
+                                size="sm"
+                                className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
+                                onClick={handleAddTitle}
+                              >
+                                Add <Plus className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="mb-2">Total Project Cost</div>
+                        <Input
+                          {...register("totalProjectCost")}
+                          placeholder="$75,000"
+                        />
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex-1">
+                          <div className="mb-2">Projected Sale Price</div>
+                          <Input
+                            {...register("projectedSalePrice")}
+                            placeholder="$150,000"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <div className="mb-2">Profit</div>
+                          <Input
+                            {...register("profit")}
+                            placeholder="$75,000"
+                          />
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <label className="block mb-1 font-medium">
+                          Upload Documents
+                        </label>
+                        <label
+                          htmlFor="file-upload"
+                          className="w-full lg:w-[350px] border-2 border-dashed border-gray-300 rounded-lg bg-white text-center py-8 cursor-pointer flex flex-col items-center justify-center"
+                        >
+                          <Upload className="w-6 h-6 mb-2 text-gray-700" />
+                          <span className="font-medium text-gray-800">
+                            Upload Image
+                          </span>
+                          <span className="text-xs text-gray-500 mt-1">
+                            Format: JPG, PNG, PDF (10 mb max/size)
+                          </span>
+                          <input
+                            id="file-upload"
+                            type="file"
+                            className="hidden"
+                            {...register("file")}
+                          />
+                        </label>
+                      </div>
                     </div>
-                    <div className="mb-4 text-gray-600">
-                      Are you sure you want to mark this property as sold?
-                    </div>
-                    <div className="flex justify-end gap-2">
+                    <div className="flex gap-2">
                       <button
-                        className="px-4 py-2 rounded bg-gray-200"
+                        className="px-4 py-2 rounded bg-[#d48806] text-white cursor-pointer"
+                        type="submit"
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="px-4 py-2 rounded bg-gray-200 cursor-pointer"
+                        type="button"
                         onClick={() => {
                           setIsSold(false);
                           setShowModal(false);
@@ -187,15 +345,9 @@ export default function PropertyDetails() {
                       >
                         Cancel
                       </button>
-                      <button
-                        className="px-4 py-2 rounded bg-[#d48806] text-white"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Confirm
-                      </button>
                     </div>
                   </div>
-                </div>
+                </form>
               )}
             </div>
           )}
@@ -203,50 +355,184 @@ export default function PropertyDetails() {
       </div>
       {/* Investment Details */}
       <div className="p-6 bg-white rounded-xl mt-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Left column */}
+        <div className=" space-y-5">
+          {/* top column */}
           <div>
-            {/* Investment Value */}
-            <div className="text-xl font-medium mb-3">
-              Investment Value Increase Ratio
-            </div>
-            <div className="mb-4 border border-gray-200 p-4 rounded-xl">
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600 mt-1">$130,000.00</span>
-                <span className="text-sm text-gray-600 mt-1">$150,000.00</span>
-              </div>
-              <div className="flex items-center mt-2">
-                <div className="w-full bg-gray-300 h-2 rounded-full ">
-                  <div
-                    className="bg-[#D80] h-2 rounded-full"
-                    style={{ width: "80%" }}
-                  ></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Investment Value Increase Ratio */}
+              <div>
+                {/* Investment Value */}
+                <div className="text-xl font-medium mb-3">
+                  Investment Value Increase Ratio
+                </div>
+                <div className="mb-4 border border-gray-200 p-4 rounded-xl">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600 mt-1">
+                      $130,000.00
+                    </span>
+                    <span className="text-sm text-gray-600 mt-1">
+                      $150,000.00
+                    </span>
+                  </div>
+                  <div className="flex items-center mt-2">
+                    <div className="w-full bg-gray-300 h-2 rounded-full ">
+                      <div
+                        className="bg-[#D80] h-2 rounded-full"
+                        style={{ width: "80%" }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    <span className="text-xs text-gray-500">80% Funded</span>
+                    <div className="text-xs text-gray-400">
+                      60K was invested in the past 24 hours
+                    </div>
+                  </div>
+                </div>
+                {/* watch */}
+                <div className="mb-4">
+                  <div className="bg-[#FCF1E6] flex gap-2 px-4 py-2 rounded-xl text-[#C9631E]">
+                    <LucideWatch /> 60K was invested in the past 24 hours
+                  </div>
+                </div>
+                {/*  */}
+                <div className="flex justify-between border border-gray-200 px-4 py-5 rounded-xl">
+                  <div className="text-[#707070] flex flex-col">
+                    <span>Annual ROI</span>
+                    <span>Lock-In Period</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span>6% (Paid Monthly)</span>
+                    <span>12 Months</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-between mt-2">
-                <span className="text-xs text-gray-500">80% Funded</span>
-                <div className="text-xs text-gray-400">
-                  60K was invested in the past 24 hours
+
+              {/* Minimum Invest or  */}
+              <div className="mt-9.5">
+                {isActive ? (
+                  <div className="flex-1">
+                    <div className="mb-2 font-medium">Minimum Invest</div>
+                    <Input placeholder="$5,000" />
+                  </div>
+                ) : (
+                  <div className="border border-gray-200 text-center p-6 rounded-xl space-y-2">
+                    <h1 className="text-gray-400">
+                      Investment value in 1 year increases
+                    </h1>
+                    <div className="space-x-3">
+                      <span className="font-medium">$5,334.93</span>
+                      <span className="px-3 py-1 border border-[#04A755] bg-[#CDFDC6] text-[#04A755] rounded-md">
+                        6%
+                      </span>
+                    </div>
+                    <p className="text-gray-400">
+                      Annual income{" "}
+                      <span className="font-medium text-black">$334.93</span>
+                    </p>
+                    {/* Minimum & Maximum Invest */}
+                    <div className="flex gap-5">
+                      <div className="flex-1">
+                        <div className="mb-2 font-medium">Minimum Invest</div>
+                        <Input placeholder="$5,000" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="mb-2 font-medium">Maximum Invest</div>
+                        <Input placeholder="$1200" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* middle column */}
+          {isActive && formState?.acquisitionCost && (
+            <div className=" bg-[#F5F5F5] flex items-center justify-center z-50 rounded-lg">
+              <div className="rounded-lg p-6 w-full space-y-4">
+                <div className="space-y-4">
+                  <h1 className="font-semibold">Add Investment Summary</h1>
+                  <div>
+                    {/* input */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <div className="mb-2">Acquisition Cost</div>
+                        <Input {...register("acquisitionCost")} />
+                      </div>
+                      <div>
+                        <div className="mb-2">Renovation Cost</div>
+                        <Input {...register("renovationCost")} />
+                      </div>
+                      {/* Show added titles as label + input */}
+                      {titles.map((title, idx) => (
+                        <div key={idx} className="mt-2">
+                          <span className="w-full">{title}</span>
+                          <Input
+                            className="flex-1 mt-2"
+                            {...register(`title_${idx}`)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Title Add Feature */}
+                    <div className="mt-4">
+                      {!showTitleInput ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
+                          onClick={() => setShowTitleInput(true)}
+                        >
+                          Add <Plus className="w-4 h-4" />
+                        </Button>
+                      ) : (
+                        <div className="flex gap-2 items-center">
+                          <Input
+                            placeholder="Title"
+                            value={titleInput}
+                            onChange={(e) => setTitleInput(e.target.value)}
+                            className="w-40 h-8 px-2 text-xs border-gray-200"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddTitle();
+                              }
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            size="sm"
+                            className="bg-[#fff7e6] hover:bg-[#fff7e6] text-[#d48806] border border-[#d48806] w-[75px] px-2 h-8 cursor-pointer"
+                            onClick={handleAddTitle}
+                          >
+                            Add <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="mb-2">Total Project Cost</div>
+                    <Input {...register("totalProjectCost")} />
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex-1">
+                      <div className="mb-2">Projected Sale Price</div>
+                      <Input {...register("projectedSalePrice")} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="mb-2">Profit</div>
+                      <Input {...register("profit")} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            {/* watch */}
-            <div className="mb-4">
-              <div className="bg-[#FCF1E6] flex gap-2 px-4 py-2 rounded-xl text-[#C9631E]">
-                <LucideWatch /> 60K was invested in the past 24 hours
-              </div>
-            </div>
-            {/*  */}
-            <div className="flex justify-between border border-gray-200 px-4 py-5 rounded-xl">
-              <div className="text-[#707070] flex flex-col">
-                <span>Annual ROI</span>
-                <span>Lock-In Period</span>
-              </div>
-              <div className="flex flex-col">
-                <span>6% (Paid Monthly)</span>
-                <span>12 Months</span>
-              </div>
-            </div>
+          )}
+
+          {/* button column */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Investment Strategy */}
             <div>
               <h1 className="my-4 font-semibold">Investment Strategy</h1>
@@ -260,38 +546,6 @@ export default function PropertyDetails() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Right column */}
-          <div className="flex flex-col gap-6">
-            <div className="border border-gray-200 text-center p-6 rounded-xl space-y-2">
-              <h1 className="text-gray-400">
-                Investment value in 1 year increases
-              </h1>
-              <div className="space-x-3">
-                <span className="font-medium">$5,334.93</span>
-                <span className="px-3 py-1 border border-[#04A755] bg-[#CDFDC6] text-[#04A755] rounded-md">
-                  6%
-                </span>
-              </div>
-              <p className="text-gray-400">
-                Annual income{" "}
-                <span className="font-medium text-black">$334.93</span>
-              </p>
-            </div>
-
-            {/* Minimum & Maximum Invest */}
-            <div className="flex gap-5">
-              <div className="flex-1">
-                <div className="mb-2 font-medium">Minimum Invest</div>
-                <Input placeholder="$5,000" />
-              </div>
-              <div className="flex-1">
-                <div className="mb-2 font-medium">Maximum Invest</div>
-                <Input placeholder="$1200" />
-              </div>
-            </div>
-
             <div>
               <span className="font-semibold">FAQ</span>
               <Accordion
@@ -356,7 +610,7 @@ export default function PropertyDetails() {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem
-                  value="item-2"
+                  value="item-4"
                   className="border px-3 rounded-xl"
                 >
                   <AccordionTrigger>Shipping Details</AccordionTrigger>
