@@ -97,8 +97,9 @@ export default function ManageNotification() {
   };
 
   return (
-    <section className="bg-white p-8">
-      <h2 className="text-2xl font-semibold mb-4">Manage Notification</h2>
+    <section className="bg-white p-8 rounded-[12px] mt-4">
+    <h2 className="text-2xl font-semibold mb-4">Privacy Policy</h2>
+    <hr className="h-[1px] bg-[#d6d6d6] mb-6" />
       <form onSubmit={handleSubmit}>
         <div className="mb-6 space-y-4">
           <p className="text-[#170A00] font-medium">Select User Type</p>

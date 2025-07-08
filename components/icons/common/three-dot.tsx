@@ -16,7 +16,7 @@ export default function ThreeDot({ className = "" }) {
           stroke="#383838"
           strokeWidth="1.5"
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
         />
       </svg>
     </>

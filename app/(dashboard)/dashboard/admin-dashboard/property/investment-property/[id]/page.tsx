@@ -232,7 +232,7 @@ export default function PropertyDetails() {
                               placeholder="$25,000"
                             />
                           </div>
-                          {/* Show added titles as label + input */}
+                          {/* ======Show added titles as label + input */}
                           {titles.map((title, idx) => (
                             <div key={idx} className="mt-2">
                               <span className="w-full">{title}</span>
@@ -244,7 +244,7 @@ export default function PropertyDetails() {
                             </div>
                           ))}
                         </div>
-                        {/* Title Add Feature */}
+                        {/* Title Add Feature ====*/}
                         <div className="mt-4">
                           {!showTitleInput ? (
                             <Button
