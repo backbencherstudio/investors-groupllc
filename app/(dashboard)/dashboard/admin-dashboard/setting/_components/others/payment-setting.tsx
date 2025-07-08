@@ -2,7 +2,7 @@
 import React from "react";
 import PaymentReceiving from "../tabs/_components/payment-receving-table";
 import PaymentSending from "../tabs/_components/payment-sending-table";
-import AddPaymentGatway from "../tabs/_components/add-payment-gateway";
+import AddPaymentGatway from "../tabs/_components/payment-gateway-add";
 
 
 export default function PaymentSetting() {

@@ -15,7 +15,7 @@ export default function Revinew() {
           stroke="#DD8800"
           strokeWidth="1.5"
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
         />
       </svg>
     </>

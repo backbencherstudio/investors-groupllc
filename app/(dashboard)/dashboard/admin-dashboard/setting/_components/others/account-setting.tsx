@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 // import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 type FormData = {
   name: string;
@@ -25,6 +26,9 @@ export default function ProfileEditForm() {
     formState: { errors },
   } = useForm<FormData>();
   const [photo, setPhoto] = useState<File | null>(null);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     const formData = new FormData();
@@ -57,7 +61,7 @@ export default function ProfileEditForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 p-6 bg-white rounded-lg shadow"
+      className="space-y-4 p-6 bg-white rounded-lg shadow "
     >
       <div className="flex items-center gap-6">
         <Image src="https://randomuser.me/img/creator_keith.png" width={320} height={320} alt="Profile" className="w-16 h-16 rounded-full"></Image>
@@ -99,6 +103,8 @@ export default function ProfileEditForm() {
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
           )}
+
+          
           <Input
             {...register("email", { required: "Email is required" })}
             defaultValue="john@winvestors.com"
@@ -131,21 +137,51 @@ export default function ProfileEditForm() {
         </div>
 
         <div className="w-full md:w-2/3 flex flex-col gap-[14px]">
-          <Input
-            {...register("currentPassword")}
-            type="password"
-            placeholder="Current Password"
-          />
-          <Input
-            {...register("newPassword")}
-            type="password"
-            placeholder="New Password"
-          />
-          <Input
-            {...register("confirmPassword")}
-            type="password"
-            placeholder="Confirm Password"
-          />
+          <div className="relative">
+            <Input
+              {...register("currentPassword")}
+              type={showCurrentPassword ? "text" : "password"}
+              placeholder="Current Password"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              tabIndex={-1}
+              onClick={() => setShowCurrentPassword((v) => !v)}
+            >
+              {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          <div className="relative">
+            <Input
+              {...register("newPassword")}
+              type={showNewPassword ? "text" : "password"}
+              placeholder="New Password"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              tabIndex={-1}
+              onClick={() => setShowNewPassword((v) => !v)}
+            >
+              {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          <div className="relative">
+            <Input
+              {...register("confirmPassword")}
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              tabIndex={-1}
+              onClick={() => setShowConfirmPassword((v) => !v)}
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
       </div>
 

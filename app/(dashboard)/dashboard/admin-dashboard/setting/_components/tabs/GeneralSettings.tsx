@@ -46,13 +46,6 @@ export default function GeneralSettings() {
         {/* Tab Content */}
         <TabsContent value="account-setting">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">
-              Account Settings Content
-            </h2>
-            <p className="text-gray-500">
-              Content related to account settings goes here.
-            </p>
-
             <ProfileEditForm />
           </div>
         </TabsContent>

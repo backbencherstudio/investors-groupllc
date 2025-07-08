@@ -14,7 +14,7 @@ export default function AddButton({
 }: AddButtonProps) {
   return (
     <Button
-      className={`bg-white text-black border rounded font-normal hover:text-white transition-colors cursor-pointer ${
+      className={`bg-gray-100/50 text-black border rounded font-normal hover:text-white transition-colors cursor-pointer shadow ${
         className || ""
       }`}
       {...props}

@@ -18,7 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
 
 import { Label } from "@radix-ui/react-label";
-import { ChevronDownIcon,  X } from "lucide-react";
+import { ChevronDownIcon, X } from "lucide-react";
 
 import React, { useState } from "react";
 import AddButton from "@/components/common/AddButton";
