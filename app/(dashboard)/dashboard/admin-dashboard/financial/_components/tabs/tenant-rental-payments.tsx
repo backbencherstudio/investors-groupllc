@@ -3,6 +3,7 @@ import Card from "../../../user-manage/_components/card";
 import BagMoney from "@/components/icons/finanacial/BagMoney";
 import Pending from "@/components/icons/finanacial/Pending";
 import RentPayment from "./withdrawal-list";
+import StatsCards from "../../../user-manage/_components/card";
 
 const cardData = [
   {
@@ -20,15 +21,14 @@ const cardData = [
 export default function TenantRentalPayments() {
   return (
     <div>
-
       {/* Card stats */}
       <section className="mt-4">
-        <Card cardData={cardData} />
+        <StatsCards cardData={cardData} />
       </section>
 
       {/* table */}
       <section className="mt-6">
-        <RentPayment/>
+        <RentPayment />
       </section>
     </div>
   );

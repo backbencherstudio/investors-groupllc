@@ -8,10 +8,11 @@ import {
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
+// import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 import TenantRentalPayments from "./tabs/tenant-rental-payments";
 import InvestorTransection from "./tabs/investor-transection";
 import Withdrawals from "./tabs/withdrawals";
+import CustomBreadSeparator from "../../../_components/common/CustomBreadSeparator";
 
 export default function FinancialPageContent() {
   type TabKey =
@@ -41,6 +42,7 @@ export default function FinancialPageContent() {
           </BreadcrumbItem>
 
           <CustomBreadSeparator />
+
           <BreadcrumbItem className="text-lg font-semibold text-[#170A00]">
             {breadcrumbTitle[activeTab]}{" "}
             {/* Dynamically displays the active tab title */}
@@ -84,11 +86,11 @@ export default function FinancialPageContent() {
         </TabsContent>
         <TabsContent value="investor-transaction">
           <div>
-            <InvestorTransection></InvestorTransection>
+            <InvestorTransection />
           </div>
         </TabsContent>
         <TabsContent value="withdrawals">
-          <Withdrawals/>
+          <Withdrawals />
         </TabsContent>
       </Tabs>
     </div>

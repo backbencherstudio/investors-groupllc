@@ -1,9 +1,11 @@
 import CoinHand from "@/components/icons/finanacial/CoinHand";
-import Card from "../../../user-manage/_components/card";
+
 import Tick from "@/components/icons/finanacial/Tick";
 import Request from "@/components/icons/finanacial/Request";
 import Info from "@/components/icons/finanacial/Info";
-import WithdrawalTable from "../../../_components/withdrawal-table";
+import WithdrawalTable from "@/app/(dashboard)/dashboard/_components/withdrawal-table";
+import StatsCards from "../../../user-manage/_components/card";
+
 
 const cardData = [
   {
@@ -33,12 +35,12 @@ export default function Withdrawals() {
     <div>
       {/* Card stats */}
       <section className="mt-4">
-        <Card cardData={cardData} />
+        <StatsCards cardData={cardData} />
       </section>
 
       {/* table */}
       <section className="mt-6">
-        <WithdrawalTable/>
+        <WithdrawalTable />
       </section>
     </div>
   );

@@ -6,8 +6,9 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
-import Card from "../../user-manage/_components/card";
+
 import InvestmentCard from "./_components/investment-card";
+import StatsCards from "../../user-manage/_components/card";
 
 const cardData = [
   {
@@ -151,7 +152,7 @@ export default function InvestmentProperty() {
 
   return (
     <div>
-      <Card cardData={cardData} />
+      <StatsCards cardData={cardData} />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">My Property List</h2>

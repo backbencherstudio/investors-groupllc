@@ -11,8 +11,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GeneralSettings from "./tabs/GeneralSettings";
+import ManageNotification from "./tabs/ManageNotification";
+import ManageInformation from "./tabs/ManageInformation";
+import PrivacyPolicy from "./tabs/PrivacyPolicy";
 // import { Tabs, TabsList, TabsTrigger, TabsContent } from "";
 
 export default function SettingPage() {
@@ -27,24 +30,36 @@ export default function SettingPage() {
     {
       value: "manage-notification",
       label: "Manage Notification",
-      content: "Content for Manage Notification goes here.",
+      content: <ManageNotification />,
     },
     {
       value: "manage-information",
       label: "Manage Information",
-      content: "Content for Manage Information goes here.",
+      content: <ManageInformation />,
     },
     {
       value: "privacy-policy",
       label: "Privacy Policy",
-      content: "Content for Privacy Policy goes here.",
+      content: <PrivacyPolicy />,
     },
   ];
 
   const [activeTab, setActiveTab] = useState(tabsItems[0].value);
 
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    if (
+      savedTab === "general-settings" ||
+      savedTab === "manage-notification" ||
+      savedTab === "manage-information" ||
+      savedTab === "privacy-policy"
+    ) {
+      setActiveTab(savedTab);
+    }
+  }, []);
+
   return (
-    <div>
+    <div className="container">
       {/* Breadcrumb */}
       <h3 className="text-lg font-medium my-6"></h3>
 
@@ -55,11 +70,10 @@ export default function SettingPage() {
               <Link href="/">Setting</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-
           <BreadcrumbSeparator />
+
           <BreadcrumbItem>
             <BreadcrumbPage className="font-medium">
-              {" "}
               {tabsItems.find((item) => item.value === activeTab)?.label}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -69,17 +83,20 @@ export default function SettingPage() {
       {/* Tabs section */}
       <div>
         <Tabs
-          defaultValue={tabsItems[0].value}
-          onValueChange={setActiveTab}
-          className="w-full "
+          value={activeTab}
+          onValueChange={(value) => {
+            setActiveTab(value);
+            localStorage.setItem("activeTab", value);
+          }}
+          className="w-full"
         >
-          <div className="border-b-2 rounded-none h-11">
+          <div className="border-b-2 rounded-none h-13.5 overflow-x-auto py-2">
             <TabsList className="">
               {tabsItems.map((item) => (
                 <TabsTrigger
                   key={item.value}
                   value={item.value}
-                  className="tab-item  px-4 text-lg font-medium text-gray-600 hover:text-orange-600 border-transparent h-13"
+                  className="tab-item  px-4 text-lg font-medium text-gray-600 hover:text-orange-800/70 border-transparent h-13 cursor-pointer"
                 >
                   {item.label}
                 </TabsTrigger>

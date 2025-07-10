@@ -2,16 +2,9 @@ import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import StatusBadge from "@/components/common/StatusBadges";
 import { Switch } from "@/components/ui/switch";
 import React, { useState } from "react";
-// import axios from "axios";  
+import { PaymentMethodData } from "./payment.type";
 
-// Define the type for the data
-type PaymentMethodData = {
-  id: number;
-  gateway: string;
-  method: string;
-  status: string;
-  action: boolean;
-};
+// import axios from "axios";
 
 // Sample data to pass into the table
 const paymentData: PaymentMethodData[] = [
@@ -53,8 +46,8 @@ export default function PaymentReceiving() {
     setData(updatedData);
 
     // console.log(!data.find((item) => item.id === id)?.action,)
-    const actionBody =  !data.find((item) => item.id === id)?.action;
-    console.log(actionBody)
+    const actionBody = !data.find((item) => item.id === id)?.action;
+    console.log(actionBody);
 
     // Call the API to sync with the backend
     // try {
@@ -85,15 +78,17 @@ export default function PaymentReceiving() {
     },
     {
       header: "Status",
-      accessor: "status" as keyof PaymentMethodData, // Explicitly type accessor
-      render: (value: string) => <StatusBadge status={value} />,
+      accessor: "status" as keyof PaymentMethodData,
+      render: (value: string | number | boolean) => (
+        <StatusBadge status={String(value)} />
+      ),
     },
     {
       header: "Action",
-      accessor: "action" as keyof PaymentMethodData, // Explicitly type accessor
-      render: (value: boolean, row: PaymentMethodData) => (
+      accessor: "action" as keyof PaymentMethodData,
+      render: (value: string | number | boolean, row: PaymentMethodData) => (
         <Switch
-          checked={value}
+          checked={Boolean(value)}
           onCheckedChange={() => handleSwitchChange(row.id)}
         />
       ),

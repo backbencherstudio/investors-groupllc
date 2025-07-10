@@ -76,7 +76,7 @@ const AddTeamMemberModal = () => {
     }
   };
 
-  console.log(isSubmitting);
+  // console.log(isSubmitting);
   return (
     <div className="">
       {/* Trigger Button */}
@@ -250,7 +250,7 @@ const AddTeamMemberModal = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white py-3 px-4 rounded-lg font-medium transition-colors mt-6 cursor-pointer"
+                  className="w-full bg-[#D80] hover:bg-[#d70]   disabled:bg-orange-300 text-white py-3 px-4 rounded-lg font-medium transition-colors mt-6 cursor-pointer"
                 >
                   {isSubmitting ? "Sending..." : "Add"}
                 </button>

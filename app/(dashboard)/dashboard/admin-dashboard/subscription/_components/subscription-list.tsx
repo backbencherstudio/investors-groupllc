@@ -3,10 +3,15 @@ import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
+import Diamond from "@/components/icons/subscription/Diamond";
+import Monthly from "@/components/icons/subscription/Monthly";
+import People from "@/components/icons/subscription/People";
+import Revinew from "@/components/icons/subscription/Revinew";
 import { Card } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import StatsCards from "../../user-manage/_components/card";
 
 type SubscriptionData = {
   id: string;
@@ -56,10 +61,36 @@ const subscriptionData: SubscriptionData[] = [
   },
 ];
 
+const cardData = [
+  {
+    icon: People,
+    value: 320,
+    label: "Total Subscribers",
+  },
+  {
+    icon: Monthly,
+    value: 210,
+    label: "Monthly Plan",
+  },
+  {
+    icon: Diamond,
+    value: 110,
+    label: "Yearly Plan",
+  },
+  {
+    icon: Revinew,
+    value: "$14,800",
+    label: "Revenew",
+  },
+];
+
 export default function SubscriptionPlan() {
   return (
-    <div className="w">
-      <div>stats</div>
+    <div className="">
+      {/* Card stats */}
+      <section className="my-6">
+        <StatsCards cardData={cardData} />
+      </section>
       {/* Table */}
       <div className="">
         <SubscriptionTable />

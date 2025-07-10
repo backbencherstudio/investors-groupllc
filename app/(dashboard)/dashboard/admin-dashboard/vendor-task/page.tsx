@@ -11,7 +11,8 @@ import Image from "next/image";
 // import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
-import Card from "../user-manage/_components/card";
+import StatsCards from "../user-manage/_components/card";
+
 
 interface RequestData {
   id: string | number;
@@ -301,7 +302,7 @@ export default function VendorTask() {
 
   return (
     <div>
-      <Card cardData={cardData} />
+      <StatsCards cardData={cardData} />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">Task List</h2>
