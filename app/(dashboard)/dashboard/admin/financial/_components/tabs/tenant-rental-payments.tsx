@@ -3,7 +3,8 @@ import Card from "../../../user-manage/_components/card";
 import BagMoney from "@/components/icons/finanacial/BagMoney";
 import Pending from "@/components/icons/finanacial/Pending";
 import RentPayment from "./withdrawal-list";
-import StatsCards from "../../../user-manage/_components/card";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+
 
 const cardData = [
   {

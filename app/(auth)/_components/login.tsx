@@ -19,7 +19,7 @@ export default function Login() {
     const formData = { email, password };
     console.log("After login", formData);
 
-    router.push("/dashboard");
+    router.push("/dashboard/admin");
   };
 
   return (

@@ -1,5 +1,6 @@
 import React from "react";
-import StatsCards from "../../../user-manage/_components/card";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+
 import Coins from "@/components/icons/finanacial/Coins";
 import Screen from "@/components/icons/finanacial/Screen";
 import InvestorTransectionTable from "@/app/(dashboard)/dashboard/_components/investor-transection-table";
