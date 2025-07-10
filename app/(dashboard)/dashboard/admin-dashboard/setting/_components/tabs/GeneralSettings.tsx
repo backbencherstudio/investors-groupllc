@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ProfileEditForm from "./sub-tabs/account-setting";
-import PaymentSetting from "./sub-tabs/payment-setting";
+import ProfileEditForm from "../others/account-setting";
+import PaymentSetting from "../others/payment-setting";
+
 
 // Define the structure for the subtabs
 interface Subtab {

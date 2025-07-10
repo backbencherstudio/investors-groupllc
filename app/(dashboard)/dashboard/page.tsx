@@ -1,20 +1,13 @@
 import React from "react";
-import Analytics from "./_components/anlytics";
-import IncomeChart from "./_components/income-chart";
-import InvestmentMaintenance from "./_components/investment-maintenance";
-import TenantTable from "./_components/tenant-table";
-import InvestorTransectionTable from "./_components/investor-transection-table";
-import WithdrawalTable from "./_components/withdrawal-table";
+import AdminDashboard from "./_components/admin/admin-dashboard";
+import LandlordDashboard from "./_components/landlord/landlord-dashboard";
 
 export default function DashboardHome() {
+  const role = "landlord";
+
   return (
     <div className="space-y-6">
-      <Analytics />
-      <IncomeChart />
-      <InvestmentMaintenance />
-      <TenantTable />
-      <InvestorTransectionTable />
-      <WithdrawalTable />
+      {role === "admin" ? <AdminDashboard /> : <LandlordDashboard />}
     </div>
   );
 }
