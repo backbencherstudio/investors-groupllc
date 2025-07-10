@@ -1,6 +1,5 @@
 "use client";
 import { ClipboardList, Plus, UserCheck, UserPlus } from "lucide-react";
-import StatsCards from "../../admin-dashboard/user-manage/_components/card";
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -16,8 +15,9 @@ import SearchInput from "@/components/common/SearchInput";
 import Link from "next/link";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
-import { PropertyCard } from "../../admin-dashboard/property/rental-property/_components/property-card";
-import { DataTable } from "../../admin-dashboard/user-manage/_components/table";
+import StatsCards from "../admin/user-manage/_components/card";
+import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
+import { DataTable } from "../admin/user-manage/_components/table";
 
 interface Tenant {
   avatar: string;
@@ -373,11 +373,11 @@ export default function LandlordDashboard() {
                 strokeDasharray="5 5"
               />
               {/* <Line
-          type="monotone"
-          dataKey="uv"
-          stroke="#82ca9d"
-          strokeDasharray="3 4 5 2"
-        /> */}
+        type="monotone"
+        dataKey="uv"
+        stroke="#82ca9d"
+        strokeDasharray="3 4 5 2"
+      /> */}
             </LineChart>
           </div>
 
