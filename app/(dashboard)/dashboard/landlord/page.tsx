@@ -16,9 +16,9 @@ import Link from "next/link";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
 import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
 import { DataTable } from "../admin/user-manage/_components/table";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
 
 interface Tenant {
   avatar: string;

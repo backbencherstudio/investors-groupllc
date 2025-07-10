@@ -2,7 +2,7 @@ import React from "react";
 
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 import { DataTable } from "../_components/table";
-import Card from "../_components/card";
+import StatsCards from "../../../_components/common/card";
 
 
 const cardData = [
@@ -26,7 +26,7 @@ const cardData = [
 export default function Tenant() {
   return (
     <div className="space-y-6">
-      <Card cardData={cardData} />
+      <StatsCards cardData={cardData} />
       <DataTable />
     </div>
   );

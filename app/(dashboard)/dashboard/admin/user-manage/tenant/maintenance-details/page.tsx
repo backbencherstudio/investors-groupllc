@@ -1,7 +1,7 @@
 import React from "react";
-import Card from "../../_components/card";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 import { MaintenanceList } from "./_components/maintenance-list";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/card";
 
 const cardData = [
   {
@@ -24,7 +24,7 @@ const cardData = [
 export default function MaintenanceDetail() {
   return (
     <div className="space-y-6">
-      <Card cardData={cardData} />
+      <StatsCards cardData={cardData} />
       <MaintenanceList />
     </div>
   );
