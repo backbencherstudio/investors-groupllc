@@ -238,7 +238,7 @@ export function InvestorTable() {
                   </span>
                 </td>
                 <td className="py-3 px-4 text-center">
-                  <Link href={`/dashboard/user-manage/investor/${investor.id}`}>
+                  <Link href={`/dashboard/admin-dashboard/user-manage/investor/${investor.id}`}>
                     <Eye className="w-5 h-5 text-gray-400 cursor-pointer" />
                   </Link>
                 </td>
