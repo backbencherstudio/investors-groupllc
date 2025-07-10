@@ -7,12 +7,12 @@ const tabs = [
   {
     label: "Rental Property",
     value: "Rental Property",
-    href: "/dashboard/admin-dashboard/property/rental-property",
+    href: "/dashboard/landlord/property/rental-property",
   },
   {
     label: "Investment Property",
     value: "Investment Property",
-    href: "/dashboard/admin-dashboard/property/investment-property",
+    href: "/dashboard/landlord/property/investment-property",
   },
 ];
 

@@ -8,7 +8,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 
 import { PropertyCard } from "./_components/property-card";
-import StatsCards from "../../user-manage/_components/card";
+import StatsCards from "../../../_components/common/card";
 
 const cardData = [
   {

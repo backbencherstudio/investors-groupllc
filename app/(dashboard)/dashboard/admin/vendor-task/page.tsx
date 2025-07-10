@@ -11,7 +11,8 @@ import Image from "next/image";
 // import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
-import StatsCards from "../user-manage/_components/card";
+import StatsCards from "../../_components/common/card";
+
 
 
 interface RequestData {
