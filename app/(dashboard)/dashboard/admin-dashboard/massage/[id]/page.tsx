@@ -1,5 +1,3 @@
-// pages/chat.js (or any other page in your Next.js project)
-import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import React from "react";
 import { Paperclip, Image as ImageIcon, Mic } from "lucide-react";
