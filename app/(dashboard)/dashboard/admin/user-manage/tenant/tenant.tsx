@@ -2,7 +2,7 @@ import React from "react";
 
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 import { DataTable } from "../_components/table";
-import StatsCards from "../../../_components/common/card";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
 
 
 const cardData = [
