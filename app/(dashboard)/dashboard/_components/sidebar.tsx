@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/lib/utils"; // make sure you have cn helper
+import { cn } from "@/lib/utils";
 import logo from "../../../../public/logo.svg";
 
 interface SidebarProps {
@@ -25,47 +25,85 @@ interface SidebarProps {
 }
 
 const mainMenu = [
+  // for admin
   {
     label: "Dashboard",
     icon: LayoutDashboard,
-    href: "/dashboard",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin",
+    roles: ["admin"],
   },
   {
     label: "User Manage",
     icon: Users,
-    href: "/dashboard/admin-dashboard/user-manage",
+    href: "/dashboard/admin/user-manage",
     roles: ["admin"],
   },
   {
     label: "Request",
     icon: GitBranch,
-    href: "/dashboard/admin-dashboard/request",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/request",
+    roles: ["admin"],
   },
   {
     label: "VendorTask",
     icon: UserCog,
-    href: "/dashboard/admin-dashboard/vendor-task",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/vendor-task",
+    roles: ["admin"],
   },
   {
     label: "Property",
     icon: Building,
-    href: "/dashboard/admin-dashboard/property/rental-property",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/property/rental-property",
+    roles: ["admin"],
   },
   {
     label: "Massage",
     icon: MessageCircle,
-    href: "/dashboard/admin-dashboard/massage",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/massage",
+    roles: ["admin"],
   },
   {
     label: "Financial",
     icon: CreditCard,
-    href: "/dashboard/admin-dashboard/financial",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/financial",
+    roles: ["admin"],
+  },
+  // for landlord
+  {
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/dashboard/landlord",
+    roles: ["landlord"],
+  },
+  {
+    label: "Request",
+    icon: GitBranch,
+    href: "/dashboard/landlord/request",
+    roles: ["landlord"],
+  },
+  {
+    label: "VendorTask",
+    icon: UserCog,
+    href: "/dashboard/landlord/vendor-task",
+    roles: ["landlord"],
+  },
+  {
+    label: "Property",
+    icon: Building,
+    href: "/dashboard/landlord/property/rental-property",
+    roles: ["landlord"],
+  },
+  {
+    label: "Massage",
+    icon: MessageCircle,
+    href: "/dashboard/landlord/massage",
+    roles: ["landlord"],
+  },
+  {
+    label: "Financial",
+    icon: CreditCard,
+    href: "/dashboard/landlord/financial",
+    roles: ["landlord"],
   },
 ];
 
@@ -73,27 +111,39 @@ const customMenu = [
   {
     label: "Team Permission",
     icon: ShieldPlus,
-    href: "/dashboard/admin-dashboard/team-permission",
+    href: "/dashboard/admin/team-permission",
     roles: ["admin"],
   },
   {
     label: "Subscription",
     icon: Crown,
-    href: "/dashboard/admin-dashboard/subscription",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/subscription",
+    roles: ["admin"],
   },
   {
     label: "Setting",
     icon: Settings,
-    href: "/dashboard/admin-dashboard/setting",
-    roles: ["admin", "landlord"],
+    href: "/dashboard/admin/setting",
+    roles: ["admin"],
+  },
+  {
+    label: "Subscription",
+    icon: Crown,
+    href: "/dashboard/landlord/subscription",
+    roles: ["landlord"],
+  },
+  {
+    label: "Setting",
+    icon: Settings,
+    href: "/dashboard/landlord/setting",
+    roles: ["landlord"],
   },
 ];
 
 export function AppSidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  const role = "admin";
+  const role = "landlord";
 
   return (
     <>
