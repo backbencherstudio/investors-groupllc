@@ -99,7 +99,7 @@ export default function LeftSideUser() {
         {/* Recent Chat List */}
         <div className="space-y-4">
           {chatData?.map((chat) => (
-            <Link href={`/dashboard/admin-dashboard/massage/${chat.id}`}
+            <Link href={`/dashboard/landlord/massage/${chat.id}`}
               key={chat?.id}
               className="flex items-center space-x-4 border-b border-gray-200 pb-4"
             >
