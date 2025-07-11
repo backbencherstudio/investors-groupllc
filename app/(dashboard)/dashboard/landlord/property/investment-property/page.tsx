@@ -8,7 +8,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 
 import InvestmentCard from "./_components/investment-card";
-import StatsCards from "../../../_components/common/card";
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";;
 
 const cardData = [
   {

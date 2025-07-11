@@ -11,8 +11,7 @@ import { Card } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import StatsCards from "../../../_components/common/card";
-
+import StatsCards from "../../../_components/common/StatsCards";
 
 type SubscriptionData = {
   id: string;

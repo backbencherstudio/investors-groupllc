@@ -2,7 +2,9 @@ import React from "react";
 
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 import { InvestorTable } from "./_components/investor-table";
-import StatsCards from "../../../_components/common/card";
+
+import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+
 
 const cardData = [
   {

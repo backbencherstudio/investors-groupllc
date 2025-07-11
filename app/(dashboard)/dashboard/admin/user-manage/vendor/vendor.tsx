@@ -1,7 +1,7 @@
 import React from "react";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
+import Card from "../_components/card";
 import { VendorTable } from "./_components/vendor-table";
-import StatsCards from "../../../_components/common/card";
 
 
 const cardData = [
@@ -26,7 +26,7 @@ const cardData = [
 export default function Vendor() {
   return (
     <div className="space-y-6">
-      <StatsCards cardData={cardData} />
+      <Card cardData={cardData} />
       <VendorTable />
     </div>
   );

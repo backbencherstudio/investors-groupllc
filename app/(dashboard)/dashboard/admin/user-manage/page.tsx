@@ -33,7 +33,7 @@ export default function Page() {
   }, []);
 
   // Breadcrumb title mapping
-  const breadcrumbTitle: Record<TabKey, string> = {
+  const tabItemsTitle: Record<TabKey, string> = {
     tenant: "Tenant",
     vendor: "Vendor",
     investor: "Investor",
@@ -58,7 +58,7 @@ export default function Page() {
 
           <BreadcrumbItem>
             <span className="capitalize font-semibold text-[#170A00]">
-              {breadcrumbTitle[activeTab]}
+              {tabItemsTitle[activeTab]}
             </span>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -74,33 +74,19 @@ export default function Page() {
         className="my-6"
       >
         <div className="relative mb-6">
-          <TabsList className="gap-16">
-            <TabsTrigger
-              value="tenant"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
-            >
-              Tenant
-            </TabsTrigger>
-            <TabsTrigger
-              value="vendor"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none "
-            >
-              Vendor
-            </TabsTrigger>
-            <TabsTrigger
-              value="investor"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
-            >
-              Investor
-            </TabsTrigger>
-            <TabsTrigger
-              value="landlord"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
-            >
-              Landlord
-            </TabsTrigger>
+          <TabsList className="gap-8">
+            {Object.entries(tabItemsTitle).map(([key, value]) => (
+              <TabsTrigger
+                key={key}
+                value={key}
+                className="tab-item  px-8 text-lg font-semibold text-gray-600 hover:text-orange-800/70 border-transparent h-10 cursor-pointer"
+              >
+                {value}
+              </TabsTrigger>
+            ))}
+          
           </TabsList>
-          <hr className=" absolute bottom-0.5 w-full" />
+          <hr className=" absolute -bottom-1 w-full" />
         </div>
 
         <TabsContent value="tenant">
