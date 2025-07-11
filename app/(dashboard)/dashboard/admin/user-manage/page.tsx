@@ -73,7 +73,7 @@ export default function Page() {
         }}
         className="my-6"
       >
-        <div className="relative mb-6">
+        <div className=" overflow-x-auto h-10 border-b-2 mb-4">
           <TabsList className="gap-8">
             {Object.entries(tabItemsTitle).map(([key, value]) => (
               <TabsTrigger
@@ -84,9 +84,7 @@ export default function Page() {
                 {value}
               </TabsTrigger>
             ))}
-          
           </TabsList>
-          <hr className=" absolute -bottom-1 w-full" />
         </div>
 
         <TabsContent value="tenant">

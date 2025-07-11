@@ -87,7 +87,7 @@ export default function RequestPage() {
         onValueChange={setActiveTab}
         className=" rounded-md relative"
       >
-        <TabsList className="gap-8  rounded-none ">
+        <TabsList className="gap-8 rounded-none ">
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.value}

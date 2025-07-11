@@ -56,7 +56,7 @@ export default function FinancialPageContent() {
         onValueChange={(value) => setActiveTab(value as TabKey)}
       >
         <div className="relative">
-          <TabsList className="gap-10">
+          {/* <TabsList className="gap-10">
             <TabsTrigger
               value="tenant-rental-payments"
               className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
@@ -75,9 +75,23 @@ export default function FinancialPageContent() {
             >
               Withdrawals
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
           <hr className=" absolute bottom-0.5 w-full" />
+
+          <TabsList className="gap-10">
+            {Object.entries(breadcrumbTitle).map(([key, val]) => (
+              <TabsTrigger
+                key={key}
+                value={key}
+                className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
+              >
+                {val}
+              </TabsTrigger>
+            ))}
+          </TabsList>
         </div>
+
+        <div></div>
 
         <TabsContent value="tenant-rental-payments">
           <div>

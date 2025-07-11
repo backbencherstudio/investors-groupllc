@@ -6,7 +6,7 @@ import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState } from "react";
 import StatusBadge from "@/components/common/StatusBadges";
 import DatePicker from "@/components/common/DatePicker";
-import { Paginations } from "../../../_components/pagination";
+
 import {
   Table,
   TableBody,
@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { RentPaymentDetails } from "./_components/rent-payment-details";
+import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
 
 interface TenantData {
   paidDate: string;
