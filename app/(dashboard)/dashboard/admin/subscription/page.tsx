@@ -6,9 +6,10 @@ import SubscriptionPlan from "./_components/subscription-plan";
 
 export default function SubscriptionPage() {
   const [activeTab, setActiveTab] = useState("subscription-list");
+
   return (
     <div>
-      <h3 className="text-lg font-medium my-6">Subscription List</h3>
+      <h3 className="text-lg font-medium my-6">Subscription </h3>
 
       <div>
         <Tabs
@@ -16,12 +17,13 @@ export default function SubscriptionPage() {
           onValueChange={setActiveTab}
           className=""
         >
-          <TabsList>
-            <TabsTrigger
+          <div className="border-b-2 w-full h-10">
+            <TabsList className="gap-10">
+              {/* <TabsTrigger
               className={`text-lg font-semibold px-5 h-10 ${
                 activeTab === "subscription-list"
                   ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-700"
+                  : "text-zinc-400 border-transparent hover:text-[#D70]"
               }`}
               value="subscription-list"
             >
@@ -37,8 +39,19 @@ export default function SubscriptionPage() {
               value="subscription-plan"
             >
               Subscription Plan
-            </TabsTrigger>
-          </TabsList>
+            </TabsTrigger> */}
+
+              {["subscription-list", "subscription-plan"].map((item, idx) => (
+                <TabsTrigger
+                  key={idx}
+                  value={item}
+                  className="h-10 capitalize px-4"
+                >
+                  {item.split("-").join(" ")}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
           <TabsContent value="subscription-list">
             <SubscriptionList />
           </TabsContent>

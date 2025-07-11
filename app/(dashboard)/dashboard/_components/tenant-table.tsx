@@ -10,6 +10,7 @@ import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
+import { DatePickers } from "@/components/common/DatePickers";
 
 interface TenantData {
   paidDate: string;
@@ -185,6 +186,7 @@ export default function TenantTable() {
               </div>
               <div className="w-[47.5%] md:w-auto ">
                 <DatePicker value={tenantDate} onChange={setTenantDate} />
+                
               </div>
             </div>
           </div>

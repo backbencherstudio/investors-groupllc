@@ -88,7 +88,7 @@ export function PlanModalForm() {
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <Button
-          className="bg-amber-600 text-white rounded mt-8 flex items-center gap-2 cursor-pointer"
+          className="bg-[#d80] text-white rounded mt-8 flex items-center gap-2 cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
           <Plus />
