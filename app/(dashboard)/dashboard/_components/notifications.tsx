@@ -116,7 +116,7 @@ export default function NotificationDropdown() {
           )} */}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[440px]">
+      <DropdownMenuContent align="end" className="md:w-[440px] min-w-auto ml-4">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gray-100">

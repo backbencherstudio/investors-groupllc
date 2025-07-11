@@ -14,6 +14,7 @@ import {
   ShieldPlus,
   Crown,
   X,
+  PanelRightClose,
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -166,9 +167,10 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
         {/* Mobile Close Button */}
         <button
           onClick={onClose}
-          className="lg:hidden absolute right-4 top-4 p-2 text-gray-400 hover:text-white"
+          className="lg:hidden absolute right-2.5 top-3 text-gray-400 hover:text-white"
         >
-          <X className="w-6 h-6" />
+          {/* <X className="w-6 h-6" /> */}
+          <PanelRightClose />
         </button>
 
         <div className="h-full w-full px-4 py-6 flex flex-col overflow-y-auto">

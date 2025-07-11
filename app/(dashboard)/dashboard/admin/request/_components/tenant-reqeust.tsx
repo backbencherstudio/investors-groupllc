@@ -59,7 +59,7 @@ export default function TenantRequests({
           ))}
         </TabsList>
 
-        <TabsContent value="booking">
+        {/* <TabsContent value="booking">
           {loadSubtabContent("booking")}
         </TabsContent>
         <TabsContent value="transfer">
@@ -68,9 +68,15 @@ export default function TenantRequests({
         <TabsContent value="maintenance">
           {loadSubtabContent("maintenance")}
         </TabsContent>
-        <TabsContent value="property-tour">
-          {loadSubtabContent("property-tour")}
-        </TabsContent>
+        <TabsContent value="property-tour"></TabsContent> */}
+
+        {["booking", "transfer", "maintenance", "property-tour"].map(
+          (item, idx) => (
+            <TabsContent key={idx} value={item}>
+              {loadSubtabContent(item)}
+            </TabsContent>
+          )
+        )}
       </Tabs>
     </div>
   );

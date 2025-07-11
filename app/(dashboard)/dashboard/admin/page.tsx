@@ -8,7 +8,7 @@ import WithdrawalTable from "../_components/withdrawal-table";
 
 export default function AdminDashboard() {
   return (
-    <div>
+    <div className="space-y-6">
       <Analytics />
       <IncomeChart />
       <InvestmentMaintenance />

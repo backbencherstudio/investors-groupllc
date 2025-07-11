@@ -46,13 +46,13 @@ export default function TenantRequests({
         }}
         className=""
       >
-        <TabsList className="flex gap-5 bg-transparent p-0 border-none mb-4">
+        <TabsList className="flex gap-5 bg-transparent p-0 border-none mb-4 ">
           {subtabs.map((subtab) => (
             <TabsTrigger
               key={subtab.value}
               value={subtab.value}
               // className="relative data-[state=active]:bg-transparent data-[state=active]:text-green-700 data-[state=active]:shadow-none px-4 py-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5  after:scale-x-0 after:transition-transform after:duration-200 after:origin-left data-[state=active]:after:scale-x-100 border-none"
-              className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2  text-[#707070]"
+              className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2  text-[#707070] overflow-x-auto"
             >
               {subtab.label}
             </TabsTrigger>
@@ -71,6 +71,8 @@ export default function TenantRequests({
         <TabsContent value="property-tour">
           {loadSubtabContent("property-tour")}
         </TabsContent>
+
+       
       </Tabs>
     </div>
   );

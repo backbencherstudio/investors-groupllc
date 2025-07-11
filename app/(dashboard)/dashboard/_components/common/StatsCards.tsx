@@ -16,11 +16,11 @@ export default function StatsCards({ cardData }: { cardData: CardItem[] }) {
           className="flex items-center bg-white  rounded-xl shadow p-4 lg:p-6 min-w-[180px] "
         >
           {/* Icon box */}
-          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-orange-50 mr-4">
+          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-orange-50 mr-4 ">
             {item.icon && <item.icon className="text-orange-500 w-8 h-8" />}
           </div>
           {/* Number and label */}
-          <div>
+          <div className="">
             <div className="text-3xl font-bold text-neutral-900 leading-tight">
               {item.value}
             </div>

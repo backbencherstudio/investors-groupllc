@@ -12,6 +12,7 @@ import { useState } from "react";
 import TenantRequests from "./_components/tenant-reqeust";
 import InvestmentApplications from "./_components/investment-application";
 import PropertyListingRequest from "./_components/property-listing-reqest";
+import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 
 // Main tabs data
 const tabs = [
@@ -54,12 +55,19 @@ export default function RequestPage() {
     <div className="p-2 ">
       {/* Breadcrumb */}
       <Breadcrumb className="mb-6">
-        <BreadcrumbList className="md:text-lg">
+        <BreadcrumbList className="md:text-lg font-medium">
           <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard/request">Request</BreadcrumbLink>
+            <BreadcrumbLink href="/dashboard/admin/request">
+              Request
+            </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
+          <CustomBreadSeparator />
+          <BreadcrumbItem
+            className={` ${
+              activeTab === "tenant-requests" ||
+              "text-lg font-semibold text-[#170A00]"
+            } `}
+          >
             {/* <BreadcrumbLink href={`/dashboard/request/`}> */}
             {tabs.find((tab) => tab.value === activeTab)?.label}
             {/* </BreadcrumbLink> */}
@@ -67,14 +75,9 @@ export default function RequestPage() {
 
           {activeTab === "tenant-requests" && (
             <>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {
-                    subtabs.find((subtab) => subtab.value === activeSubtab)
-                      ?.label
-                  }
-                </BreadcrumbPage>
+              <CustomBreadSeparator />
+              <BreadcrumbItem className="text-lg font-semibold text-[#170A00]">
+                {subtabs.find((subtab) => subtab.value === activeSubtab)?.label}
               </BreadcrumbItem>
             </>
           )}
@@ -87,25 +90,25 @@ export default function RequestPage() {
         onValueChange={setActiveTab}
         className=" rounded-md relative"
       >
-        <TabsList className="gap-8  rounded-none ">
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className={`pb-3 md:pb-6 text-sm md:text-lg font-semibold transition-colors  ${
-                activeTab === tab.value
-                  ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-600"
-              }`}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        <hr className=" absolute h-1 inset-x-0 top-[32px] " />
+        <div className=" overflow-x-auto whitespace-nowrap border-b-2 h">
+          <TabsList className="gap-8  rounded-none p-[0px] ">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+              
+
+                className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
+        {/* <hr className=" absolute h-[6px] w-full top-[32px]  " /> */}
+        {/* <hr className=" absolute bottom-0.5 w-full " /> */}
         <TabsContent value={activeTab}>
           <div className="pt-2">
-            {/* <h2 className="text-lg font-semibold">Showing content for: </h2> */}
             <span className="text-orange-500">{loadTabContent(activeTab)}</span>
           </div>
         </TabsContent>
