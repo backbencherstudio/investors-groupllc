@@ -72,7 +72,7 @@ export function PropertyCard({ property }: { property: any}) {
               <span className="text-xs font-medium">{property.owner.name}</span>
             </div>
           )}
-          <Link href={`/dashboard/admin-dashboard/property/rental-property/${property.id}`} className="mt-4 border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition text-center">
+          <Link href={`/dashboard/landlord/property/rental-property/${property.id}`} className="mt-4 border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition text-center">
             Details
           </Link>
         </div>

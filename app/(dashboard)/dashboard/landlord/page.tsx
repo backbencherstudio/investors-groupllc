@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -350,35 +351,29 @@ export default function LandlordDashboard() {
 
           {/* Chart */}
           <div className="col-span-1 lg:col-span-6">
-            <LineChart
-              width={750}
-              height={300}
-              data={data}
-              margin={{
-                top: 12,
-                right: 45,
-                left: 0,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              {/* <Legend /> */}
-              <Line
-                type="monotone"
-                dataKey="pv"
-                stroke="#D80"
-                strokeDasharray="5 5"
-              />
-              {/* <Line
-        type="monotone"
-        dataKey="uv"
-        stroke="#82ca9d"
-        strokeDasharray="3 4 5 2"
-      /> */}
-            </LineChart>
+            <ResponsiveContainer width={'100%'} height={300}>
+              <LineChart
+                data={data}
+                margin={{
+                  top: 12,
+                  right: 45,
+                  left: 0,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                {/* <Legend /> */}
+                <Line
+                  type="monotone"
+                  dataKey="pv"
+                  stroke="#D80"
+                  strokeDasharray="5 5"
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
 
           {/* Right: Stat Cards */}

@@ -177,7 +177,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
             <Image
               src={logo} // Replace with your logo
               alt="Investors Group LLC"
-              width={160}
+              width={161}
               height={80}
             />
           </div>
