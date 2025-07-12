@@ -3,7 +3,7 @@ import AdminDashboard from "./admin/page";
 import LandlordDashboard from "./landlord/page";
 
 export default function DashboardHome() {
-  const role = "landlord";
+  const role = "admin";
 
     if (role === "admin") {
       return <AdminDashboard />;

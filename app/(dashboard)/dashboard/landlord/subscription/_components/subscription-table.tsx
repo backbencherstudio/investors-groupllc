@@ -3,15 +3,12 @@ import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
-import Diamond from "@/components/icons/subscription/Diamond";
-import Monthly from "@/components/icons/subscription/Monthly";
-import People from "@/components/icons/subscription/People";
-import Revinew from "@/components/icons/subscription/Revinew";
 import { Card } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import StatsCards from "../../../_components/common/StatsCards";
+
+import DatePicker from "@/components/common/DatePicker";
 
 type SubscriptionData = {
   id: string;
@@ -23,6 +20,7 @@ type SubscriptionData = {
   amount: string;
   methods: string;
   status: string;
+  action?: string;
 };
 
 const subscriptionData: SubscriptionData[] = [
@@ -61,46 +59,11 @@ const subscriptionData: SubscriptionData[] = [
   },
 ];
 
-const cardData = [
-  {
-    icon: People,
-    value: 320,
-    label: "Total Subscribers",
-  },
-  {
-    icon: Monthly,
-    value: 210,
-    label: "Monthly Plan",
-  },
-  {
-    icon: Diamond,
-    value: 110,
-    label: "Yearly Plan",
-  },
-  {
-    icon: Revinew,
-    value: "$14,800",
-    label: "Revenew",
-  },
-];
-
-export default function SubscriptionPlan() {
-  return (
-    <div className="">
-      {/* Card stats */}
-      <section className="my-6">
-        <StatsCards cardData={cardData} />
-      </section>
-      {/* Table */}
-      <div className="">
-        <SubscriptionTable />
-      </div>
-    </div>
-  );
-}
-
-function SubscriptionTable() {
+export function SubscriptionTable() {
   const [statusFilter, setStatusFilter] = useState("");
+  const [subscriptionDate, setsubscriptionDate] = useState<Date | undefined>(
+    undefined
+  );
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -135,14 +98,14 @@ function SubscriptionTable() {
       render: (value: string) => (
         <span
           className={`px-2 py-1 rounded text-xs font-semibold
-            ${
-              value === "Premium"
-                ? "bg-blue-100 text-blue-600"
-                : value === "Basic"
-                ? "bg-orange-100 text-orange-600"
-                : "bg-blue-50 text-blue-400"
-            }
-          `}
+              ${
+                value === "Premium"
+                  ? "bg-blue-100 text-blue-600"
+                  : value === "Basic"
+                  ? "bg-orange-100 text-orange-600"
+                  : "bg-blue-50 text-blue-400"
+              }
+            `}
         >
           {value}
         </span>
@@ -156,16 +119,16 @@ function SubscriptionTable() {
       render: (value: string) => (
         <span
           className={`px-2 py-1 rounded text-xs font-semibold
-            ${
-              value === "Paid"
-                ? "bg-green-100 text-green-600"
-                : value === "Free Plan"
-                ? "bg-blue-50 text-blue-400"
-                : value === "Trial"
-                ? "bg-green-50 text-green-400"
-                : ""
-            }
-          `}
+              ${
+                value === "Paid"
+                  ? "bg-green-100 text-green-600"
+                  : value === "Free Plan"
+                  ? "bg-blue-50 text-blue-400"
+                  : value === "Trial"
+                  ? "bg-green-50 text-green-400"
+                  : ""
+              }
+            `}
         >
           {value}
         </span>
@@ -173,11 +136,14 @@ function SubscriptionTable() {
     },
     {
       header: "Action",
-      accessor: "action",
-      render: (_: any, row: SubscriptionData) => (
+      accessor: "action" as keyof SubscriptionData,
+      render: (
+        _: string,// eslint-disable-line @typescript-eslint/no-unused-vars
+        _row
+      ) => (
         <button className="p-2 hover:bg-gray-100 rounded">
           <span role="img" aria-label="view">
-            <Eye></Eye>
+            <Eye />
           </span>
         </button>
       ),
@@ -187,7 +153,7 @@ function SubscriptionTable() {
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
           <h2 className="text-2xl font-semibold">Subscriptions</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">
@@ -198,6 +164,13 @@ function SubscriptionTable() {
                 value={statusFilter}
                 onChange={setStatusFilter}
                 options={["Trial", "Paid", "Free Plan"]}
+              />
+            </div>
+
+            <div className="w-[47.5%] md:w-auto">
+              <DatePicker
+                value={subscriptionDate}
+                onChange={setsubscriptionDate}
               />
             </div>
           </div>

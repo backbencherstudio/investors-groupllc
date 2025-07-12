@@ -1,50 +1,56 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SubscriptionList from "./_components/subscription-list";
-import SubscriptionPlan from "./_components/subscription-plan";
+import ChoosePlan from "./_components/tabs/choose-plan";
+import ManageSubscription from "./_components/tabs/manage-subscription";
+
+type TabItem = {
+  value: string;
+  label: string;
+  content: React.ReactNode;
+};
+
+const tabItems: TabItem[] = [
+  {
+    value: "choose-plan",
+    label: "Choose Plan",
+    content: <ChoosePlan />,
+  },
+  {
+    value: "manage-subscription",
+    label: "Manage Subscription",
+    content: <ManageSubscription />,
+  },
+];
 
 export default function SubscriptionPage() {
-  const [activeTab, setActiveTab] = useState("subscription-list");
   return (
-    <div>
-      <h3 className="text-lg font-medium my-6">Subscription List</h3>
+    <div className="container">
+      <h3 className="text-lg font-medium my-6">Subscription </h3>
 
       <div>
-        <Tabs
-          defaultValue="subscription-list"
-          onValueChange={setActiveTab}
-          className=""
-        >
-          <TabsList>
-            <TabsTrigger
-              className={`text-lg font-semibold px-5 h-10 ${
-                activeTab === "subscription-list"
-                  ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-700"
-              }`}
-              value="subscription-list"
-            >
-              Subscription List
-            </TabsTrigger>
+        <Tabs defaultValue="choose-plan">
+          {/* tabs button */}
+          <div className="border-b-2 h-[42px] mb-4">
+            <TabsList className="gap-10 ">
+              {tabItems.map((item) => (
+                <TabsTrigger
+                  className="h-[43px] px-6"
+                  key={item.value}
+                  value={item.value}
+                >
+                  {item.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          {/* tab content */}
 
-            <TabsTrigger
-              className={`text-lg font-semibold px-5 h-10 ${
-                activeTab === "subscription-plan"
-                  ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-700"
-              }`}
-              value="subscription-plan"
-            >
-              Subscription Plan
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="subscription-list">
-            <SubscriptionList />
-          </TabsContent>
-          <TabsContent value="subscription-plan">
-            <SubscriptionPlan />
-          </TabsContent>
+          {tabItems.map((item) => (
+            <TabsContent key={item.value} value={item.value}>
+              {item.content}
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>
