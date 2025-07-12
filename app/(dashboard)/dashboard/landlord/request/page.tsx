@@ -4,80 +4,46 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbItem,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 import { useState } from "react";
-import TenantRequests from "./_components/tenant-reqeust";
-import InvestmentApplications from "./_components/investment-application";
-import PropertyListingRequest from "./_components/property-listing-reqest";
+import Booking from "./_components/tabs/booking";
 
-// Main tabs data
-const tabs = [
-  { label: "Tenant Requests", value: "tenant-requests" },
-  { label: "Investment Applications", value: "investment-applications" },
-  { label: "Property Listing Requests", value: "property-listing-requests" },
+import MaintenanceRequests from "./_components/tabs/maintenance";
+import PropertyTour from "./_components/tabs/property-tour";
+import Transfer from "./_components/tabs/transfer";
+
+const tabItems = [
+  { label: "Booking", value: "booking", content: <Booking /> },
+  { label: "Transfer", value: "transfer", content: <Transfer /> },
+  {
+    label: "Maintenance",
+    value: "maintenance",
+    content: <MaintenanceRequests />,
+  },
+  { label: "Property Tour", value: "property-tour", content: <PropertyTour /> },
 ];
-// Sub-tabs data
-const subtabs = [
-  { label: "Booking", value: "booking" },
-  { label: "Transfer", value: "transfer" },
-  { label: "Maintenance", value: "maintenance" },
-  { label: "Property Tour", value: "property-tour" },
-];
+
 export default function RequestPage() {
-  const [activeTab, setActiveTab] = useState("tenant-requests");
-  const [activeSubtab, setActiveSubtab] = useState("booking");
-
-  // Function to load content dynamically based on tab value
-  const loadTabContent = (tabValue: string) => {
-    switch (tabValue) {
-      case "tenant-requests":
-        return (
-          <TenantRequests
-            subtabs={subtabs}
-            activeSubtab={activeSubtab}
-            setActiveSubtab={setActiveSubtab}
-          />
-        );
-      case "investment-applications":
-        return <InvestmentApplications />;
-      case "property-listing-requests":
-        return <PropertyListingRequest />;
-      default:
-        return <div>Invalid Tab</div>;
-    }
-  };
+  const [activeTab, setActiveTab] = useState("booking");
 
   return (
-    <div className="p-2 ">
-      {/* Breadcrumb */}
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList className="md:text-lg">
+    <div>
+      {/* BreadCrumb */}
+      <Breadcrumb>
+        <BreadcrumbList className="md:text-lg font-medium">
           <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard/request">Request</BreadcrumbLink>
+            <BreadcrumbLink href="/dashboard/landlord/request">
+              Request
+            </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            {/* <BreadcrumbLink href={`/dashboard/request/`}> */}
-            {tabs.find((tab) => tab.value === activeTab)?.label}
-            {/* </BreadcrumbLink> */}
+          <CustomBreadSeparator />
+          <BreadcrumbItem
+            className={` ${"text-lg font-semibold text-[#170A00] capitalize"} `}
+          >
+            {activeTab}
           </BreadcrumbItem>
-
-          {activeTab === "tenant-requests" && (
-            <>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {
-                    subtabs.find((subtab) => subtab.value === activeSubtab)
-                      ?.label
-                  }
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </>
-          )}
         </BreadcrumbList>
       </Breadcrumb>
 
@@ -85,28 +51,30 @@ export default function RequestPage() {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className=" rounded-md relative"
+        className=" rounded-md relative mt-6"
       >
-        <TabsList className="gap-8 rounded-none ">
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className={`pb-3 md:pb-6 text-sm md:text-lg font-semibold transition-colors  ${
-                activeTab === tab.value
-                  ? ""
-                  : "text-zinc-400 border-transparent hover:text-orange-600"
-              }`}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        <hr className=" absolute h-1 inset-x-0 top-[32px] " />
+        <div className=" overflow-x-auto whitespace-nowrap ">
+          <TabsList className="flex gap-5 bg-transparent p-0 border-none mb-4">
+            {tabItems.map((subtab) => (
+              <TabsTrigger
+                key={subtab.value}
+                value={subtab.value}
+                // className="relative data-[state=active]:bg-transparent data-[state=active]:text-green-700 data-[state=active]:shadow-none px-4 py-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5  after:scale-x-0 after:transition-transform after:duration-200 after:origin-left data-[state=active]:after:scale-x-100 border-none"
+                className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2  text-[#707070] cursor-pointer"
+              >
+                {subtab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
+
         <TabsContent value={activeTab}>
           <div className="pt-2">
-            {/* <h2 className="text-lg font-semibold">Showing content for: </h2> */}
-            <span className="text-orange-500">{loadTabContent(activeTab)}</span>
+            {tabItems.map((item) => (
+              <TabsContent key={item.value} value={item.value}>
+                {item.content}
+              </TabsContent>
+            ))}
           </div>
         </TabsContent>
       </Tabs>

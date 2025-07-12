@@ -3,8 +3,9 @@ import CoinHand from "@/components/icons/finanacial/CoinHand";
 import Tick from "@/components/icons/finanacial/Tick";
 import Request from "@/components/icons/finanacial/Request";
 import Info from "@/components/icons/finanacial/Info";
-import WithdrawalTable from "@/app/(dashboard)/dashboard/_components/withdrawal-table";
+
 import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import MyWithdrawalTable from "../tables/my-withdrawal-table";
 
 
 
@@ -31,7 +32,7 @@ const cardData = [
   },
 ];
 
-export default function Withdrawals() {
+export default function MyWithdrawals() {
   return (
     <div>
       {/* Card stats */}
@@ -41,7 +42,7 @@ export default function Withdrawals() {
 
       {/* table */}
       <section className="mt-6">
-        <WithdrawalTable />
+        <MyWithdrawalTable/>
       </section>
     </div>
   );

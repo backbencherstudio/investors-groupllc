@@ -10,22 +10,18 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 // import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 import TenantRentalPayments from "./tabs/tenant-rental-payments";
-import InvestorTransection from "./tabs/investor-transection";
-import Withdrawals from "./tabs/withdrawals";
+
 import CustomBreadSeparator from "../../../_components/common/CustomBreadSeparator";
+import MyWithdrawals from "./tabs/my-withdrawals";
 
 export default function FinancialPageContent() {
-  type TabKey =
-    | "tenant-rental-payments"
-    | "investor-transaction"
-    | "withdrawals";
+  type TabKey = "tenant-rental-payments" | "my-withdrawals";
 
   const [activeTab, setActiveTab] = useState<TabKey>("tenant-rental-payments");
 
   const breadcrumbTitle: Record<TabKey, string> = {
     "tenant-rental-payments": "Tenant Rental Payments",
-    "investor-transaction": "Investor Transaction",
-    withdrawals: "Withdrawals",
+    "my-withdrawals": "My Withdrawals",
   };
 
   return (
@@ -98,13 +94,9 @@ export default function FinancialPageContent() {
             <TenantRentalPayments />
           </div>
         </TabsContent>
-        <TabsContent value="investor-transaction">
-          <div>
-            <InvestorTransection />
-          </div>
-        </TabsContent>
-        <TabsContent value="withdrawals">
-          <Withdrawals />
+
+        <TabsContent value="my-withdrawals">
+          <MyWithdrawals />
         </TabsContent>
       </Tabs>
     </div>

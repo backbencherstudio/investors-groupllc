@@ -139,7 +139,7 @@ export function SubscriptionTable() {
       accessor: "action" as keyof SubscriptionData,
       render: (
         _: string,// eslint-disable-line @typescript-eslint/no-unused-vars
-        _row
+        // _row
       ) => (
         <button className="p-2 hover:bg-gray-100 rounded">
           <span role="img" aria-label="view">

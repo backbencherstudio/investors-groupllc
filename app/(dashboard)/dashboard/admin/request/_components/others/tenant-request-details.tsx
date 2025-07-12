@@ -112,7 +112,7 @@ export default function TenantRequestDetails({ reqId }: { reqId: string }) {
               {/* Right side - Property Info */}
               <Button
                 variant="link"
-                className="text-orange-500 text-sm p-0 h-auto cursor-pointer"
+                className="text-[#d80] text-sm p-0 h-auto cursor-pointer"
               >
                 View Details
               </Button>
@@ -175,7 +175,7 @@ export default function TenantRequestDetails({ reqId }: { reqId: string }) {
               <div className="flex justify-between  text-gray-700">
                 <span className="font-semibold">Lease End</span>
                 <span className="font-medium">{property.leaseEnd}</span>
-              </div> 
+              </div>
 
               {/* Request ID */}
               <div className="flex justify-between  text-gray-700">

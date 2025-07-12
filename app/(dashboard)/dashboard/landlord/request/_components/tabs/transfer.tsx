@@ -76,7 +76,7 @@ const bookingData: BookingData[] = [
   },
 ];
 
-export default function Booking() {
+export default function Transfer() {
   const [propertyStatus, setPropertyStatus] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
