@@ -185,12 +185,12 @@ export default function ProfileEditForm() {
         </div>
       </div>
 
-      <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline">
-          Cancel
-        </Button>
-        <Button type="submit" variant="default">
+      <div className="flex  gap-4 mt-12">
+        <Button  type="submit" variant="accept">
           Update
+        </Button>
+        <Button type="button" variant="reject">
+          Cancel
         </Button>
       </div>
     </form>

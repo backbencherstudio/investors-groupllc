@@ -144,7 +144,7 @@ const customMenu = [
 export function AppSidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  const role = "admin";
+  const role = "landlord";
 
   return (
     <>

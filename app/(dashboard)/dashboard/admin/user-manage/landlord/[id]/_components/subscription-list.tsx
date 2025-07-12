@@ -3,10 +3,16 @@
 import { Eye } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Paginations } from "@/app/(dashboard)/dashboard/_components/pagination";
-
+import SearchIcon from "@/components/icons/common/search";
 
 const subscriptionData = [
   {
@@ -71,35 +77,22 @@ export function SubscriptionList() {
     <div className="bg-white rounded-xl shadow p-6">
       {/* Search & Filter */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
-        <h2 className="text-xl font-semibold">Subscription List</h2>
+        <h2 className="text-xl font-semibold">Subscription Listt</h2>
         <div className="flex gap-2 items-center w-full md:w-auto">
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
-                />
-              </svg>
+              <SearchIcon />
             </span>
             <Input
               type="text"
               placeholder="Search..."
-              className="pl-9 pr-4 py-2 w-[200px] lg:w-[300px] bg-zinc-100 rounded-md"
+              className="pl-9 pr-4 py-2 w-[200px] lg:w-[250px] bg-zinc-100 rounded-md"
             />
           </div>
           <div className="relative">
             <Select>
-              <SelectTrigger className="w-[100px] md:w-[120px]">
-                <SelectValue placeholder="Select" />
+              <SelectTrigger className="w-[100px] md:w-[120px] ">
+                <SelectValue placeholder="Filter" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
@@ -107,6 +100,9 @@ export function SubscriptionList() {
                 <SelectItem value="new">New</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div>
+
           </div>
         </div>
       </div>

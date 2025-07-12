@@ -64,7 +64,6 @@ export default function SubscriptionPlan() {
         ))}
       </div>
 
-     
       <PlanModalForm></PlanModalForm>
     </div>
   );
@@ -82,9 +81,9 @@ const SubscriptionCard = ({ data }) => {
         <div className="flex items-center gap-2">
           <CardTitle className="text-lg">{data.price}</CardTitle>
           {data.savings && (
-            <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">
+            <div className="bg-[#CDFDC6] text-[#04A755] text-xs font-semibold px-[6px] py-0.5 rounded-[3px] border border-[#04A755]">
               {data.savings}
-            </span>
+            </div>
           )}
         </div>
         <CardDescription className="font-medium">
