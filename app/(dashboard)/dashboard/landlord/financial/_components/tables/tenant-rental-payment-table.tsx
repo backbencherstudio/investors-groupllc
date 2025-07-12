@@ -18,6 +18,8 @@ interface RentPaymentData {
   recipient: string;
   id: string;
   property: string;
+  propertyImage: string;
+  propertyAddress: string;
   amount: string;
   dueDate: string;
   status: string;
@@ -32,6 +34,8 @@ const rentPaymentData: RentPaymentData[] = [
     recipient: "Kathryn Murphy",
     id: "RP-3021",
     property: "Trade Winds Townhouses",
+    propertyImage: "/placeholder-avatar.png",
+    propertyAddress: "123 Main St, Anytown, USA",
     amount: "$16,920",
     dueDate: "April 5",
     status: "Paid",
@@ -44,6 +48,8 @@ const rentPaymentData: RentPaymentData[] = [
     recipient: "Guy Hawkins",
     id: "RP-3025",
     property: "Skylight Square Apartments",
+    propertyImage: "/placeholder-avatar.png",
+    propertyAddress: "123 Main St, Anytown, USA",
     amount: "$2,200",
     dueDate: "April 5",
     status: "Due",
@@ -56,6 +62,8 @@ const rentPaymentData: RentPaymentData[] = [
     recipient: "Jerome Bell",
     id: "RP-3039",
     property: "Prominence Park Residences",
+    propertyImage: "/placeholder-avatar.png",
+    propertyAddress: "123 Main St, Anytown, USA",
     amount: "$16,920",
     dueDate: "April 5",
     status: "Due",
@@ -75,7 +83,13 @@ export default function RentPayment() {
 
   const rentPaymentColumns: Column<RentPaymentData>[] = [
     { header: "Paid Date", accessor: "paidDate" as keyof RentPaymentData },
-    { header: "Payment", accessor: "payment" as keyof RentPaymentData },
+    {
+      header: "Payment",
+      accessor: "payment" as keyof RentPaymentData,
+      render: (value: string | undefined) => (
+        <StatusBadge status={value || ""} />
+      ),
+    },
     {
       header: "Recipient",
       accessor: "recipient" as keyof RentPaymentData,
@@ -93,7 +107,26 @@ export default function RentPayment() {
       ),
     },
     { header: "ID", accessor: "id" as keyof RentPaymentData },
-    { header: "Property", accessor: "property" as keyof RentPaymentData },
+    {
+      header: "Property",
+      accessor: "property" as keyof RentPaymentData,
+      render: (value: string, row: RentPaymentData) => (
+        <div className="flex items-center gap-2">
+          <Image
+            src={row.propertyImage}
+            alt={value}
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+          <div>
+            <div className="font-semibold">{value}</div>
+            <div className="text-xs text-gray-500">{row.propertyAddress}</div>
+          </div>
+        </div>
+      ),
+    },
+
     { header: "Amount", accessor: "amount" as keyof RentPaymentData },
     { header: "Due Date", accessor: "dueDate" as keyof RentPaymentData },
     {
