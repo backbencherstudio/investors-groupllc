@@ -1,6 +1,11 @@
 "use client";
 
-export const ROLE = "admin";
+const userrole: { [key: string]: string } = {
+  admin: "admin",
+  landlord: "landlord",
+}
+
+export const ROLE = userrole.landlord; // Change this to "admin" or "landlord" as needed
 
 export function getRole() {
   return ROLE;

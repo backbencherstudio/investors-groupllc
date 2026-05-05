@@ -3,6 +3,7 @@ import { Menu, Crown, Settings as SettingsIcon, LogOut } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import NotificationDropdown from "./notifications";
+import { useRole } from "@/hooks/use-role";
 
 interface HeaderProps {
   onMobileMenuClick?: () => void;
@@ -11,6 +12,9 @@ interface HeaderProps {
 export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // role
+  const role = useRole();
 
   // Close profile dropdown on outside click
   useEffect(() => {
@@ -41,7 +45,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           <Menu className="h-6 w-6 text-zinc-700" />
         </button>
         <h1 className="text-xl md:text-2xl font-semibold text-zinc-900">
-          Dashboard
+          <span className=" capitalize">{role} </span> Dashboard
         </h1>
       </div>
       {/* Right section */}
