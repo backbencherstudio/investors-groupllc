@@ -10,6 +10,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Check, Edit, X } from "lucide-react";
 
+type SubscriptionFeature = { included?: boolean; label?: string };
+
 type PriceCard = {
   variant?: string;
   data: any;
@@ -41,7 +43,7 @@ export const SubscriptionCard = ({ variant = "admin", data }: PriceCard) => {
         <hr className="mt-2" />
       </CardHeader>
       <CardContent className="space-y-1">
-        {data?.features?.map((feature, idx: number) => (
+        {data?.features?.map((feature: SubscriptionFeature, idx: number) => (
           <div
             key={idx}
             className="text-[#707070] text-xs flex items-center gap-2"

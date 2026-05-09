@@ -1,4 +1,7 @@
-import { DashboardDataTable } from "@/components/common/DashboardDataTable";
+import {
+  DashboardDataTable,
+  type Column,
+} from "@/components/common/DashboardDataTable";
 
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
@@ -108,7 +111,7 @@ function SubscriptionTable() {
   const totalPages = Math.ceil(subscriptionData.length / itemsPerPage);
 
   // Table columns
-  const columns = [
+  const columns: Column<SubscriptionData>[] = [
     {
       header: "Name",
       accessor: "name",
@@ -173,8 +176,8 @@ function SubscriptionTable() {
     },
     {
       header: "Action",
-      accessor: "action",
-      render: (_: any, row: SubscriptionData) => (
+      accessor: "id",
+      render: (_value, row) => (
         <button className="p-2 hover:bg-gray-100 rounded">
           <span role="img" aria-label="view">
             <Eye></Eye>

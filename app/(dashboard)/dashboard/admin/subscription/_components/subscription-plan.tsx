@@ -48,6 +48,8 @@ const pricingPlans = [
   },
 ];
 
+type PricingPlan = (typeof pricingPlans)[number];
+
 export default function SubscriptionPlan() {
   const [isModalOpen, setIsOpen] = useState(false);
   const [planData, setPlanData] = useState({});
@@ -70,7 +72,7 @@ export default function SubscriptionPlan() {
 }
 
 // Card now receives `data` prop
-const SubscriptionCard = ({ data }) => {
+const SubscriptionCard = ({ data }: { data: PricingPlan }) => {
   return (
     <Card className="w-full rounded-md py-4 gap-3 max-w-md">
       <CardHeader className="px-4">
@@ -92,7 +94,7 @@ const SubscriptionCard = ({ data }) => {
         <hr className="mt-2" />
       </CardHeader>
       <CardContent className="space-y-1">
-        {data.features.map((feature, idx: number) => (
+        {data.features.map((feature, idx) => (
           <div
             key={idx}
             className="text-[#707070] text-xs flex items-center gap-2"

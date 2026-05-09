@@ -4,6 +4,8 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import NotificationDropdown from "./notifications";
 import { useRole } from "@/hooks/use-role";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   onMobileMenuClick?: () => void;
@@ -12,7 +14,12 @@ interface HeaderProps {
 export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const { logout, isLoading } = useAuth();
+  const router = useRouter();
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
+  };
   // role
   const role = useRole();
 
@@ -110,7 +117,10 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                   </button>
                 </li>
                 <li>
-                  <button className="w-full flex items-center gap-3 px-5 py-2 text-red-600 hover:bg-zinc-100 transition">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-5 py-2 text-red-600 hover:bg-zinc-100 transition"
+                  >
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
                   </button>

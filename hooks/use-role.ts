@@ -1,16 +1,9 @@
 "use client";
 
-const userrole: { [key: string]: string } = {
-  admin: "admin",
-  landlord: "landlord",
-}
+import { useAppSelector } from "@/redux/hooks";
+import { selectUserRole } from "@/redux/features/auth/authSlice";
+import type { UserRole } from "@/redux/features/auth/authTypes";
 
-export const ROLE = userrole.landlord; // Change this to "admin" or "landlord" as needed
-
-export function getRole() {
-  return ROLE;
-}
-
-export function useRole() {
-  return getRole();
+export function useRole(): UserRole | null {
+  return useAppSelector(selectUserRole);
 }

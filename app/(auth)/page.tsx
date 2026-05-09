@@ -1,10 +1,5 @@
-import React from "react";
-import Login from "./_components/login";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div>
-      <Login />
-    </div>
-  );
+  redirect("/login");
 }

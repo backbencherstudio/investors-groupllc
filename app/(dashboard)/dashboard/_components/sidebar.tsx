@@ -20,6 +20,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/hooks/use-role";
 import logo from "../../../../public/logo.svg";
+import { UserRole } from "@/redux/features/auth/authTypes";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -146,7 +147,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   // const role = "landlord";
-  const role = useRole();
+  const role: UserRole | null = useRole();
 
   return (
     <>
@@ -190,7 +191,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium text-gray-400 px-2 mb-1">Menu</p>
             {mainMenu
-              .filter((item) => item.roles.includes(role))
+              .filter((item) => item.roles.includes(role ?? ""))
               .map((item) => (
                 <Link
                   key={item.href}
@@ -218,7 +219,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
               Custom
             </p>
             {customMenu
-              .filter((item) => item.roles.includes(role))
+              .filter((item) => item.roles.includes(role ?? ""))
               .map((item) => (
                 <Link
                   key={item.href}
