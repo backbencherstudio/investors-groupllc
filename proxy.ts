@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-/** Login lives at `/` — do not use `startsWith("/")` (matches every path). */
+
 const PUBLIC_PREFIXES = [
   "/login",
   "/forgot-password",
@@ -24,7 +24,7 @@ export function proxy(request: NextRequest) {
   const publicRoute = isPublicPath(pathname);
 
   if (!token && !publicRoute) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   if (token && publicRoute) {

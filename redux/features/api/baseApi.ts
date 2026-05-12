@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TAG_TYPES } from "./tagList";
 
 import { extractTokensFromAuthPayload } from "@/lib/auth-tokens";
 import {
@@ -8,6 +9,15 @@ import {
   setTokens,
 } from "@/lib/session";
 import { AUTH_ENDPOINTS } from "@/redux/features/auth/authEndpoints";
+
+if (
+  process.env.NODE_ENV === "development" &&
+  !process.env.NEXT_PUBLIC_API_URL
+) {
+  console.warn(
+    "[baseApi] NEXT_PUBLIC_API_URL is not set. Requests use relative URLs and hit this app’s origin, not your API server."
+  );
+}
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -68,6 +78,6 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extra) => {
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["User", "Auth"],
+  tagTypes: TAG_TYPES,
   endpoints: () => ({}),
 });

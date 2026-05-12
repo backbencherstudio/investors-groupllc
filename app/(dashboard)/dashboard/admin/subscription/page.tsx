@@ -56,6 +56,7 @@ export default function SubscriptionPage() {
             <SubscriptionList />
           </TabsContent>
           <TabsContent value="subscription-plan">
+            
             <SubscriptionPlan />
           </TabsContent>
         </Tabs>

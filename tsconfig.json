@@ -23,9 +23,12 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@redux/*": ["./redux/*"],
+      "@features/*": ["./redux/features/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"]
     }
   },
   "include": [
