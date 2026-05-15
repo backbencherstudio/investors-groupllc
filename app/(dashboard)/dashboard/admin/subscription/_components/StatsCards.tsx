@@ -5,7 +5,7 @@ import Diamond from "@/components/icons/subscription/Diamond";
 import Monthly from "@/components/icons/subscription/Monthly";
 import People from "@/components/icons/subscription/People";
 import Revinew from "@/components/icons/subscription/Revinew";
-import StatsCardsSkeleton from "@/components/common/Loader";
+import { StatsCardsSkeleton } from "@/components/common/Loader";
 
 export default function StatsCards() {
   const { data: stats, isLoading, error } = useGetSubscriptionStatsQuery();

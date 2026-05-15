@@ -13,6 +13,7 @@ import React, { useState, useMemo } from "react";
 import DatePicker from "@/components/common/DatePicker";
 import { useGetSubscriptionListQuery } from "@/redux/features/subscription/SubscriptionApi";
 import type { SubscriptionListItem } from "@/redux/features/subscription/SubscriptionTypes";
+import { TableSkeleton } from "@/components/common/Loader";
 
 const FALLBACK_AVATAR =
   "https://randomuser.me/api/portraits/lego/1.jpg";
@@ -177,8 +178,8 @@ export function SubscriptionTable() {
     return (
       <Card className="w-full overflow-hidden p-6">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
-        </div>
+          <TableSkeleton rows={5} columns={6} />
+        </div> 
       </Card>
     );
   }

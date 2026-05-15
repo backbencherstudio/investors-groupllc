@@ -12,24 +12,7 @@ import { PlanModalForm } from "./plan-form";
 import { useDeleteSubscriptionMutation, useGetAllSubscriptionsQuery } from "@/redux/features/subscription/SubscriptionApi";
 import { toast } from "sonner";
 import { DeleteConfirmToast } from "@/components/reusable/DeleteConfirmToast";
-
-// Type based on your API response
-interface Subscription {
-  id: string;
-  name: string;
-  description: string;
-  isActive: boolean;
-  amount: number;
-  currency: string;
-  interval: string;
-  trialDays: number | null;
-  stripeProductId: string;
-  stripePriceId: string;
-  benefits: string[];
-  discountPercentage: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import type { Subscription } from "@/redux/features/subscription/SubscriptionTypes";
 
 export default function SubscriptionPlan() {
   const { data: subscriptions, isLoading, error } = useGetAllSubscriptionsQuery();
@@ -94,7 +77,7 @@ export default function SubscriptionPlan() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
-        {subscriptions?.map((plan: Subscription) => (
+        {(Array.isArray(subscriptions) ? subscriptions : []).map((plan: Subscription) => (
           <SubscriptionCard
             key={plan.id}
             data={plan}

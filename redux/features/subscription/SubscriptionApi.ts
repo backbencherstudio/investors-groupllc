@@ -10,6 +10,19 @@ import type {
   PaginatedSubscriptionListResponse,
 } from "./SubscriptionTypes";
 
+/** Handles raw array, `{ data: Plan[] }`, or `{ data: { items: Plan[] } }` from the API. */
+function normalizeSubscriptionPlansPayload(res: unknown): Subscription[] {
+  if (Array.isArray(res)) return res;
+  if (!res || typeof res !== "object") return [];
+  const data = (res as { data?: unknown }).data;
+  if (Array.isArray(data)) return data;
+  if (data && typeof data === "object" && "items" in data) {
+    const items = (data as { items?: unknown }).items;
+    if (Array.isArray(items)) return items;
+  }
+  return [];
+}
+
 export const subscriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
 
@@ -42,8 +55,11 @@ export const subscriptionApi = baseApi.injectEndpoints({
 
 
     getAllSubscriptions: builder.query<Subscription[], void>({
-      query: () => ({ url: "/admin/subscription-plan?includeInactive=true", method: "GET" }),
-      // transformResponse: (res: SubscriptionListResponse) => res.data,
+      query: () => ({
+        url: "/admin/subscription-plan?includeInactive=true",
+        method: "GET",
+      }),
+      transformResponse: (res: unknown) => normalizeSubscriptionPlansPayload(res),
       providesTags: ["Subscription"],
     }),
 

@@ -6,7 +6,7 @@ interface StatsCardsSkeletonProps {
   className?: string; // Optional additional classes
 }
 
-export default function StatsCardsSkeleton({ 
+function StatsCardsSkeleton({ 
   count = 4, 
   className = "" 
 }: StatsCardsSkeletonProps) {
@@ -24,3 +24,46 @@ export default function StatsCardsSkeleton({
     </div>
   );
 }
+
+
+
+interface TableSkeletonProps {
+  rows?: number; // Number of rows to show, defaults to 5
+  columns?: number; // Number of columns, defaults to 6
+  showHeader?: boolean; // Show header skeleton, defaults to true
+  className?: string; // Additional classes
+}
+
+function TableSkeleton({ 
+  rows = 5, 
+  columns = 6,
+  showHeader = true,
+  className = ""
+}: TableSkeletonProps) {
+  return (
+    <div className={`w-full ${className}`}>
+      {/* Table Header */}
+      {showHeader && (
+        <div className="flex gap-4 mb-4 pb-2 border-b">
+          {Array.from({ length: columns }).map((_, idx) => (
+            <Skeleton key={`header-${idx}`} className="h-6 flex-1" />
+          ))}
+        </div>
+      )}
+      
+      {/* Table Rows */}
+      <div className="space-y-3">
+        {Array.from({ length: rows }).map((_, rowIdx) => (
+          <div key={`row-${rowIdx}`} className="flex gap-4 items-center">
+            {Array.from({ length: columns }).map((_, colIdx) => (
+              <Skeleton key={`col-${rowIdx}-${colIdx}`} className="h-8 flex-1" />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+export { StatsCardsSkeleton, TableSkeleton };
