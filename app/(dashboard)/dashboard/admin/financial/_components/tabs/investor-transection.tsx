@@ -1,5 +1,5 @@
 import React from "react";
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 
 import Coins from "@/components/icons/finanacial/Coins";

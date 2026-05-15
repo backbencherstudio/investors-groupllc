@@ -6,10 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check, Edit, Plus, X } from "lucide-react";
+import { Check, Edit, Plus, Trash, X } from "lucide-react";
 import React, { useState } from "react";
 import { PlanModalForm } from "./plan-form";
-import { useGetAllSubscriptionsQuery } from "@/redux/features/subscription/SubscriptionApi";
+import { useDeleteSubscriptionMutation, useGetAllSubscriptionsQuery } from "@/redux/features/subscription/SubscriptionApi";
+import { toast } from "sonner";
+import { DeleteConfirmToast } from "@/components/reusable/DeleteConfirmToast";
 
 // Type based on your API response
 interface Subscription {
@@ -31,7 +33,8 @@ interface Subscription {
 
 export default function SubscriptionPlan() {
   const { data: subscriptions, isLoading, error } = useGetAllSubscriptionsQuery();
-  
+  const [deleteSubscription, { isLoading: isDeleting }] = useDeleteSubscriptionMutation();
+
   // State for edit modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<Subscription | null>(null);
@@ -41,6 +44,19 @@ export default function SubscriptionPlan() {
     setIsEditModalOpen(true);
   };
 
+
+
+  const handleDeleteClick = (plan: Subscription) => {
+    toast.custom((t) => (
+      <DeleteConfirmToast
+        toastId={t as string}
+        planName={plan.name}
+        onConfirm={() => deleteSubscription(plan.id)}
+      />
+    ), { duration: Infinity });
+  };
+
+  
   const handleAddClick = () => {
     setSelectedPlan(null);
     setIsEditModalOpen(true);
@@ -79,15 +95,16 @@ export default function SubscriptionPlan() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
         {subscriptions?.map((plan: Subscription) => (
-          <SubscriptionCard 
-            key={plan.id} 
-            data={plan} 
+          <SubscriptionCard
+            key={plan.id}
+            data={plan}
             onEdit={() => handleEditClick(plan)}
+            onDelete={() => handleDeleteClick(plan)}
           />
         ))}
       </div>
 
-      <PlanModalForm 
+      <PlanModalForm
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
         editData={selectedPlan}
@@ -97,12 +114,14 @@ export default function SubscriptionPlan() {
 }
 
 // Updated SubscriptionCard component
-const SubscriptionCard = ({ 
-  data, 
-  onEdit 
-}: { 
-  data: Subscription; 
+const SubscriptionCard = ({
+  data,
+  onEdit,
+  onDelete
+}: {
+  data: Subscription;
   onEdit: () => void;
+  onDelete: () => void;
 }) => {
   // Format price from cents to dollars
   const formattedPrice = new Intl.NumberFormat('en-US', {
@@ -114,7 +133,7 @@ const SubscriptionCard = ({
 
   // Format interval display
   const getIntervalText = (interval: string) => {
-    switch(interval.toLowerCase()) {
+    switch (interval.toLowerCase()) {
       case 'month': return 'monthly';
       case 'year': return 'yearly';
       case 'week': return 'weekly';
@@ -158,10 +177,14 @@ const SubscriptionCard = ({
               <span className="text-xs text-red-500 ml-2">(Inactive)</span>
             )}
           </div>
-          <Edit 
-            className="w-4 h-4 cursor-pointer hover:text-amber-600 transition-colors" 
-            onClick={onEdit}
-          />
+          <div className="flex items-center gap-2">
+            <Edit
+              className="w-4 h-4 cursor-pointer hover:text-amber-600 transition-colors"
+              onClick={onEdit}
+            />
+
+            <Trash className="w-4 h-4 cursor-pointer hover:text-amber-600 transition-colors" onClick={onDelete} />
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <CardTitle className="text-lg">

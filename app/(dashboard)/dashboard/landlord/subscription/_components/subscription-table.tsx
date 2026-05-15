@@ -1,20 +1,23 @@
+"use client";
 import {
   DashboardDataTable,
   type Column,
 } from "@/components/common/DashboardDataTable";
-
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import { Card } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
-
+import React, { useState, useMemo } from "react";
 import DatePicker from "@/components/common/DatePicker";
-import { useGetAllSubscriptionsQuery } from "@/redux/features/subscription/SubscriptionApi";
+import { useGetSubscriptionListQuery } from "@/redux/features/subscription/SubscriptionApi";
+import type { SubscriptionListItem } from "@/redux/features/subscription/SubscriptionTypes";
 
-type SubscriptionData = {
+const FALLBACK_AVATAR =
+  "https://randomuser.me/api/portraits/lego/1.jpg";
+
+interface SubscriptionTableData {
   id: string;
   name: string;
   role: string;
@@ -24,71 +27,98 @@ type SubscriptionData = {
   amount: string;
   methods: string;
   status: string;
-};
+}
 
-const subscriptionData: SubscriptionData[] = [
-  {
-    id: "1",
-    name: "Jenny Wilson",
-    role: "Landlord",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    paidDate: "Apr 28, 2025",
-    planType: "Trail",
-    amount: "Free",
-    methods: "-",
-    status: "Trial",
-  },
-  {
-    id: "2",
-    name: "Kristin Watson",
-    role: "Landlord",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-    paidDate: "May 28, 2025",
-    planType: "Premium",
-    amount: "$29",
-    methods: "Credit Card",
-    status: "Paid",
-  },
-  {
-    id: "3",
-    name: "Courtney Henry",
-    role: "Landlord",
-    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
-    paidDate: "Jun 28, 2025",
-    planType: "Basic",
-    amount: "Free",
-    methods: "-",
-    status: "Free Plan",
-  },
+type ApiStatus = "pending" | "active" | "past_due" | "canceled";
+
+type DisplayStatus = "Trial" | "Paid" | "Free Plan" | "Active" | "Expired";
+
+const STATUS_OPTIONS: DisplayStatus[] = [
+  "Trial",
+  "Paid",
+  "Free Plan",
+  "Active",
+  "Expired",
 ];
 
+const DISPLAY_TO_API_STATUS: Record<DisplayStatus, ApiStatus> = {
+  Trial: "pending",
+  Paid: "active",
+  "Free Plan": "active",
+  Active: "active",
+  Expired: "past_due",
+};
+
+function formatPeriod(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+}
+
+function deriveStatus(item: SubscriptionListItem): string {
+  if (!item.expiryDate) return "Active";
+  return new Date(item.expiryDate) > new Date() ? "Active" : "Expired";
+}
+
+function transformToTableData(
+  items: SubscriptionListItem[]
+): SubscriptionTableData[] {
+  return items.map((item) => ({
+    id: item.id,
+    name: item.user.name ?? "—",
+    role: item.user.role,
+    avatar: item.user.avatar ?? FALLBACK_AVATAR,
+    paidDate: new Date(item.startDate).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    planType: item.plan.name,
+    amount: "-",
+    methods: "-",
+    status: deriveStatus(item),
+  }));
+}
+
 export function SubscriptionTable() {
-
-
-
-  const [statusFilter, setStatusFilter] = useState("");
-  const [subscriptionDate, setsubscriptionDate] = useState<Date | undefined>(
+  const [statusFilter, setStatusFilter] = useState<DisplayStatus | "">("");
+  const [subscriptionDate, setSubscriptionDate] = useState<Date | undefined>(
     undefined
   );
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(subscriptionData.length / itemsPerPage);
 
-  // Table columns
-  const columns: Column<SubscriptionData>[] = [
+  const { data: apiData, isLoading, isError } = useGetSubscriptionListQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    search: search || undefined,
+    status: statusFilter
+      ? DISPLAY_TO_API_STATUS[statusFilter]
+      : undefined,
+    period: subscriptionDate ? formatPeriod(subscriptionDate) : undefined,
+  });
+
+  const tableData = useMemo<SubscriptionTableData[]>(() => {
+    if (!apiData?.items?.length) return [];
+    return transformToTableData(apiData.items);
+  }, [apiData]);
+
+  const totalPages = apiData?.pagination.totalPages ?? 1;
+  const totalResults = apiData?.pagination.total ?? 0;
+
+  const columns: Column<SubscriptionTableData>[] = [
     {
       header: "Name",
       accessor: "name",
-      render: (value: string, row: SubscriptionData) => (
+      render: (_value: string, row: SubscriptionTableData) => (
         <div className="flex items-center gap-2">
           <Image
             src={row.avatar}
             alt={row.name}
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-full object-cover"
           />
           <div>
             <div className="font-semibold">{row.name}</div>
@@ -103,15 +133,12 @@ export function SubscriptionTable() {
       accessor: "planType",
       render: (value: string) => (
         <span
-          className={`px-2 py-1 rounded text-xs font-semibold
-              ${
-                value === "Premium"
-                  ? "bg-blue-100 text-blue-600"
-                  : value === "Basic"
-                  ? "bg-orange-100 text-orange-600"
-                  : "bg-blue-50 text-blue-400"
-              }
-            `}
+          className={`px-2 py-1 rounded text-xs font-semibold ${value === "Premium"
+              ? "bg-blue-100 text-blue-600"
+              : value === "Basic"
+                ? "bg-orange-100 text-orange-600"
+                : "bg-purple-100 text-purple-600"
+            }`}
         >
           {value}
         </span>
@@ -124,17 +151,12 @@ export function SubscriptionTable() {
       accessor: "status",
       render: (value: string) => (
         <span
-          className={`px-2 py-1 rounded text-xs font-semibold
-              ${
-                value === "Paid"
-                  ? "bg-green-100 text-green-600"
-                  : value === "Free Plan"
-                  ? "bg-blue-50 text-blue-400"
-                  : value === "Trial"
-                  ? "bg-green-50 text-green-400"
-                  : ""
-              }
-            `}
+          className={`px-2 py-1 rounded text-xs font-semibold ${value === "Active"
+              ? "bg-green-100 text-green-600"
+              : value === "Expired"
+                ? "bg-red-100 text-red-500"
+                : "bg-gray-100 text-gray-600"
+            }`}
         >
           {value}
         </span>
@@ -144,14 +166,32 @@ export function SubscriptionTable() {
       header: "Action",
       accessor: "id",
       render: () => (
-        <button className="p-2 hover:bg-gray-100 rounded">
-          <span role="img" aria-label="view">
-            <Eye />
-          </span>
+        <button className="p-2 hover:bg-gray-100 rounded transition-colors">
+          <Eye className="w-4 h-4" />
         </button>
       ),
     },
   ];
+
+  if (isLoading) {
+    return (
+      <Card className="w-full overflow-hidden p-6">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+        </div>
+      </Card>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Card className="w-full overflow-hidden p-6">
+        <div className="flex justify-center items-center h-64 text-red-500">
+          Failed to load subscriptions. Please try again.
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <div>
@@ -165,31 +205,28 @@ export function SubscriptionTable() {
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
                 value={statusFilter}
-                onChange={setStatusFilter}
-                options={["Trial", "Paid", "Free Plan"]}
+                onChange={(val) => setStatusFilter(val as DisplayStatus | "")}
+                options={STATUS_OPTIONS}
               />
             </div>
-
             <div className="w-[47.5%] md:w-auto">
               <DatePicker
                 value={subscriptionDate}
-                onChange={setsubscriptionDate}
+                onChange={setSubscriptionDate}
               />
             </div>
           </div>
         </div>
 
-        {/* Data Table */}
         <div className="w-full overflow-hidden">
-          <DashboardDataTable columns={columns} data={subscriptionData} />
+          <DashboardDataTable columns={columns} data={tableData} />
         </div>
 
-        {/* Pagination */}
         <TablePagination
           totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
-          totalResults={subscriptionData.length}
+          totalResults={totalResults}
           pageSize={itemsPerPage}
         />
       </Card>

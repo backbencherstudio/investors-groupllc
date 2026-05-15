@@ -89,7 +89,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         {/* Profile Image and Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
-            className="flex items-center"
+            className="flex items-center cursor-pointer border rounded-full w-10 h-10 "
             onClick={() => setOpen((v) => !v)}
             aria-label="Open user menu"
           >

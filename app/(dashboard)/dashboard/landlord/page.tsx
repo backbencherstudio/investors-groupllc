@@ -19,7 +19,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 
 import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
 import { DataTable } from "../admin/user-manage/_components/table";
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 interface Tenant {
   avatar: string;

@@ -12,7 +12,7 @@ import Image from "next/image";
 import { TablePagination } from "@/components/common/TablePagination";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 interface RequestData {
   id: string | number;
@@ -228,8 +228,8 @@ export default function VendorTask() {
                 row.issueType === "Emergency"
                   ? "text-xs text-red-500 font-semibold"
                   : row.issueType === "Urgent"
-                  ? "text-xs text-orange-500 font-semibold"
-                  : "text-xs text-blue-500 font-semibold"
+                    ? "text-xs text-orange-500 font-semibold"
+                    : "text-xs text-blue-500 font-semibold"
               }
             >
               {row.issueType}
@@ -272,8 +272,8 @@ export default function VendorTask() {
               status === "Completed"
                 ? "bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs"
                 : status === "On going"
-                ? "bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs"
-                : "bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs"
+                  ? "bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs"
+                  : "bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs"
             }
           >
             {status}

@@ -66,7 +66,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   if (!isPublicRoute && (!isHydrated || isLoading)) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-y-transparent" />
       </div>
     );
   }
