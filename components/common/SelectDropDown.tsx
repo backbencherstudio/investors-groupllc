@@ -48,6 +48,8 @@ type Option = {
   value: string;
 };
 
+const EMPTY_VALUE = "__all__";
+
 export default function SelectDropDown({
   value,
   onChange,
@@ -60,14 +62,19 @@ export default function SelectDropDown({
   placeholder?: string;
 }) {
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select
+      value={value || EMPTY_VALUE}
+      onValueChange={(val) => onChange(val === EMPTY_VALUE ? "" : val)}
+    >
       <SelectTrigger className="w-full md:w-[140px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-
       <SelectContent>
         {options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.value}>
+          <SelectItem
+            key={opt.value || EMPTY_VALUE}
+            value={opt.value || EMPTY_VALUE}
+          >
             {opt.label}
           </SelectItem>
         ))}

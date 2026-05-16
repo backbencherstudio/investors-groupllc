@@ -5,11 +5,12 @@ const nextConfig: NextConfig = {
   // See: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
   allowedDevOrigins: ["192.168.7.56"],
   images: {
-    remotePatterns: [new URL("https://randomuser.me/")],
+    remotePatterns: [new URL("https://randomuser.me/"), new URL("https://gueloprboy.anikstudio.com/")],
     domains: [
       "randomuser.me",
       "images.unsplash.com",
       "maps.googleapis.com",
+      "gueloprboy.anikstudio.com"
     ],
     //     remotePatterns: [
     //       {
