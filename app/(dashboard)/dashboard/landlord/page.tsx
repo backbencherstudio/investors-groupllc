@@ -172,7 +172,7 @@ export default function LandlordDashboard() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
 
       <div className="my-4">
         <div className="grid  grid-cols-1 lg:grid-cols-2 gap-6">
@@ -482,7 +482,7 @@ export default function LandlordDashboard() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>

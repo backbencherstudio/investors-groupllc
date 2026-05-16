@@ -27,7 +27,7 @@ const cardData = [
 export default function Vendor() {
   return (
     <div className="space-y-6">
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <VendorTable />
     </div>
   );

@@ -153,7 +153,7 @@ export default function Booking() {
               <SelectDropDown
                 value={tenantStatus}
                 onChange={setTenantStatus}
-                options={["Approved", "In Review", "Rejected"]}
+                options={[{ label: "Approved", value: "Approved" }, { label: "In Review", value: "In Review" }, { label: "Rejected", value: "Rejected" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

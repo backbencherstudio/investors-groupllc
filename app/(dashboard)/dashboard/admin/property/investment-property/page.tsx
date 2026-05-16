@@ -152,7 +152,7 @@ export default function InvestmentProperty() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">My Property List</h2>
@@ -176,7 +176,7 @@ export default function InvestmentProperty() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Passive", "Active"]}
+                options={[{ label: "Passive", value: "Passive" }, { label: "Active", value: "Active" }]}
               />
             </div>
           </div>

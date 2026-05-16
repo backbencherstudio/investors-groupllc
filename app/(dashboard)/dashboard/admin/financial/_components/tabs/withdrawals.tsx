@@ -36,7 +36,7 @@ export default function Withdrawals() {
     <div>
       {/* Card stats */}
       <section className="mt-4">
-        <StatsCards cardData={cardData} />
+        <StatsCards  />
       </section>
 
       {/* table */}

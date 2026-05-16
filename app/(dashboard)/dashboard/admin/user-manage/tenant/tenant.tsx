@@ -26,7 +26,7 @@ const cardData = [
 export default function Tenant() {
   return (
     <div className="space-y-6">
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <DataTable />
     </div>
   );

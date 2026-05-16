@@ -23,7 +23,7 @@ export default function TenantRentalPayments() {
     <div>
       {/* Card stats */}
       <section className="mt-4">
-        <StatsCards cardData={cardData} />
+        <StatsCards  />
       </section>
 
       {/* table */}

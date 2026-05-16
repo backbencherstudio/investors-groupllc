@@ -204,7 +204,7 @@ export default function InvestorTransectionTable() {
                 <SelectDropDown
                   value={tenantStatus}
                   onChange={setTenantStatus}
-                  options={["Paid", "Due"]}
+                  options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }]}
                 />
               </div>
               <div className="w-[47.5%] md:w-auto ">

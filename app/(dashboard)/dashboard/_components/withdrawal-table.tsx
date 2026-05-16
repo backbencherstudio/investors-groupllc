@@ -83,7 +83,7 @@ export default function WithdrawalTable() {
 
   // fetched from backend
 
-  const columns: Column<WithdrawData>[]  = [
+  const columns: Column<WithdrawData>[] = [
     { header: "Req date", accessor: "reqDate" as keyof WithdrawData },
     {
       header: "Name",
@@ -140,8 +140,9 @@ export default function WithdrawalTable() {
                 <SelectDropDown
                   value={tenantStatus}
                   onChange={setTenantStatus}
-                  options={["Paid", "Due"]}
-                />
+                  options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }]
+                  }
+                  />  
               </div>
               <div className="w-[47.5%] md:w-auto ">
                 <DatePicker value={tenantDate} onChange={setTenantDate} />

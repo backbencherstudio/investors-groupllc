@@ -169,8 +169,9 @@ export default function PaidHistory() {
                   <SelectDropDown
                     value={tenantStatus}
                     onChange={setTenantStatus}
-                    options={["Paid", "Due"]}
-                  />
+                    options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }]
+                    }
+                    />
                 </div>
                 <div className="w-[47.5%] md:w-auto">
                   <DatePicker value={tenantDate} onChange={setTenantDate} />
@@ -220,13 +221,11 @@ export default function PaidHistory() {
             {/* Pagination */}
             <div className="mt-4 flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="text-sm text-zinc-500">
-                {`Showing ${
-                  tenantData.length === 0
+                {`Showing ${tenantData.length === 0
                     ? 0
                     : (currentPage - 1) * PAGE_SIZE + 1
-                }–${Math.min(currentPage * PAGE_SIZE, tenantData.length)} of ${
-                  tenantData.length
-                } results`}
+                  }–${Math.min(currentPage * PAGE_SIZE, tenantData.length)} of ${tenantData.length
+                  } results`}
               </div>
               <Paginations
                 totalPages={totalPages}

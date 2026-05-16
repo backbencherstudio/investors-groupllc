@@ -302,7 +302,7 @@ export default function VendorTask() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">Task List</h2>
@@ -317,14 +317,14 @@ export default function VendorTask() {
               <SelectDropDown
                 value={propertyStatus}
                 onChange={setPropertyStatus}
-                options={["In Review", "Completed", "On going"]}
+                options={[{ label: "In Review", value: "In Review" }, { label: "Completed", value: "Completed" }, { label: "On going", value: "On going" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>
