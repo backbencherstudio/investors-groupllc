@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/drawer";
 import Image from "next/image";
 
-export function InvestmentPerformance() {
+export function InvestmentPerformance({ property }: { property: any }) {
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>

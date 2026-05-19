@@ -5,25 +5,46 @@ import React, { useState } from "react";
 import { TransferRequest } from "./transfer-request";
 import Link from "next/link";
 import Image from "next/image";
+import { useGetUserByIdQuery } from "@/redux/features/user/UserApi";
 
-interface Tenant {
-  avatar: string;
-  name: string;
-  phone: string;
-  email: string;
-  userId: string;
-  address: string;
-  employer: string;
-  jobTitle: string;
-  salary: string;
+
+interface AfterPurchaseProps {
+  id: string;
 }
 
-export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
+export default function AfterPurchase({ id }: AfterPurchaseProps) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { data: user, isLoading } = useGetUserByIdQuery(id as string);
+  
+  console.log("user: ", user);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
+  if (isLoading) {
+    return (
+      <div className="p-4 flex justify-center items-center min-h-[400px]">
+        <div className="text-neutral-500">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="p-4 flex justify-center items-center min-h-[400px]">
+        <div className="text-red-500">User not found</div>
+      </div>
+    );
+  }
+
+  // Calculate maintenance counts
+  const maintenanceList = user.maintenance || [];
+  const totalTasks = maintenanceList.length;
+  const pendingTasks = maintenanceList.filter((m: any) => m.status === "Pending").length;
+  const ongoingTasks = maintenanceList.filter((m: any) => m.status === "In Progress" || m.status === "On Going").length;
+  const inReviewTasks = maintenanceList.filter((m: any) => m.status === "In Review").length;
+  const completedTasks = maintenanceList.filter((m: any) => m.status === "Completed").length;
 
   return (
     <div className="p-4">
@@ -36,8 +57,8 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
             <div className="bg-white rounded-xl p-6 mb-6 relative shadow-sm">
               <div className="flex items-start gap-4">
                 <Image
-                  src={tenant.avatar}
-                  alt={tenant.name}
+                  src={user.profile?.avatar || "/default-avatar.png"}
+                  alt={user.profile?.name || "Tenant"}
                   width={64}
                   height={64}
                   className="rounded-full object-cover w-16 h-16"
@@ -46,16 +67,16 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="font-bold text-xl text-neutral-900 mb-1 truncate">
-                        {tenant.name}
+                        {user.profile?.name || "N/A"}
                       </div>
                       <div className="flex items-center gap-3 text-[15px] text-neutral-700">
                         <span className="flex items-center gap-1">
                           <Phone className="w-4 h-4 text-orange-500" />
-                          {tenant.phone}
+                          {user.profile?.phone || "N/A"}
                         </span>
                         <span className="flex items-center gap-1">
                           <Mail className="w-4 h-4 text-orange-500" />
-                          {tenant.email}
+                          {user.profile?.email || "N/A"}
                         </span>
                       </div>
                     </div>
@@ -66,8 +87,8 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                       >
                         <MessageCircle className="w-5 h-5" />
                       </button>
-                      <button
-                        className="bg-zinc-100 hover:bg-zinc-200 rounded-lg p-2 text-zinc-500  cursor-pointer"
+                      {/* <button
+                        className="bg-zinc-100 hover:bg-zinc-200 rounded-lg p-2 text-zinc-500 cursor-pointer"
                         title="More"
                         onClick={toggleDropdown}
                       >
@@ -96,42 +117,42 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                             Block
                           </a>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
               </div>
               <hr className="my-5 border-zinc-200" />
               {/* Details grid */}
-              <div className=" text-[15px]">
+              <div className="text-[15px] space-y-2">
                 <div className="flex justify-between">
                   <div className="text-neutral-700">User ID</div>
                   <div className="text-right md:text-left font-medium text-neutral-900">
-                    {tenant.userId}
+                    {user.profile?.id || "N/A"}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="text-neutral-700">Current Address</div>
                   <div className="text-right md:text-left font-medium text-neutral-900">
-                    {tenant.address}
+                    {user.profile?.address || "N/A"}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="text-neutral-700">Employer Name</div>
                   <div className="text-right md:text-left font-medium text-neutral-900">
-                    {tenant.employer}
+                    {user.employment?.employerName || "N/A"}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="text-neutral-700">Job Title</div>
                   <div className="text-right md:text-left font-medium text-neutral-900">
-                    {tenant.jobTitle}
+                    {user.employment?.jobTitle || "N/A"}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="text-neutral-700">Annual Salary</div>
                   <div className="text-right md:text-left font-medium text-neutral-900">
-                    {tenant.salary}
+                    {user.employment?.annualSalary || "N/A"}
                   </div>
                 </div>
               </div>
@@ -184,18 +205,26 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="font-semibold text-lg mb-4">Maintenance</h3>
               <div className="space-y-2 text-sm">
-                {[
-                  ["Total task", 8],
-                  ["Pending Task", 1],
-                  ["On Going", 2],
-                  ["In Review", 1],
-                  ["Completed", 5],
-                ].map(([label, count], i) => (
-                  <div key={i} className="flex justify-between">
-                    <span>{label}</span>
-                    <span className="font-medium">{count}</span>
-                  </div>
-                ))}
+                <div className="flex justify-between">
+                  <span>Total task</span>
+                  <span className="font-medium">{totalTasks}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Pending Task</span>
+                  <span className="font-medium">{pendingTasks}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>On Going</span>
+                  <span className="font-medium">{ongoingTasks}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>In Review</span>
+                  <span className="font-medium">{inReviewTasks}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Completed</span>
+                  <span className="font-medium">{completedTasks}</span>
+                </div>
               </div>
               <div className="mt-4">
                 <Link
@@ -213,9 +242,6 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
             <span className="text-neutral-700 font-medium text-sm">
               Transfer Request
             </span>
-            {/* <button className="border border-zinc-200 px-4 py-1 rounded font-medium text-sm">
-              View Details
-            </button> */}
             <TransferRequest />
           </div>
         </div>
@@ -305,12 +331,7 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
       <div className="bg-white rounded-xl p-4 shadow-sm mt-6">
         <h3 className="font-semibold mb-4 text-base">Documents</h3>
         <div className="flex flex-wrap gap-4">
-          {[
-            "Lease Agreement",
-            "ID Verification",
-            "Proof of Income",
-            "Pay Receipts",
-          ].map((name, i) => (
+          {(user.documents || []).map((doc: any, i: number) => (
             <div
               key={i}
               className="flex items-center gap-3 bg-white border border-zinc-100 rounded-lg px-4 py-3 w-full sm:w-auto min-w-[180px] max-w-[220px] flex-1"
@@ -334,10 +355,17 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm truncate">{name}</div>
-                <div className="text-xs text-neutral-400">12 MB</div>
+                <div className="font-medium text-sm truncate">{doc.label}</div>
+                <div className="text-xs text-neutral-400">
+                  {doc.url?.split(".").pop()?.toUpperCase() || "FILE"}
+                </div>
               </div>
-              <button className="text-zinc-400 hover:text-orange-500">
+              <a
+                href={doc.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 hover:text-orange-500"
+              >
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                   <path
                     d="M12 4v12m0 0l-4-4m4 4l4-4"
@@ -355,7 +383,7 @@ export default function AfterPurchase({ tenant }: { tenant: Tenant }) {
                     fill="currentColor"
                   />
                 </svg>
-              </button>
+              </a>
             </div>
           ))}
         </div>

@@ -38,7 +38,7 @@ export const userApi = baseApi.injectEndpoints({
     }),
 
 
-    getUserById: builder.query<User, string>({
+    getUserById: builder.query<any, string>({
       query: (id) => ({ url: `/dashboard/users/${id}`, method: "GET" }),
       transformResponse: (res: any) => res.data,
       providesTags: (_result, _err, id) => [{ type: "User", id }],

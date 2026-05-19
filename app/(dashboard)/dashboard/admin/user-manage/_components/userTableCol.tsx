@@ -1,8 +1,9 @@
 // userTableCol.tsx
 import { Column } from "@/components/common/DashboardDataTable";
-import { Eye, TrendingUp, DollarSign, Building, Briefcase, Home, Wrench } from "lucide-react";
+import { Eye, TrendingUp, DollarSign, Building, Briefcase, Home, Wrench, } from "lucide-react";
 import Image from "next/image";
 import { UserRole } from "@/redux/features/user/UserTypes";
+import Link from "next/link";
 
 export interface UserTableData {
     id: string;
@@ -42,12 +43,17 @@ const asNumber = (value: UserCellValue) =>
 const actionColumn: Column<UserTableData> = {
     header: "", // Empty header matching the layout
     accessor: "id",
-    render: () => (
-        <button className="p-2 text-gray-500 hover:text-gray-800 transition-colors">
-            <Eye className="w-5 h-5" />
-        </button>
-    ),
-};
+
+    render: (value: UserCellValue, row: UserTableData) => 
+    {
+        const role = row.role.toLowerCase();
+        return (
+                <Link href={`/dashboard/admin/user-manage/${role}/${row.id}`}>
+                <Eye className="w-5 h-5 text-gray-400 cursor-pointer" />
+            </Link>
+        );
+    },
+};      
 
 // Common columns matching the design layout
 const commonColumns: Partial<Record<keyof UserTableData, Column<UserTableData>>> = {

@@ -29,7 +29,7 @@ export default function Tenant() {
   return (
     <div className="space-y-6">
       <StatsCards />
-      <TenantTable />
+      {/* <TenantTable /> */}
       <UserTable userType="TENANT" title="Tenants Management" />
     </div>
   );
