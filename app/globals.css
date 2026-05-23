@@ -246,3 +246,11 @@ body {
 button{
   cursor: pointer;
 }
+
+/* .icon-button{
+  @apply p-2 hover:bg-gray-100 rounded-md transition-colors bg-gray-100;
+} */
+
+.icon-button{
+  @apply p-2 hover:bg-gray-100 rounded-md transition-colors bg-gray-100/50 cursor-pointer;
+}
