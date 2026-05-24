@@ -15,9 +15,16 @@ const getLoginErrorMessage = (err: unknown): string => {
   return "Invalid email or password";
 };
 
+const isDev = process.env.NODE_ENV === "development";
+
+const DEFAULT_VALUES = {
+  email: isDev ? "anik.wdev@gmail.com" : "",
+  password: isDev ? "12345678" : "",
+};
+
 export default function Login() {
-  const [email, setEmail] = useState("anik.wdev@gmail.co");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState(DEFAULT_VALUES.email);
+  const [password, setPassword] = useState(DEFAULT_VALUES.password);
   const [error, setError] = useState("");
   const { login, isLoading } = useAuth();
 
