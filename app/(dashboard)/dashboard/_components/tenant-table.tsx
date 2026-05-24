@@ -76,7 +76,7 @@ const tenantData: TenantData[] = [
     paidDate: "-",
     payment: "-",
     recipient: "Guy Hawkins",
-      id: "RP-3026",
+    id: "RP-3026",
     property: "Skylight Squa.",
     amount: "$2,200",
     dueDate: "April 5",
@@ -181,12 +181,13 @@ export default function TenantTable() {
                 <SelectDropDown
                   value={tenantStatus}
                   onChange={setTenantStatus}
-                  options={["Paid", "Due"]}
-                />
+                  options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }]
+                  }
+                  />
               </div>
               <div className="w-[47.5%] md:w-auto ">
                 <DatePicker value={tenantDate} onChange={setTenantDate} />
-                
+
               </div>
             </div>
           </div>

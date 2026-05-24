@@ -173,7 +173,7 @@ function InvestmentApplicationsTable() {
               <SelectDropDown
                 value={tenantStatus}
                 onChange={setTenantStatus}
-                options={["Pending", "Assigned", "Completed"]}
+                options={[{ label: "Pending", value: "Pending" }, { label: "Assigned", value: "Assigned" }, { label: "Completed", value: "Completed" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

@@ -1,8 +1,11 @@
+"use client";
+
 import React from "react";
 import AfterPurchase from "./_components/after-purchase";
 import BeforePurchase from "./_components/before-purchase";
-
-export default function TenantDetails() {
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useGetUserByIdQuery } from "@/redux/features/user/UserApi";
   // Mock data
   const tenant = {
     avatar: "https://randomuser.me/api/portraits/men/10.jpg",
@@ -15,20 +18,27 @@ export default function TenantDetails() {
     jobTitle: "Business",
     salary: "$10,000-$20,000",
   };
+export default function TenantDetails() {
+
+
+
 
   const isPurchase = true;
+  const { id } = useParams();
+  console.log("id: ", id);
+
 
   return (
     <div>
       {/* Breadcrumb */}
       <div className=" text-gray-400 mb-6">
-        User Management &gt; Tenant &gt;{" "}
+        User Management &gt; <Link href="/dashboard/admin/user-manage">Tenant</Link> &gt;{" "}
         <span className="text-black font-semibold text-[18px]">
           Tenant Details
         </span>
       </div>
       {isPurchase ? (
-        <AfterPurchase tenant={tenant} />
+        <AfterPurchase id={id as string} />
       ) : (
         <BeforePurchase tenant={tenant} />
       )}

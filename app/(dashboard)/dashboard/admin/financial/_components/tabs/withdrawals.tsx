@@ -4,7 +4,7 @@ import Tick from "@/components/icons/finanacial/Tick";
 import Request from "@/components/icons/finanacial/Request";
 import Info from "@/components/icons/finanacial/Info";
 import WithdrawalTable from "@/app/(dashboard)/dashboard/_components/withdrawal-table";
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 
 
@@ -36,7 +36,7 @@ export default function Withdrawals() {
     <div>
       {/* Card stats */}
       <section className="mt-4">
-        <StatsCards cardData={cardData} />
+        <StatsCards  />
       </section>
 
       {/* table */}

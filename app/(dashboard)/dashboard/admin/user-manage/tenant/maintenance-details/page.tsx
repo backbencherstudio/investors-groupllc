@@ -24,7 +24,7 @@ const cardData = [
 export default function MaintenanceDetail() {
   return (
     <div className="space-y-6">
-      <StatsCards cardData={cardData} />
+      <StatsCards cardData={cardData}/>
       <MaintenanceList />
     </div>
   );

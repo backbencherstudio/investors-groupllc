@@ -19,7 +19,7 @@ import {
   Upload,
 } from "lucide-react";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldValues } from "react-hook-form";
 
 const strategy = [
   {
@@ -104,9 +104,9 @@ export default function PropertyDetails() {
   };
 
   // On form submit, store all data in state
-  const onSubmit = (data) => {
+  const onSubmit = (data: FieldValues) => {
     data.titles = titles.map((title, idx) => data[`title_${idx}`] || "");
-    setFormState(data);
+    setFormState(data as typeof formState);
     setShowModal(false);
   };
 

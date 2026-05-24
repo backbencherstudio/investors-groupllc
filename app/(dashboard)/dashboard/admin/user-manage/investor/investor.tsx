@@ -3,7 +3,8 @@ import React from "react";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 import { InvestorTable } from "./_components/investor-table";
 
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
+import { UserTable } from "../_components/UserTable";
 
 
 const cardData = [
@@ -27,8 +28,8 @@ const cardData = [
 export default function Investor() {
   return (
     <div className="space-y-6">
-      <StatsCards cardData={cardData} />
-      <InvestorTable />
+      <StatsCards />
+      <UserTable userType="INVESTOR" title="Investor List" />
     </div>
   );
 }

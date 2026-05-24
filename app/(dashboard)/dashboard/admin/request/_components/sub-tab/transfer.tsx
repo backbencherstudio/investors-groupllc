@@ -176,7 +176,7 @@ export default function Booking() {
               <SelectDropDown
                 value={propertyStatus}
                 onChange={setPropertyStatus}
-                options={["In Review", "Approved", "Rejected"]}
+                options={[{ label: "In Review", value: "In Review" }, { label: "Approved", value: "Approved" }, { label: "Rejected", value: "Rejected" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
@@ -185,7 +185,7 @@ export default function Booking() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>

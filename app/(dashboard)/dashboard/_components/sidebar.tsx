@@ -18,7 +18,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useRole } from "@/hooks/use-role";
 import logo from "../../../../public/logo.svg";
+import { UserRole } from "@/redux/features/auth/authTypes";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -144,7 +146,8 @@ const customMenu = [
 export function AppSidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  const role = "landlord";
+  // const role = "landlord";
+  const role: UserRole | null = useRole();
 
   return (
     <>
@@ -161,7 +164,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
         className={cn(
           "fixed lg:sticky top-0 left-0 h-screen w-[280px] flex flex-col bg-[#1c1c1c] text-white z-50 transition-transform duration-300 ease-in-out",
           "lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         {/* Mobile Close Button */}
@@ -188,7 +191,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium text-gray-400 px-2 mb-1">Menu</p>
             {mainMenu
-              .filter((item) => item.roles.includes(role))
+              .filter((item) => item.roles.includes(role ?? ""))
               .map((item) => (
                 <Link
                   key={item.href}
@@ -198,7 +201,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
                     "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm hover:bg-zinc-800 transition",
                     pathname === item.href
                       ? "bg-zinc-700 text-white"
-                      : "text-gray-300"
+                      : "text-gray-300",
                   )}
                 >
                   <item.icon className="w-5 h-5" />
@@ -216,7 +219,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
               Custom
             </p>
             {customMenu
-              .filter((item) => item.roles.includes(role))
+              .filter((item) => item.roles.includes(role ?? ""))
               .map((item) => (
                 <Link
                   key={item.href}
@@ -226,7 +229,7 @@ export function AppSidebar({ isOpen, onClose }: SidebarProps) {
                     "flex items-center gap-3 px-3 py-2 rounded-md text-sm hover:bg-zinc-800 transition",
                     pathname === item.href
                       ? "bg-zinc-700 text-white"
-                      : "text-gray-300"
+                      : "text-gray-300",
                   )}
                 >
                   <item.icon className="w-5 h-5" />

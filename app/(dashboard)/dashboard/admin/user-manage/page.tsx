@@ -14,7 +14,7 @@ import Vendor from "./vendor/vendor";
 import Landlord from "./landlord/landlord";
 
 export default function Page() {
-  type TabKey = "tenant" | "vendor" | "investor" | "landlord";
+  type TabKey = "tenant" | "vendor" | "investor" ;
 
   // Initialize the active tab with "tenant" as default
   const [activeTab, setActiveTab] = useState<TabKey>("tenant");
@@ -25,8 +25,7 @@ export default function Page() {
     if (
       savedTab === "tenant" ||
       savedTab === "vendor" ||
-      savedTab === "investor" ||
-      savedTab === "landlord"
+      savedTab === "investor" 
     ) {
       setActiveTab(savedTab as TabKey);
     }
@@ -37,7 +36,6 @@ export default function Page() {
     tenant: "Tenant",
     vendor: "Vendor",
     investor: "Investor",
-    landlord: "Landlord",
   };
 
   return (
@@ -100,11 +98,6 @@ export default function Page() {
         <TabsContent value="investor">
           <div>
             <Investor />
-          </div>
-        </TabsContent>
-        <TabsContent value="landlord">
-          <div>
-            <Landlord />
           </div>
         </TabsContent>
       </Tabs>

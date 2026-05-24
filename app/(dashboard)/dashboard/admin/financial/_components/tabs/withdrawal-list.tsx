@@ -125,7 +125,7 @@ export default function RentPayment() {
               <SelectDropDown
                 value={paymentStatus}
                 onChange={setPaymentStatus}
-                options={["Paid", "Due", "Pending"]}
+                options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }, { label: "Pending", value: "Pending" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

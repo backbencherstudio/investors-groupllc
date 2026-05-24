@@ -19,7 +19,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 
 import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
 import { DataTable } from "../admin/user-manage/_components/table";
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 interface Tenant {
   avatar: string;
@@ -172,7 +172,7 @@ export default function LandlordDashboard() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
 
       <div className="my-4">
         <div className="grid  grid-cols-1 lg:grid-cols-2 gap-6">
@@ -482,7 +482,7 @@ export default function LandlordDashboard() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>

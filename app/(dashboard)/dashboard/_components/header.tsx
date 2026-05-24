@@ -3,6 +3,10 @@ import { Menu, Crown, Settings as SettingsIcon, LogOut } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import NotificationDropdown from "./notifications";
+import { useRole } from "@/hooks/use-role";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface HeaderProps {
   onMobileMenuClick?: () => void;
@@ -11,6 +15,17 @@ interface HeaderProps {
 export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { logout, isLoading } = useAuth();
+  const router = useRouter();
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
+  };
+
+  const {user} = useAuth();
+  console.log(user);
+  // role
+  const role = useRole();
 
   // Close profile dropdown on outside click
   useEffect(() => {
@@ -41,7 +56,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           <Menu className="h-6 w-6 text-zinc-700" />
         </button>
         <h1 className="text-xl md:text-2xl font-semibold text-zinc-900">
-          Dashboard
+          <span className=" capitalize">{role} </span> Dashboard
         </h1>
       </div>
       {/* Right section */}
@@ -78,7 +93,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         {/* Profile Image and Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
-            className="flex items-center"
+            className="flex items-center cursor-pointer border rounded-full w-10 h-10 "
             onClick={() => setOpen((v) => !v)}
             aria-label="Open user menu"
           >
@@ -94,19 +109,24 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
             <div className="absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-lg border z-50 animate-fade-in-up">
               <ul className="py-2">
                 <li>
-                  <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
-                    <Crown className="h-5 w-5" />
-                    <span>Subscription</span>
-                  </button>
+                  <Link href="/dashboard/admin/subscription">
+                    <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
+                      <Crown className="h-5 w-5" />
+                      <span>Subscription</span>
+                    </button></Link>
                 </li>
                 <li>
-                  <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
-                    <SettingsIcon className="h-5 w-5" />
-                    <span>Settings</span>
-                  </button>
+                  <Link href={`/dashboard/${role}/setting`}>
+                    <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
+                      <SettingsIcon className="h-5 w-5" />
+                      <span>Settings</span>
+                    </button></Link>
                 </li>
                 <li>
-                  <button className="w-full flex items-center gap-3 px-5 py-2 text-red-600 hover:bg-zinc-100 transition">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-5 py-2 text-red-600 hover:bg-zinc-100 transition"
+                  >
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
                   </button>

@@ -12,7 +12,7 @@ import Image from "next/image";
 import { TablePagination } from "@/components/common/TablePagination";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 interface RequestData {
   id: string | number;
@@ -228,8 +228,8 @@ export default function VendorTask() {
                 row.issueType === "Emergency"
                   ? "text-xs text-red-500 font-semibold"
                   : row.issueType === "Urgent"
-                  ? "text-xs text-orange-500 font-semibold"
-                  : "text-xs text-blue-500 font-semibold"
+                    ? "text-xs text-orange-500 font-semibold"
+                    : "text-xs text-blue-500 font-semibold"
               }
             >
               {row.issueType}
@@ -272,8 +272,8 @@ export default function VendorTask() {
               status === "Completed"
                 ? "bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs"
                 : status === "On going"
-                ? "bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs"
-                : "bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs"
+                  ? "bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs"
+                  : "bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs"
             }
           >
             {status}
@@ -302,7 +302,7 @@ export default function VendorTask() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">Task List</h2>
@@ -317,14 +317,14 @@ export default function VendorTask() {
               <SelectDropDown
                 value={propertyStatus}
                 onChange={setPropertyStatus}
-                options={["In Review", "Completed", "On going"]}
+                options={[{ label: "In Review", value: "In Review" }, { label: "Completed", value: "Completed" }, { label: "On going", value: "On going" }]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>

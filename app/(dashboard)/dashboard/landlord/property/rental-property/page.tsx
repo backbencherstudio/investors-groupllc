@@ -8,7 +8,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 
 import { PropertyCard } from "./_components/property-card";
-import StatsCards from "@/app/(dashboard)/dashboard/_components/common/StatsCards";;
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";;
 
 const cardData = [
   {
@@ -152,7 +152,7 @@ export default function RentalProperty() {
 
   return (
     <div>
-      <StatsCards cardData={cardData} />
+      <StatsCards />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">My Property List</h2>
@@ -176,7 +176,7 @@ export default function RentalProperty() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={["Property", "Room"]}
+                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
               />
             </div>
           </div>

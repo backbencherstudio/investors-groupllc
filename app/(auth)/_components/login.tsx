@@ -1,25 +1,34 @@
 "use client";
 
-// pages/login.tsx
 import { Button } from "@/components/ui/button";
 import LoginLogo from "./login-logo";
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import useAuth from "@/hooks/useAuth";
+
+const getLoginErrorMessage = (err: unknown): string => {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "object" && err !== null) {
+    const e = err as { data?: { message?: string }; error?: string; message?: string };
+    return e.data?.message ?? e.error ?? e.message ?? "Invalid email or password";
+  }
+  return "Invalid email or password";
+};
 
 export default function Login() {
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("1234asdf");
+  const [email, setEmail] = useState("anik.wdev@gmail.co");
+  const [password, setPassword] = useState("12345678");
+  const [error, setError] = useState("");
+  const { login, isLoading } = useAuth();
 
-  const router = useRouter();
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const formData = { email, password };
-    console.log("After login", formData);
-
-    router.push("/dashboard/admin");
+    setError("");
+    try {
+      await login({ email, password });
+    } catch (err) {
+      setError(getLoginErrorMessage(err));
+    }
   };
 
   return (
@@ -73,9 +82,16 @@ export default function Login() {
             </Link>
           </div>
 
+          {error && (
+            <p className="mb-4 text-sm text-red-600 text-center">{error}</p>
+          )}
+
           {/* Login Button */}
-          <Button className="w-full py-3 bg-[#d80] text-white font-semibold rounded-md hover:bg-[#d70] cursor-pointer">
-            Login
+          <Button
+            disabled={isLoading}
+            className="w-full py-3 bg-[#d80] text-white font-semibold rounded-md hover:bg-[#d70] cursor-pointer disabled:opacity-70"
+          >
+            {isLoading ? "Logging in..." : "Login"}
           </Button>
         </form>
       </div>
