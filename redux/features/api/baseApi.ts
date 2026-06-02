@@ -40,7 +40,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extra) => {
   // back to the caller — never force a hard redirect for them.
   if (AUTH_URLS.some((u) => url.endsWith(u))) return result;
 
-  if (result.error?.status === 401 || result.error?.status === 403) {
+  if (result.error?.status === 401) {
     const refreshEnabled = process.env.NEXT_PUBLIC_ENABLE_REFRESH === "true";
 
     if (!refreshEnabled) {

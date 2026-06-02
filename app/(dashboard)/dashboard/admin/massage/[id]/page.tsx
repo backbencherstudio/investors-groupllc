@@ -1,164 +1,403 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import {
+  Download,
+  FileText,
+  Image as ImageIcon,
+  MessageCircle,
+  MoreVertical,
+  Paperclip,
+  Phone,
+  SendHorizontal,
+  Video,
+  X,
+} from "lucide-react";
 import Image from "next/image";
-import React from "react";
-import { Paperclip, Image as ImageIcon, Mic } from "lucide-react";
+import { useParams } from "next/navigation";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
-const messages = [
-  {
-    id: 1,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-  {
-    id: 2,
-    sender: "Mr. Joe",
-    message: "Perfect. Thank you so much.",
-    time: "06:30 PM",
-  },
+import {
+  useGetConversationsQuery,
+  useGetMessagesQuery,
+  useSendMessageMutation,
+} from "@/redux/features/message/MessageApi";
 
-  {
-    id: 3,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:40 PM",
-  },
-  {
-    id: 4,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-  {
-    id: 5,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-  {
-    id: 6,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-  {
-    id: 9,
-    sender: "Mr. Joe",
-    message: "Perfect. Thank you so much.",
-    time: "06:30 PM",
-  },
-  {
-    id: 7,
-    sender: "You",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-  {
-    id: 8,
-    sender: "Mr. Joe",
-    message:
-      "Hi, I was wondering if I could schedule a maintenance visit for the kitchen sink. It's leaking again.",
-    time: "06:30 PM",
-  },
-];
+const formatMessageTime = (dateString: string) =>
+  new Intl.DateTimeFormat("en", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(dateString));
+
+const getApiErrorMessage = (error: unknown) => {
+  if (typeof error === "object" && error !== null && "data" in error) {
+    const data = (error as { data?: { message?: string; error?: string } })
+      .data;
+    return data?.message ?? data?.error ?? "Failed to send message";
+  }
+
+  return "Failed to send message";
+};
 
 export default function ChatPage() {
-  return (
-    <div className="relative w-full h-[715px] bg-white p-6 rounded-xl shadow-md">
-      {/* Header with user info */}
-      <div className="flex items-center justify-between pb-4">
-        <div className="flex items-center space-x-3">
-          <Image
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="User Avatar"
-            className="w-12 h-12 rounded-full object-cover"
-            width={40}
-            height={40}
-          />
-          <div>
-            <p className="font-semibold text-lg">Mr. Joe</p>
-            <p className="text-sm text-gray-500">Online</p>
-          </div>
-        </div>
-        <p className="text-sm text-gray-400">10 Feb, 2025</p>
-      </div>
+  const params = useParams<{ id: string }>();
+  const conversationId = params.id;
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
+  const {
+    data: conversationsData,
+    isLoading: isLoadingConversations,
+    isFetching: isFetchingConversations,
+  } = useGetConversationsQuery();
+  const {
+    data: messagesData,
+    isLoading: isLoadingMessages,
+    isFetching: isFetchingMessages,
+  } = useGetMessagesQuery(conversationId);
+  const [sendMessage, { isLoading: isSendingMessage }] =
+    useSendMessageMutation();
 
-      {/* Messages */}
-      <div className="space-y-4 h-[550px] overflow-x-auto py-2">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${
-              msg.sender === "You" ? "justify-end" : "justify-start"
-            } items-start space-x-3`}
-          >
-            {/* Sender Avatar */}
-            {msg.sender !== "You" && (
-              <Image
-                src="https://randomuser.me/api/portraits/men/2.jpg"
-                alt="Sender Avatar"
-                className="w-10 h-10 rounded-full object-cover"
-                width={40}
-                height={40}
-              />
+  const conversation = conversationsData?.data.items.find(
+    (item) => item.id === conversationId
+  );
+  const threadMessages = messagesData?.data.items ?? [];
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [threadMessages.length]);
+
+  const handleSendMessage = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const trimmedMessage = newMessage.trim();
+    if (!trimmedMessage && !selectedFile) return;
+
+    try {
+      setSendError(null);
+      const formData = new FormData();
+      formData.append("message", trimmedMessage);
+      if (selectedFile) formData.append("attachment", selectedFile);
+
+      await sendMessage({
+        conversationId,
+        formData,
+      }).unwrap();
+      setNewMessage("");
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (imageInputRef.current) imageInputRef.current.value = "";
+    } catch (error) {
+      setSendError(getApiErrorMessage(error));
+      console.error("Failed to send message", error);
+    }
+  };
+
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) setSelectedFile(file);
+  };
+
+  const clearSelectedFile = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (imageInputRef.current) imageInputRef.current.value = "";
+  };
+
+  const isLoading =
+    isLoadingConversations ||
+    isLoadingMessages ||
+    (!conversation && isFetchingConversations);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full min-h-[520px] flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white px-6 text-center shadow-sm xl:min-h-0">
+        <p className="text-sm font-medium text-slate-500">
+          Loading conversation...
+        </p>
+      </div>
+    );
+  }
+
+  if (!conversation) {
+    return (
+      <div className="flex h-full min-h-[520px] flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white px-6 text-center shadow-sm xl:min-h-0">
+        <h2 className="mb-2 text-xl font-semibold text-slate-950">
+          Conversation not found
+        </h2>
+        <p className="max-w-sm text-sm leading-6 text-slate-500">
+          The selected chat does not exist in the current conversation list.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm xl:min-h-0">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-100 px-5 py-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="relative shrink-0">
+            <Image
+              src={conversation.participant.avatar ?? "/image/fallback-user2.jpg"}
+              alt={conversation.participant.name}
+              className="h-12 w-12 rounded-full object-cover"
+              width={48}
+              height={48}
+            />
+            {conversation.participant.onlineStatus === "online" && (
+              <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-500" />
             )}
-            {/* Message Content */}
-            <div
-              className={`max-w-[70%] ${
-                msg.sender === "You" ? "bg-blue-100 text-right" : "bg-gray-100"
-              } p-4 rounded-lg`}
-            >
-              <p className="text-sm">{msg.message}</p>
-              <span className="text-xs text-gray-500 block mt-2">
-                {msg.time}
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="truncate text-lg font-semibold text-slate-950">
+                {conversation.participant.name}
+              </p>
+              <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-500">
+                {conversation.participant.role}
               </span>
             </div>
-            {/* Sender Avatar (for "You") */}
-            {msg.sender === "You" && (
-              <Image
-                src="https://randomuser.me/api/portraits/men/3.jpg"
-                alt="You Avatar"
-                className="w-10 h-10 rounded-full object-cover"
-                width={40}
-                height={40}
-              />
-            )}
+            <p className="text-sm text-slate-500">
+              {conversation.participant.onlineStatus === "online"
+                ? "Online now"
+                : "Offline"}
+            </p>
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Typing message section */}
-      <div className="w-full flex items-center gap-2">
-        {/* Input with icons inside */}
-        <div className="flex-1 flex items-center bg-white rounded-xl px-4 py-2 shadow-sm">
-          <input
-            type="text"
-            placeholder="Type your message..."
-            className="flex-1 bg-transparent outline-none text-sm"
-          />
+        <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
-            className="p-1 text-gray-500 hover:text-[#d48806]"
+            className="hidden h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 sm:flex"
+            aria-label="Start voice call"
           >
-            <Paperclip className="w-5 h-5" />
+            <Phone className="h-4 w-4" />
           </button>
           <button
             type="button"
-            className="p-1 text-gray-500 hover:text-[#d48806]"
+            className="hidden h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 sm:flex"
+            aria-label="Start video call"
           >
-            <ImageIcon className="w-5 h-5" />
+            <Video className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200"
+            aria-label="Open conversation menu"
+          >
+            <MoreVertical className="h-4 w-4" />
           </button>
         </div>
-        {/* Mic button */}
-        <button className="bg-[#d48806] hover:bg-[#b97d05] p-3 rounded-xl text-white flex items-center justify-center">
-          <Mic className="w-5 h-5" />
-        </button>
       </div>
+
+      <div className="scrollbar-custom min-h-0 flex-1 overflow-y-auto bg-slate-50/70 px-5 py-6 [scrollbar-gutter:stable]">
+        <div className="mx-auto mb-6 w-fit rounded-full bg-white px-4 py-2 text-xs font-medium text-slate-400 shadow-sm">
+          Today
+        </div>
+
+        <div className="space-y-5">
+          {isFetchingMessages && threadMessages.length === 0 ? (
+            <p className="text-center text-sm text-slate-400">
+              Loading messages...
+            </p>
+          ) : null}
+
+          {threadMessages.length === 0 && !isFetchingMessages ? (
+            <div className="flex min-h-52 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white px-6 text-center">
+              <MessageCircle className="mb-3 h-8 w-8 text-slate-300" />
+              <p className="font-medium text-slate-700">No messages yet</p>
+              <p className="mt-1 text-sm text-slate-400">
+                Send the first message to start this conversation.
+              </p>
+            </div>
+          ) : null}
+
+          {threadMessages.map((message) => {
+            const isMine = message.isMine;
+            const attachmentIsImage =
+              message.attachment?.type.startsWith("image/");
+
+            return (
+              <div
+                key={message.id}
+                className={cn(
+                  "flex items-end gap-3",
+                  isMine ? "justify-end" : "justify-start"
+                )}
+              >
+                {!isMine && (
+                  <Image
+                    src={
+                      message.sender.avatar ??
+                      "/image/fallback-user2.jpg"
+                    }
+                    alt={message.sender.name}
+                    className="h-9 w-9 rounded-full object-cover"
+                    width={36}
+                    height={36}
+                  />
+                )}
+
+                <div
+                  className={cn(
+                    "max-w-[82%] rounded-3xl px-4 py-3 shadow-sm sm:max-w-[68%]",
+                    isMine
+                      ? "rounded-br-md bg-[#d48806] text-white"
+                      : "rounded-bl-md bg-white text-slate-700"
+                  )}
+                >
+                  {message.text && (
+                    <p className="text-sm leading-6">{message.text}</p>
+                  )}
+                  {message.attachment && (
+                    <a
+                      href={message.attachment.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cn(
+                        "mt-3 block overflow-hidden rounded-2xl border",
+                        isMine ? "border-white/20" : "border-slate-100"
+                      )}
+                    >
+                      {attachmentIsImage ? (
+                        <Image
+                          src={message.attachment.url}
+                          alt={message.attachment.name}
+                          className="max-h-64 w-full object-cover"
+                          width={360}
+                          height={240}
+                        />
+                      ) : (
+                        <span
+                          className={cn(
+                            "flex items-center gap-3 p-3 text-sm",
+                            isMine ? "bg-white/10" : "bg-slate-50"
+                          )}
+                        >
+                          <FileText className="h-5 w-5 shrink-0" />
+                          <span className="min-w-0 flex-1 truncate">
+                            {message.attachment.name}
+                          </span>
+                          <Download className="h-4 w-4 shrink-0" />
+                        </span>
+                      )}
+                    </a>
+                  )}
+                  <div
+                    className={cn(
+                      "mt-2 flex items-center gap-2 text-[11px]",
+                      isMine ? "justify-end text-white/75" : "text-slate-400"
+                    )}
+                  >
+                    <span>{formatMessageTime(message.createdAt)}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          <div ref={bottomRef} />
+        </div>
+      </div>
+
+      <form
+        onSubmit={handleSendMessage}
+        className="border-t border-slate-100 bg-white p-4"
+      >
+        {sendError && (
+          <p className="mb-3 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+            {sendError}
+          </p>
+        )}
+
+        {selectedFile && (
+          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#d48806]/10 text-[#d48806]">
+                <FileText className="h-4 w-4" />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-slate-700">
+                  {selectedFile.name}
+                </p>
+                <p className="text-xs text-slate-400">
+                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={clearSelectedFile}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-white hover:text-red-500"
+              aria-label="Remove selected file"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={handleFileSelect}
+        />
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileSelect}
+        />
+
+        <div className="flex items-end gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-2">
+          <div className="flex gap-1 pb-1">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-white hover:text-[#d48806]"
+              aria-label="Attach file"
+            >
+              <Paperclip className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => imageInputRef.current?.click()}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-white hover:text-[#d48806]"
+              aria-label="Attach image"
+            >
+              <ImageIcon className="h-5 w-5" />
+            </button>
+          </div>
+
+          <textarea
+            value={newMessage}
+            onChange={(event) => setNewMessage(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            rows={1}
+            placeholder="Type your message..."
+            className="max-h-28 min-h-10 flex-1 resize-none bg-transparent px-1 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+          />
+
+          <button
+            type="submit"
+            disabled={(!newMessage.trim() && !selectedFile) || isSendingMessage}
+            className="flex h-11 shrink-0 items-center gap-2 rounded-2xl bg-[#d48806] px-4 text-sm font-semibold text-white transition hover:bg-[#b97d05] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span className="hidden sm:inline">
+              {isSendingMessage ? "Sending..." : "Send"}
+            </span>
+            <SendHorizontal className="h-4 w-4" />
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

@@ -254,3 +254,28 @@ button{
 .icon-button{
   @apply p-2 hover:bg-gray-100 rounded-md transition-colors bg-gray-100/50 cursor-pointer;
 }
+
+
+.scrollbar-custom {
+  scrollbar-color: #d48806 transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d48806;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b97d05;
+  }
+}
+
