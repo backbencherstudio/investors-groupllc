@@ -1,7 +1,7 @@
 "use client";
 import { ClipboardList, Plus, UserCheck, UserPlus } from "lucide-react";
 import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import {
   CartesianGrid,
@@ -352,7 +352,7 @@ export default function LandlordDashboard() {
 
           {/* Chart */}
           <div className="col-span-1 lg:col-span-6">
-            <ResponsiveContainer width={'100%'} height={300}>
+            <ResponsiveContainer width={"100%"} height={300}>
               <LineChart
                 data={data}
                 margin={{
@@ -482,7 +482,10 @@ export default function LandlordDashboard() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
+                options={[
+                  { label: "Property", value: "Property" },
+                  { label: "Room", value: "Room" },
+                ]}
               />
             </div>
           </div>
