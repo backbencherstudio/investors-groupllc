@@ -141,7 +141,7 @@ export const teamPermissionApi = baseApi.injectEndpoints({
     >({
       query: ({ id, data }) => ({
         url: `/dashboard/team-permission/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
       transformResponse: (res: TeamMemberResponse) => res.data,
