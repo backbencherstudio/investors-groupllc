@@ -43,6 +43,7 @@ function IndeterminateCheckbox({
     />
   );
 }
+
 interface RoleFormProps {
   initialData?: {
     title: string;
@@ -72,7 +73,8 @@ export const RoleForm: React.FC<RoleFormProps> = ({
   });
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>(
     resolvedInitialData.permissionIds
-  );  const [errors, setErrors] = useState<Record<string, string>>({});
+  );
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedModules, setExpandedModules] = useState<Set<string>>(
@@ -81,6 +83,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
 
   const initialPermissionIdsKey = resolvedInitialData.permissionIds.join(',');
 
+  // Reset form when initialData changes (for edit mode)
   useEffect(() => {
     if (!isEdit) return;
 
@@ -89,6 +92,8 @@ export const RoleForm: React.FC<RoleFormProps> = ({
       name: resolvedInitialData.name,
     });
     setSelectedPermissions(resolvedInitialData.permissionIds);
+    setErrors({});
+    setTouched({});
   }, [
     isEdit,
     resolvedInitialData.title,
@@ -104,6 +109,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
       return new Set(modules.map((m) => m.key));
     });
   }, [modules]);
+
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
@@ -138,6 +144,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
       permissionIds: selectedPermissions,
     });
   };
+
   const handleFieldChange = (field: 'title' | 'name', value: string) => {
     if (field === 'name') {
       value = value.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z_]/g, '');
@@ -174,21 +181,21 @@ export const RoleForm: React.FC<RoleFormProps> = ({
 
   const selectAllModulePermissions = (moduleKey: string) => {
     const module = modules.find((m) => m.key === moduleKey);
-    if (module) {
-      const permissionIds = module.scopes.map(s => s.permissionId);
-      const allSelected = permissionIds.every(id => selectedPermissions.includes(id));
-      
-      if (allSelected) {
-        setSelectedPermissions(prev => 
-          prev.filter(id => !permissionIds.includes(id))
-        );
-      } else {
-        setSelectedPermissions(prev => {
-          const newSet = new Set(prev);
-          permissionIds.forEach(id => newSet.add(id));
-          return Array.from(newSet);
-        });
-      }
+    if (!module) return;
+
+    const permissionIds = module.scopes.map(s => s.permissionId);
+    const allSelected = permissionIds.every(id => selectedPermissions.includes(id));
+    
+    if (allSelected) {
+      setSelectedPermissions(prev => 
+        prev.filter(id => !permissionIds.includes(id))
+      );
+    } else {
+      setSelectedPermissions(prev => {
+        const newSet = new Set(prev);
+        permissionIds.forEach(id => newSet.add(id));
+        return Array.from(newSet);
+      });
     }
   };
 
@@ -237,7 +244,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
             {isEdit ? 'Edit Role' : 'Create New Role'}
           </h2>
           <p className="mt-1 text-sm text-gray-500">
-            Configure role details and assign permissions
+            {isEdit ? 'Update role details and permissions' : 'Configure role details and assign permissions'}
           </p>
         </div>
 
@@ -295,6 +302,11 @@ export const RoleForm: React.FC<RoleFormProps> = ({
                 {!isEdit && (
                   <p className="mt-1.5 text-xs text-gray-500">
                     Lowercase letters and underscores only (e.g., financial_manager)
+                  </p>
+                )}
+                {isEdit && (
+                  <p className="mt-1.5 text-xs text-gray-500">
+                    Role name cannot be changed after creation
                   </p>
                 )}
               </div>
@@ -402,7 +414,8 @@ export const RoleForm: React.FC<RoleFormProps> = ({
                                   disabled={isLoading}
                                   className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                                 />
-                              </div>                              <span className="text-sm font-medium text-gray-900">{module.label}</span>
+                              </div>
+                              <span className="text-sm font-medium text-gray-900">{module.label}</span>
                               <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
                                 {selected}/{total}
                               </span>
@@ -464,6 +477,38 @@ export const RoleForm: React.FC<RoleFormProps> = ({
           </div>
         </div>
 
+        {/* Selected Permissions Summary */}
+        {selectedPermissions.length > 0 && (
+          <div className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">
+              Selected Permissions ({selectedPermissions.length})
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {selectedPermissions.map(id => {
+                let permission = null;
+                for (const module of modules) {
+                  const found = module.scopes.find(s => s.permissionId === id);
+                  if (found) {
+                    permission = found;
+                    break;
+                  }
+                }
+                return permission ? (
+                  <span
+                    key={id}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-md text-sm text-gray-700"
+                  >
+                    <span className="px-1.5 py-0.5 rounded text-xs font-semibold bg-indigo-100 text-indigo-700">
+                      {permission.action}
+                    </span>
+                    {permission.title}
+                  </span>
+                ) : null;
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Actions */}
         <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
           <button
@@ -476,7 +521,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
           </button>
           <button
             type="submit"
-            className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[140px]"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -485,7 +530,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Saving...
+                {isEdit ? 'Updating...' : 'Creating...'}
               </>
             ) : (
               isEdit ? 'Update Role' : 'Create Role'
