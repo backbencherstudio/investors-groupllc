@@ -10,7 +10,8 @@ const nextConfig: NextConfig = {
       "randomuser.me",
       "images.unsplash.com",
       "maps.googleapis.com",
-      "gueloprboy.anikstudio.com"
+      "gueloprboy.anikstudio.com",
+
     ],
     //     remotePatterns: [
     //       {

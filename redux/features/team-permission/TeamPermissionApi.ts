@@ -6,6 +6,11 @@ import type {
   CreateRoleData,
   UpdateRoleData,
   GetRolesQueryParams,
+  TeamMembersResponse,
+  TeamMemberResponse,
+  CreateTeamMemberData,
+  UpdateTeamMemberData,
+  DeleteTeamMemberResponse,
 } from "./TeamPermissionTypes";
 
 export const teamPermissionApi = baseApi.injectEndpoints({
@@ -27,10 +32,9 @@ export const teamPermissionApi = baseApi.injectEndpoints({
     // GET ALL ROLES
     // ============================================
     getRoles: builder.query<RolesListResponse['data'], GetRolesQueryParams>({
-      query: (params) => ({
+      query: () => ({
         url: `/dashboard/team-permission/roles`,
         method: "GET",
-        params,
       }),
       transformResponse: (res: RolesListResponse) => res.data,
       providesTags: ["Role"],
@@ -79,6 +83,88 @@ export const teamPermissionApi = baseApi.injectEndpoints({
       ],
     }),
 
+    // ============================================
+    // GET ALL TEAM MEMBERS
+    // ============================================
+    getTeamMembers: builder.query<
+      TeamMembersResponse['data'],
+      { page?: number; limit?: number; search?: string }
+    >({
+      query: ({ page = 1, limit = 10, search }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+        });
+        if (search) {
+          params.append('search', search);
+        }
+        return {
+          url: `/dashboard/team-permission?${params.toString()}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (res: TeamMembersResponse) => res.data,
+      providesTags: ["TeamMember"],
+    }),
+
+    // ============================================
+    // GET TEAM MEMBER BY ID
+    // ============================================
+    getTeamMemberById: builder.query<TeamMemberResponse['data'], string>({
+      query: (id) => ({
+        url: `/dashboard/team-permission/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (res: TeamMemberResponse) => res.data,
+      providesTags: (_result, _err, id) => [{ type: "TeamMember", id }],
+    }),
+
+    // ============================================
+    // CREATE TEAM MEMBER
+    // ============================================
+    createTeamMember: builder.mutation<TeamMemberResponse['data'], CreateTeamMemberData>({
+      query: (data) => ({
+        url: `/dashboard/team-permission`,
+        method: "POST",
+        body: data,
+      }),
+      transformResponse: (res: TeamMemberResponse) => res.data,
+      invalidatesTags: ["TeamMember"],
+    }),
+
+    // ============================================
+    // UPDATE TEAM MEMBER
+    // ============================================
+    updateTeamMember: builder.mutation<
+      TeamMemberResponse['data'],
+      { id: string; data: UpdateTeamMemberData }
+    >({
+      query: ({ id, data }) => ({
+        url: `/dashboard/team-permission/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      transformResponse: (res: TeamMemberResponse) => res.data,
+      invalidatesTags: (_result, _err, { id }) => [
+        { type: "TeamMember", id },
+        "TeamMember",
+      ],
+    }),
+
+    // ============================================
+    // DELETE TEAM MEMBER
+    // ============================================
+    deleteTeamMember: builder.mutation<DeleteTeamMemberResponse, string>({
+      query: (id) => ({
+        url: `/dashboard/team-permission/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _err, id) => [
+        { type: "TeamMember", id },
+        "TeamMember",
+      ],
+    }),
+
   }),
   overrideExisting: false,
 });
@@ -92,4 +178,9 @@ export const {
   useCreateRoleMutation,
   useUpdateRoleMutation,
   useDeleteRoleMutation,
+  useGetTeamMembersQuery,
+  useGetTeamMemberByIdQuery,
+  useCreateTeamMemberMutation,
+  useUpdateTeamMemberMutation,
+  useDeleteTeamMemberMutation,
 } = teamPermissionApi;
