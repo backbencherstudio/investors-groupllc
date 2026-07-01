@@ -24,7 +24,7 @@ import { useGetApartmentsQuery } from "@/redux/features/landlord/dashboard/apart
 import PersonalInfo from "@/components/dashboard/landlord/dashboard/PersonalInfo";
 import Maintenance from "@/components/dashboard/landlord/dashboard/Maintenance";
 
-const data = [
+const chatData = [
   {
     name: "Jan",
 
@@ -54,24 +54,6 @@ const data = [
 
     pv: 4800,
     amt: 2181,
-  },
-];
-
-const cardData = [
-  {
-    icon: ClipboardList,
-    value: 52,
-    label: "Total Tenant",
-  },
-  {
-    icon: UserCheck,
-    value: 32,
-    label: "Active",
-  },
-  {
-    icon: UserPlus,
-    value: 20,
-    label: "New",
   },
 ];
 
@@ -137,14 +119,18 @@ const propertyList = [
 
 export default function LandlordDashboard() {
   const { data } = useGetApartmentsQuery({});
-  console.log(data?.data);
+  const apartments = data?.data || [];
 
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
   // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(propertyList.length / itemsPerPage);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(apartments.length / itemsPerPage);
+  const paginatedApartments = apartments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <div>
@@ -191,7 +177,7 @@ export default function LandlordDashboard() {
           <div className="col-span-1 lg:col-span-6">
             <ResponsiveContainer width={"100%"} height={300}>
               <LineChart
-                data={data}
+                data={chatData}
                 margin={{
                   top: 12,
                   right: 45,
@@ -330,22 +316,29 @@ export default function LandlordDashboard() {
         {/* Card Data */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {propertyList.map((property) => (
+          {paginatedApartments.map((property: any) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
 
         {/* Pagination */}
-        <TablePagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          totalResults={propertyList.length}
-          pageSize={itemsPerPage}
-        />
+        <div className="mt-6">
+          <TablePagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+            totalResults={apartments.length}
+            pageSize={itemsPerPage}
+          />
+        </div>
       </div>
 
-      <DataTable />
+      {/* Data Table */}
+      <div className="mt-6">
+        <DataTable />
+      </div>
     </div>
   );
 }
