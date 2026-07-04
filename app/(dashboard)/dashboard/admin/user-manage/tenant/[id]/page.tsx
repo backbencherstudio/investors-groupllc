@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import AfterPurchase from "./_components/after-purchase";
 import BeforePurchase from "./_components/before-purchase";
 import Link from "next/link";
@@ -45,3 +44,4 @@ export default function TenantDetails() {
     </div>
   );
 }
+ 
