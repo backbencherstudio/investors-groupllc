@@ -141,3 +141,30 @@ export interface WithdrawalResponse {
     pagination: Pagination;
   };
 }
+
+
+
+// types/dashboard.types.ts or in your API file
+
+export interface IncomeSeriesItem {
+  month: string;
+  rent: number;
+  subscriptions: number;
+  investments: number;
+}
+
+export interface IncomeChartData {
+  period: "this_year" | "last_year" | "all_time" | string;
+  total: number;
+  changePercent: number;
+  series: IncomeSeriesItem[];
+}
+
+export interface IncomeChartResponse {
+  success: boolean;
+  message: string;
+  data: IncomeChartData;
+}
+
+// For your API query
+export type GetOverAllIncomeResponse = IncomeChartResponse;
