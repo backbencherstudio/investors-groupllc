@@ -1,22 +1,25 @@
 import { baseApi } from "@/redux/features/api/baseApi";
 
-export const teamPermissionApi = baseApi.injectEndpoints({
+export const propertyTourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ============================================
-    // ALL Apartments
+    // GET ALL Property Tour
     // ============================================
-    getApartments: builder.query({
+    getPropertyTour: builder.query({
       query: () => ({
-        url: `/apartments/my-apartments`,
+        url: `/landlord/request/tour`,
         method: "GET",
       }),
+      transformResponse: (res) => res.data,
+      providesTags: ["SubscriptionPlans"],
     }),
-    createApartments: builder.mutation({
+    subscriptionCreate: builder.mutation({
       query: (data) => ({
-        url: `/apartments`,
+        url: `/landlord/subscription/create`,
         method: "POST",
         body: data,
       }),
+      //   transformResponse: (res) => res.data,
     }),
   }),
   overrideExisting: false,
@@ -25,5 +28,5 @@ export const teamPermissionApi = baseApi.injectEndpoints({
 // ============================================
 // EXPORT HOOKS
 // ============================================
-export const { useGetApartmentsQuery, useCreateApartmentsMutation } =
-  teamPermissionApi;
+export const { useGetPropertyTourQuery, useSubscriptionCreateMutation } =
+  propertyTourApi;

@@ -1,8 +1,7 @@
 "use client";
-import { ClipboardList, Plus, UserCheck, UserPlus } from "lucide-react";
-import { Mail, MessageCircle, MoreVertical, Phone } from "lucide-react";
+
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 import {
   CartesianGrid,
   Line,
@@ -16,7 +15,6 @@ import SearchInput from "@/components/common/SearchInput";
 import Link from "next/link";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
-
 import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
 import { DataTable } from "../admin/user-manage/_components/table";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
@@ -54,66 +52,6 @@ const chatData = [
 
     pv: 4800,
     amt: 2181,
-  },
-];
-
-const propertyList = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Darlene Robertson",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Ralph Edwards",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Wade Warren",
-      avatar: "https://randomuser.me/api/portraits/men/43.jpg",
-    },
-    ownerLabel: "Rented by",
   },
 ];
 
@@ -201,8 +139,8 @@ export default function LandlordDashboard() {
           </div>
 
           {/* Right: Stat Cards */}
-          <div className="flex flex-col gap-4 col-span-1 lg::col-span-3">
-            <div className="bg-zinc-50 rounded-lg p-4 flex items-center gap-3">
+          <div className="w-full flex flex-col gap-4 col-span-1 lg::col-span-3">
+            <div className="bg-zinc-50 rounded-lg p-4 border w-full flex items-center gap-3">
               <div className="bg-orange-100 p-2 rounded-md">
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <rect
@@ -337,7 +275,7 @@ export default function LandlordDashboard() {
 
       {/* Data Table */}
       <div className="mt-6">
-        <DataTable />
+        <DataTable text="Tenant Rent Payment" />
       </div>
     </div>
   );
