@@ -115,7 +115,7 @@ const rentStatusClass = (status: string) =>
 
 const PAGE_SIZE = 7;
 
-export function DataTable() {
+export function DataTable({ text }: { text?: string }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(tenants.length / PAGE_SIZE);
@@ -126,14 +126,14 @@ export function DataTable() {
 
   const paginatedData = tenants.slice(
     (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    currentPage * PAGE_SIZE,
   );
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
       {/* search */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
-        <h2 className="text-xl font-semibold">Active Tenant List</h2>
+        <h2 className="text-xl font-semibold">{text}</h2>
         <div className="flex gap-2 items-center w-full md:w-auto">
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
@@ -220,7 +220,7 @@ export function DataTable() {
                 <td className="py-3 px-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${rentStatusClass(
-                      tenant.rent
+                      tenant.rent,
                     )}`}
                   >
                     {tenant.rent}

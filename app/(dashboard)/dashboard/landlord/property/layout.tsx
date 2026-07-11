@@ -5,13 +5,13 @@ import React, { useState, useEffect } from "react";
 
 const tabs = [
   {
-    label: "Rental Property",
-    value: "Rental Property",
+    label: "My Property List",
+    value: "My Property List",
     href: "/dashboard/landlord/property/rental-property",
   },
   {
-    label: "Investment Property",
-    value: "Investment Property",
+    label: "Investment For Property",
+    value: "Investment For Property",
     href: "/dashboard/landlord/property/investment-property",
   },
 ];
