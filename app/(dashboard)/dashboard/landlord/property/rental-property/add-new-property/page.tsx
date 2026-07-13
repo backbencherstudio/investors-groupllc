@@ -10,9 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCreateApartmentsMutation } from "@/redux/features/landlord/dashboard/apartments";
-import { Plus, Upload } from "lucide-react";
-import Link from "next/link";
+import { Plus, Upload, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
+import PropertyUnitsModal, { Unit } from "../_components/property-units-modal";
 
 export default function AddNewProperty() {
   const [createApartment] = useCreateApartmentsMutation();
@@ -25,6 +26,7 @@ export default function AddNewProperty() {
   const [location, setLocation] = useState("");
   const [propertyStatus, setPropertyStatus] = useState("For Rent");
   const [description, setDescription] = useState("");
+  const [availabilityDate, setAvailabilityDate] = useState("");
   const [showAmenityInput, setShowAmenityInput] = useState(false);
   const [bed, setBed] = useState(1);
   const [bath, setBath] = useState(1);
@@ -46,10 +48,8 @@ export default function AddNewProperty() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isUnitNumber, setIsUnitNumber] = useState("");
-  // const [isFloor, setIsFloor] = useState("");
-  const [isSecurityDeposit, setIsSecurityDeposit] = useState("");
-  const [isAvailabilityDate, setIsAvailabilityDate] = useState("");
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [isUnitsModalOpen, setIsUnitsModalOpen] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -106,19 +106,40 @@ export default function AddNewProperty() {
     event.preventDefault();
     const formData = new FormData();
 
-    const units = [
-      {
-        unitNumber: isUnitNumber,
-        floor,
-        price: Number(price),
-        securityDeposit: Number(isSecurityDeposit) || 0,
-        availabilityDate: isAvailabilityDate,
-        bedrooms: bed,
-        bathrooms: bath,
-        sizeSqFt: selectedSize,
-        leaseTerm: "12 months",
-      },
-    ];
+    // Build a primary unit from the main-page fields
+    const primaryUnit = {
+      unitNumber: "Unit 1",
+      floor: Number(floor) || 1,
+      price: Number(price) || 0,
+      securityDeposit: 0,
+      availabilityDate: availabilityDate
+        ? new Date(availabilityDate).toISOString()
+        : null,
+      bedrooms: bed,
+      bathrooms: bath,
+      sizeSqFt: selectedSize,
+      leaseTerm: "12 months",
+    };
+
+    // Include both the primary unit from main-page fields AND modal units
+    const modalUnits =
+      units.length > 0
+        ? units.map((unit) => ({
+            unitNumber: unit.unitNumber,
+            floor: Number(unit.floor) || 0,
+            price: Number(unit.price) || 0,
+            securityDeposit: Number(unit.securityDeposit) || 0,
+            availabilityDate: unit.availabilityDate
+              ? new Date(unit.availabilityDate).toISOString()
+              : null,
+            bedrooms: unit.bedrooms,
+            bathrooms: unit.bathrooms,
+            sizeSqFt: unit.sizeSqFt,
+            leaseTerm: "12 months",
+          }))
+        : [];
+
+    const unitsPayload = [primaryUnit, ...modalUnits];
 
     formData.append("name", propertyName);
     formData.append("price", price);
@@ -137,7 +158,13 @@ export default function AddNewProperty() {
     );
     formData.append("isRented", propertyStatus === "Rented" ? "true" : "false");
     formData.append("description", description);
-    formData.append("units", JSON.stringify(units));
+    if (availabilityDate) {
+      formData.append(
+        "availabilityDate",
+        new Date(availabilityDate).toISOString(),
+      );
+    }
+    formData.append("units", JSON.stringify(unitsPayload));
     formData.append("amenities", JSON.stringify(amenities));
     formData.append(
       "utilitiesIncluded",
@@ -154,13 +181,15 @@ export default function AddNewProperty() {
 
     try {
       setIsSubmitting(true);
-      await createApartment(formData).unwrap();
-      setIsSubmitting(false);
-      alert("Property submitted successfully.");
+      const res = await createApartment(formData).unwrap();
+      if (res.success) {
+        setIsSubmitting(false);
+        toast.success("Property submitted successfully.");
+      }
     } catch (error) {
       setIsSubmitting(false);
       console.error(error);
-      alert("Failed to submit property.");
+      toast.error("Failed to submit property.");
     }
   }
 
@@ -170,7 +199,7 @@ export default function AddNewProperty() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div className="text-sm text-gray-500 flex items-start md:items-center gap-2">
             <span>Property List</span>
-            <span className="mx-1">&gt;</span>
+            <span className="mx-1">{">"}</span>
             <span className="text-gray-900 font-medium">Add New Property</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -201,10 +230,6 @@ export default function AddNewProperty() {
                     alt="Property preview"
                     className="h-full w-full object-cover"
                   />
-                  {/* ) : (
-                  <div className="text-slate-500 text-sm">
-                    Image preview will appear here
-                  </div> */}
                 </div>
 
                 <div className="flex gap-3 p-4 overflow-x-auto bg-slate-50">
@@ -321,7 +346,7 @@ export default function AddNewProperty() {
 
               <div className="grid grid-cols-2 justify-between gap-4 text-slate-700">
                 <div className="">
-                  <div className="text-xs text-slate-500">Bed Room</div>
+                  <div className="text-sm">Bed Room</div>
                   <div className="mt-2 flex items-center gap-2">
                     <Button
                       type="button"
@@ -347,7 +372,7 @@ export default function AddNewProperty() {
                   </div>
                 </div>
                 <div className="">
-                  <div className="text-xs text-slate-500">Bath Room</div>
+                  <div className="text-sm">Bath Room</div>
                   <div className="mt-2 flex items-center gap-2">
                     <Button
                       type="button"
@@ -373,7 +398,7 @@ export default function AddNewProperty() {
                   </div>
                 </div>
                 <div className="">
-                  <div className="text-xs text-slate-500">Floors</div>
+                  <div className="text-sm">Floors</div>
                   <div className="mt-2 flex items-center gap-2">
                     <Button
                       type="button"
@@ -399,7 +424,7 @@ export default function AddNewProperty() {
                   </div>
                 </div>
                 <div className="">
-                  <div className="text-xs text-slate-500">Property Age</div>
+                  <div className="text-sm">Property Age</div>
                   <div className="mt-2 flex items-center gap-2">
                     <Button
                       type="button"
@@ -471,14 +496,67 @@ export default function AddNewProperty() {
               </div>
             </div>
 
-            <div className="w-full">
-              <Link
-                href="/dashboard/landlord/property/rental-property/add-new-property/add-units"
-                className="flex h-12 w-full items-center justify-center rounded-[10px] bg-[#DD8800] text-white font-medium hover:bg-[#c97a00] transition-colors"
-              >
-                Add Unit
-              </Link>
+            <div>
+              <div className="mb-3 font-semibold text-slate-900">Units</div>
+              <div className="space-y-3">
+                {units.length === 0 && (
+                  <div className="text-sm text-slate-500">
+                    No units added yet. Click "Add Units" to add units.
+                  </div>
+                )}
+
+                {units.map((unit, idx) => (
+                  <div
+                    key={unit.id}
+                    className="flex items-center justify-between gap-4 rounded-lg bg-slate-50 border border-slate-200 p-4"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-md bg-white border flex items-center justify-center text-[#d48806]">
+                        🏢
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-slate-900">
+                          {unit.unitNumber || `Unit ${idx + 1}`}
+                        </div>
+                        <div className="text-xs text-green-500 font-medium mt-1">
+                          Available from{" "}
+                          {unit.availabilityDate
+                            ? new Date(
+                                unit.availabilityDate,
+                              ).toLocaleDateString()
+                            : "N/A"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="text-sm font-semibold">
+                        {unit.price ? `$${unit.price}` : "-"}
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            <div className="w-full">
+              <Button
+                type="button"
+                className="flex h-12 w-full items-center justify-center rounded-[10px] bg-[#DD8800] text-white font-medium hover:bg-[#c97a00] transition-colors"
+                onClick={() => setIsUnitsModalOpen(true)}
+              >
+                Add Units
+              </Button>
+            </div>
+
+            <PropertyUnitsModal
+              open={isUnitsModalOpen}
+              onOpenChange={setIsUnitsModalOpen}
+              savedUnits={units}
+              onSave={(newUnits) => setUnits(newUnits)}
+              sizeOptions={sizeOptions}
+            />
           </div>
 
           <div className="space-y-6">
@@ -492,7 +570,7 @@ export default function AddNewProperty() {
               />
             </div>
             <div>
-              <div className="mb-2 font-medium">city</div>
+              <div className="mb-2 font-medium">City</div>
               <Input
                 value={city}
                 className="h-[56px]"
@@ -501,7 +579,7 @@ export default function AddNewProperty() {
               />
             </div>
             <div>
-              <div className="mb-2 font-medium">state</div>
+              <div className="mb-2 font-medium">State</div>
               <Input
                 value={state}
                 className="h-[56px]"
@@ -518,8 +596,20 @@ export default function AddNewProperty() {
                 placeholder="Enter zipCode"
               />
             </div>
+
             <div>
-              <div className="mb-2 font-medium">country</div>
+              <div className="mb-2 font-medium">Availability Date</div>
+              <Input
+                value={availabilityDate}
+                className="h-[56px]"
+                onChange={(e) => setAvailabilityDate(e.target.value)}
+                placeholder="Select date"
+                type="date"
+              />
+            </div>
+
+            <div>
+              <div className="mb-2 font-medium">Country</div>
               <Input
                 value={country}
                 className="h-[56px]"
@@ -539,51 +629,6 @@ export default function AddNewProperty() {
                   type="number"
                 />
               </div>
-              {/* <div>
-                <div className="mb-2 font-medium">Currency</div>
-                <Select value={currency} onValueChange={setCurrency}>
-                  <SelectTrigger className="w-full h-[56px]!">
-                    <SelectValue placeholder="USD" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
-            </div>
-
-            <div>
-              <div className="mb-2 font-medium">Unit Number*</div>
-              <Input
-                value={isUnitNumber}
-                className="h-[56px]"
-                onChange={(e) => setIsUnitNumber(e.target.value)}
-                placeholder="Enter unit number"
-                type="number"
-              />
-            </div>
-
-            {/* <div>
-              <div className="mb-2 font-medium">Floor</div>
-              <Input
-                value={price}
-                className="h-[56px]"
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="Enter floor"
-                type="number"
-              />
-            </div> */}
-
-            <div>
-              <div className="mb-2 font-medium">Availability Date</div>
-              <Input
-                value={isAvailabilityDate}
-                className="h-[56px]"
-                onChange={(e) => setIsAvailabilityDate(e.target.value)}
-                placeholder="Enter availability date"
-                type="date"
-              />
             </div>
 
             <div>
@@ -623,75 +668,6 @@ export default function AddNewProperty() {
                 placeholder="Enter a description of the property"
               />
             </div>
-
-            {/* <div>
-              <div className="mb-2 font-medium">
-                Automatic Lease Agreement Generation
-              </div>
-              <textarea
-                value={leaseAgreement}
-                onChange={(e) => setLeaseAgreement(e.target.value)}
-                placeholder="Enter your lease agreement generation"
-                className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#d48806] focus:border-[#d48806] min-h-[96px]"
-              />
-            </div>
-
-            <div>
-              <div className="mb-2 font-medium">No Credit Impact</div>
-              <textarea
-                value={noCreditImpact}
-                onChange={(e) => setNoCreditImpact(e.target.value)}
-                placeholder="Enter"
-                className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#d48806] focus:border-[#d48806] min-h-[96px]"
-              />
-            </div>
-
-            {titles.map((title, idx) => (
-              <div key={idx} className="mt-2">
-                <span className="font-semibold text-sm">{title}</span>
-                <textarea
-                  className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#d48806] focus:border-[#d48806] min-h-[96px]"
-                  placeholder={`Enter ${title}`}
-                />
-              </div>
-            ))}
-
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              {showTitleInput && (
-                <Input
-                  placeholder="Custom field title"
-                  value={titleInput}
-                  onChange={(e) => setTitleInput(e.target.value)}
-                  className="w-full sm:w-64 h-10 px-2 text-xs border-slate-200"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      if (titleInput.trim()) {
-                        setTitles([...titles, titleInput.trim()]);
-                        setTitleInput("");
-                        setShowTitleInput(false);
-                      }
-                    }
-                  }}
-                />
-              )}
-              <Button
-                type="button"
-                size="sm"
-                className="bg-[#fff7e6] text-[#d48806] border border-[#d48806] px-3 h-10"
-                onClick={() => {
-                  if (showTitleInput && titleInput.trim()) {
-                    setTitles([...titles, titleInput.trim()]);
-                    setTitleInput("");
-                    setShowTitleInput(false);
-                  } else {
-                    setShowTitleInput(true);
-                  }
-                }}
-              >
-                Add <Plus className="w-3 h-3" />
-              </Button>
-            </div> */}
           </div>
         </div>
       </form>
