@@ -15,7 +15,7 @@ if (
   !process.env.NEXT_PUBLIC_API_URL
 ) {
   console.warn(
-    "[baseApi] NEXT_PUBLIC_API_URL is not set. Requests use relative URLs and hit this app’s origin, not your API server."
+    "[baseApi] NEXT_PUBLIC_API_URL is not set. Requests use relative URLs and hit this app’s origin, not your API server.",
   );
 }
 
@@ -59,7 +59,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extra) => {
     const refreshResult = await baseQuery(
       { url: AUTH_ENDPOINTS.REFRESH, method: "POST", body: { refreshToken } },
       api,
-      extra
+      extra,
     );
 
     const parsed = extractTokensFromAuthPayload(refreshResult.data);
