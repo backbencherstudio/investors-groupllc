@@ -1,6 +1,6 @@
 import { baseApi } from "@/redux/features/api/baseApi";
 
-export const teamPermissionApi = baseApi.injectEndpoints({
+export const apartmentsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ============================================
     // ALL Apartments
@@ -26,4 +26,4 @@ export const teamPermissionApi = baseApi.injectEndpoints({
 // EXPORT HOOKS
 // ============================================
 export const { useGetApartmentsQuery, useCreateApartmentsMutation } =
-  teamPermissionApi;
+  apartmentsApi;

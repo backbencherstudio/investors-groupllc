@@ -16,12 +16,12 @@ import Transfer from "./_components/tabs/transfer";
 
 const tabItems = [
   { label: "Booking", value: "booking", content: <Booking /> },
-  { label: "Transfer", value: "transfer", content: <Transfer /> },
-  {
-    label: "Maintenance",
-    value: "maintenance",
-    content: <MaintenanceRequests />,
-  },
+  // { label: "Transfer", value: "transfer", content: <Transfer /> },
+  // {
+  //   label: "Maintenance",
+  //   value: "maintenance",
+  //   content: <MaintenanceRequests />,
+  // },
   { label: "Property Tour", value: "property-tour", content: <PropertyTour /> },
 ];
 
