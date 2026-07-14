@@ -112,16 +112,16 @@ export default function PropertyTour() {
         row: PropertyTourData,
       ) => (
         <div className="flex items-center gap-2">
-          <Image
+          {/* <Image
             src={row?.avatar}
             alt={String(value)}
             width={32}
             height={32}
             className="rounded-full"
-          />
+          /> */}
           <div>
-            <div className="font-semibold">{String(value)}</div>
-            <div className="text-xs text-gray-500">{row.requestId}</div>
+            {/* <div className="font-semibold">{String(value)}</div> */}
+            <div className="text-xs0">{row.requestId}</div>
           </div>
         </div>
       ),
