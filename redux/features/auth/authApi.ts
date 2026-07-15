@@ -40,18 +40,13 @@ export const authApi = baseApi.injectEndpoints({
           };
         }
         try {
-          await setTokens(
-            tokens.accessToken,
-            tokens.refreshToken ?? undefined
-          );
+          await setTokens(tokens.accessToken, tokens.refreshToken ?? undefined);
         } catch (e) {
           return {
             error: {
               status: "CUSTOM_ERROR",
               error:
-                e instanceof Error
-                  ? e.message
-                  : "Failed to persist session",
+                e instanceof Error ? e.message : "Failed to persist session",
             },
           };
         }
