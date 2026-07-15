@@ -23,7 +23,6 @@ export default function PropertyLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Initialize the active tab with "tenant" as default
   const [activeTab, setActiveTab] = useState("Rental Property");
   const { data } = useFetchMeQuery();
 
