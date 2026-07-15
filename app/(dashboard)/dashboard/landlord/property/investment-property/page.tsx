@@ -8,8 +8,8 @@ import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 
 import InvestmentCard from "./_components/investment-card";
-import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";;
-
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
+import { useGetInvestmentPropertyQuery } from "@/redux/features/landlord/property/propertyApi";
 const cardData = [
   {
     icon: ClipboardList,
@@ -145,10 +145,12 @@ const investmentList = [
 export default function InvestmentProperty() {
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
+  const { data, isLoading } = useGetInvestmentPropertyQuery({});
+  const apiData = data?.data || [];
   // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(investmentList.length / itemsPerPage);
+  const totalPages = Math.ceil(apiData.length / itemsPerPage);
 
   return (
     <div>
@@ -176,25 +178,41 @@ export default function InvestmentProperty() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={[{ label: "Passive", value: "Passive" }, { label: "Active", value: "Active" }]}
+                options={[
+                  { label: "Passive", value: "Passive" },
+                  { label: "Active", value: "Active" },
+                ]}
               />
             </div>
           </div>
         </div>
 
         {/* Card Data */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {investmentList.map((investment) => (
-            <InvestmentCard key={investment.id} investment={investment} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#DD8800]" />
+          </div>
+        ) : apiData.length === 0 ? (
+          <div className="flex justify-center items-center py-20 text-gray-400">
+            <p className="text-lg">No investment property found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {apiData.map((investment: any) => (
+              <InvestmentCard
+                key={investment.id || investment.apartmentId}
+                investment={investment}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Pagination */}
         <TablePagination
           totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
-          totalResults={investmentList.length}
+          totalResults={apiData.length}
           pageSize={itemsPerPage}
         />
       </div>
