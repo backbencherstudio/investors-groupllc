@@ -8,12 +8,13 @@ import {
 } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-// import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
-// import { RentPaymentDetails } from "../../../user-manage/tenant/paid-history/_components/rent-payment-details";
 import TenantRequestDetails from "../others/tenant-request-details";
-import { useGetBookingQuery } from "@/redux/features/landlord/request/booking";
+import {
+  useGetBookingQuery,
+  useGetSingleBookingQuery,
+} from "@/redux/features/landlord/request/booking";
 
 interface BookingData {
   reqDate: string;
@@ -59,9 +60,20 @@ export default function Booking() {
   const [tenantSearch, setTenantSearch] = useState("");
   const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
+    null,
+  );
   const itemsPerPage = 5;
   const { data } = useGetBookingQuery({});
   const bookings: BookingApiData[] = data ?? [];
+  const { data: singleBooking } = useGetSingleBookingQuery(
+    selectedBookingId ?? "",
+    {
+      skip: !selectedBookingId,
+    },
+  );
+
+  console.log(singleBooking);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -159,7 +171,10 @@ export default function Booking() {
       header: "Action",
       accessor: "action",
       render: (value: string | undefined, row: BookingData) => (
-        <TenantRequestDetails reqId={row.requestId} />
+        <TenantRequestDetails
+          data={singleBooking}
+          onOpen={() => setSelectedBookingId(row.requestId)}
+        />
       ),
     },
   ];

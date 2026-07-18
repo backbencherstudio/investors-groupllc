@@ -130,7 +130,7 @@ export default function MaintenanceRequests() {
       header: "Action",
       accessor: "action" as keyof MaintenanceData,
       render: (value: string | undefined, row: MaintenanceData) => (
-        <TenantRequestDetails reqId={row.id} />
+        <TenantRequestDetails data={row} />
       ),
     },
   ];
@@ -148,7 +148,11 @@ export default function MaintenanceRequests() {
               <SelectDropDown
                 value={tenantStatus}
                 onChange={setTenantStatus}
-                options={[{ label: "Pending", value: "Pending" }, { label: "Assigned", value: "Assigned" }, { label: "Completed", value: "Completed" }]}
+                options={[
+                  { label: "Pending", value: "Pending" },
+                  { label: "Assigned", value: "Assigned" },
+                  { label: "Completed", value: "Completed" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

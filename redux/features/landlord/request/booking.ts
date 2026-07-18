@@ -12,7 +12,17 @@ export const propertyTourApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
+    // ============================================
+    // GET Single Booking
+    // ============================================
+    getSingleBooking: builder.query({
+      query: (id) => ({
+        url: `/landlord/request/${id}/apartment`,
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+    }),
   }),
   overrideExisting: false,
 });
-export const { useGetBookingQuery } = propertyTourApi;
+export const { useGetBookingQuery, useGetSingleBookingQuery } = propertyTourApi;

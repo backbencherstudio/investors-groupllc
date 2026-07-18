@@ -13,6 +13,20 @@ export const propertyTourApi = baseApi.injectEndpoints({
       transformResponse: (res) => res.data,
       providesTags: ["SubscriptionPlans"],
     }),
+    // ============================================
+    // GET Single Property Tour
+    // ============================================
+    getSinglePropertyTour: builder.query({
+      query: (id) => ({
+        url: `landlord/request/${id}/tour`,
+        method: "GET",
+      }),
+      transformResponse: (res) => res.data,
+      providesTags: ["SubscriptionPlans"],
+    }),
+    // ============================================
+    // Post Property Tour
+    // ============================================
     subscriptionCreate: builder.mutation({
       query: (data) => ({
         url: `/landlord/subscription/create`,
@@ -28,5 +42,8 @@ export const propertyTourApi = baseApi.injectEndpoints({
 // ============================================
 // EXPORT HOOKS
 // ============================================
-export const { useGetPropertyTourQuery, useSubscriptionCreateMutation } =
-  propertyTourApi;
+export const {
+  useGetPropertyTourQuery,
+  useGetSinglePropertyTourQuery,
+  useSubscriptionCreateMutation,
+} = propertyTourApi;

@@ -11,7 +11,10 @@ import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 import TenantRequestDetails from "../others/tenant-request-details";
 import Image from "next/image";
-import { useGetPropertyTourQuery } from "@/redux/features/landlord/request/propertyTour";
+import {
+  useGetPropertyTourQuery,
+  useGetSinglePropertyTourQuery,
+} from "@/redux/features/landlord/request/propertyTour";
 
 interface PropertyTourData {
   id: string;
@@ -53,6 +56,13 @@ export default function PropertyTour() {
   const [tenantSearch, setTenantSearch] = useState("");
   const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(
+    null,
+  );
+
+  const { data: singleProperty } =
+    useGetSinglePropertyTourQuery(selectedPropertyId);
+
   const itemsPerPage = 5;
 
   const { data } = useGetPropertyTourQuery({});
@@ -166,7 +176,12 @@ export default function PropertyTour() {
       render: (
         value: PropertyTourData[keyof PropertyTourData],
         row: PropertyTourData,
-      ) => <TenantRequestDetails reqId={row.id} />,
+      ) => (
+        <TenantRequestDetails
+          data={singleProperty}
+          onOpen={() => setSelectedPropertyId(row.requestId)}
+        />
+      ),
     },
   ];
 
