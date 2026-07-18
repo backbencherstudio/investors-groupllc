@@ -140,7 +140,7 @@ export default function RentPayment() {
       header: "Action",
       accessor: "action",
       render: (value: string | undefined, row: RentPaymentData) => (
-        <TenantRequestDetails reqId={row.id} />
+        <TenantRequestDetails data={row} />
       ),
     },
   ];
@@ -158,7 +158,11 @@ export default function RentPayment() {
               <SelectDropDown
                 value={paymentStatus}
                 onChange={setPaymentStatus}
-                options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }, { label: "Pending", value: "Pending" }]}
+                options={[
+                  { label: "Paid", value: "Paid" },
+                  { label: "Due", value: "Due" },
+                  { label: "Pending", value: "Pending" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

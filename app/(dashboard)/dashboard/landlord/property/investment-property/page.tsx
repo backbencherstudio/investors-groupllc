@@ -1,153 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import { ClipboardList, Plus, UserCheck, UserPlus } from "lucide-react";
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
-
 import InvestmentCard from "./_components/investment-card";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 import { useGetInvestmentPropertyQuery } from "@/redux/features/landlord/property/propertyApi";
-const cardData = [
-  {
-    icon: ClipboardList,
-    value: 52,
-    label: "Total Tenant",
-  },
-  {
-    icon: UserCheck,
-    value: 32,
-    label: "Active",
-  },
-  {
-    icon: UserPlus,
-    value: 20,
-    label: "New",
-  },
-  {
-    icon: UserCheck,
-    value: 32,
-    label: "Active",
-  },
-];
-
-// 1. Add fake property data
-const investmentList = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Darlene Robertson",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Ralph Edwards",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Wade Warren",
-      avatar: "https://randomuser.me/api/portraits/men/43.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 4,
-    image:
-      "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    status: "For Rent",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-  {
-    id: 5,
-    image:
-      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80",
-    status: "For Rent",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-  {
-    id: 6,
-    image:
-      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    status: "For Sale",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-];
 
 export default function InvestmentProperty() {
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
   const { data, isLoading } = useGetInvestmentPropertyQuery({});
   const apiData = data?.data || [];
-  // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(apiData.length / itemsPerPage);

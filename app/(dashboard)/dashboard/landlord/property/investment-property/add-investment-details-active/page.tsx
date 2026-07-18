@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Plus, Upload } from "lucide-react";
 
 export default function AddInvestmentDetailsActive() {
-  const [faqs, setFaqs] = useState(["",]);
+  const [faqs, setFaqs] = useState([""]);
   const router = useRouter();
 
   const handleBack = () => {

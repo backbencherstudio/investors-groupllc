@@ -8,7 +8,7 @@ import {
 } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-// import DatePicker from "@/components/common/DatePicker";    
+// import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 import TenantRequestDetails from "../others/tenant-request-details";
 
@@ -155,7 +155,7 @@ export default function Transfer() {
       header: "Action",
       accessor: "action" as keyof BookingData,
       render: (value: string, row: BookingData) => (
-        <TenantRequestDetails reqId={row.id} />
+        <TenantRequestDetails data={row} />
       ),
     },
   ];
@@ -176,7 +176,11 @@ export default function Transfer() {
               <SelectDropDown
                 value={propertyStatus}
                 onChange={setPropertyStatus}
-                options={[{ label: "In Review", value: "In Review" }, { label: "Approved", value: "Approved" }, { label: "Rejected", value: "Rejected" }]}
+                options={[
+                  { label: "In Review", value: "In Review" },
+                  { label: "Approved", value: "Approved" },
+                  { label: "Rejected", value: "Rejected" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
@@ -185,7 +189,10 @@ export default function Transfer() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
+                options={[
+                  { label: "Property", value: "Property" },
+                  { label: "Room", value: "Room" },
+                ]}
               />
             </div>
           </div>
