@@ -6,8 +6,6 @@ import { Bed, Bath, MapPin, Calendar, Building, Layers } from "lucide-react";
 import { useState } from "react";
 
 export function PropertyCard({ property }: { property: any }) {
-  const [isLiked, setIsLiked] = useState(false);
-
   const imageUrl =
     property?.images?.[0]?.url || property?.image || "/placeholder.jpg";
   const title = property?.name || property?.title || "Untitled Property";

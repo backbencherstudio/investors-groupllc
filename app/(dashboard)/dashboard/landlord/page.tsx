@@ -15,12 +15,17 @@ import SearchInput from "@/components/common/SearchInput";
 import Link from "next/link";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
-import { PropertyCard } from "../admin/property/rental-property/_components/property-card";
 import { DataTable } from "../admin/user-manage/_components/table";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 import { useGetApartmentsQuery } from "@/redux/features/landlord/dashboard/apartments";
 import PersonalInfo from "@/components/dashboard/landlord/dashboard/PersonalInfo";
 import Maintenance from "@/components/dashboard/landlord/dashboard/Maintenance";
+import { useGetLandlordStatsQuery } from "@/redux/features/landlord/dashboard/dashboard";
+import People from "@/components/icons/subscription/People";
+import Monthly from "@/components/icons/subscription/Monthly";
+import Diamond from "@/components/icons/subscription/Diamond";
+import Revinew from "@/components/icons/subscription/Revinew";
+import { PropertyCard } from "./property/rental-property/_components/property-card";
 
 const chatData = [
   {
@@ -59,6 +64,9 @@ export default function LandlordDashboard() {
   const { data } = useGetApartmentsQuery({});
   const apartments = data?.data || [];
 
+  // const { data: stats, isLoading, error } = useGetSubscriptionStatsQuery();
+  const { data: stats, isLoading, error } = useGetLandlordStatsQuery({});
+
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
   // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
@@ -70,9 +78,55 @@ export default function LandlordDashboard() {
     currentPage * itemsPerPage,
   );
 
+  // Prepare card data from real API response
+  const cardData = [
+    {
+      icon: People,
+      value: stats?.propertyCount ?? 0,
+      label: "Properties",
+    },
+    {
+      icon: Monthly,
+      value: stats?.tenantCount ?? 0,
+      label: "Active Tenant",
+    },
+    {
+      icon: Diamond,
+      value: stats?.totalRentReceived ?? 0,
+      label: "Total Rent",
+    },
+    {
+      icon: Revinew,
+      value: `$${stats?.balance ?? 0}`,
+      label: "Balance",
+    },
+  ];
+  // const cardData = [
+  //   {
+  //     icon: People,
+  //     value: stats?.totalSubs ?? 0,
+  //     label: "Total Subscribers",
+  //   },
+  //   {
+  //     icon: Monthly,
+  //     value: stats?.monthlyPlan ?? 0,
+  //     label: "Monthly Plan",
+  //   },
+  //   {
+  //     icon: Diamond,
+  //     value: stats?.yearlyPlan ?? 0,
+  //     label: "Yearly Plan",
+  //   },
+  //   {
+  //     icon: Revinew,
+  //     value: `$${stats?.revenue?.totalPlanAmount ?? 0}`,
+  //     label: "Revenue",
+  //   },
+  // ];
+
   return (
     <div>
-      <StatsCards />
+      <StatsCards cardData={cardData} isLoading={isLoading} error={error} />
 
       <div className="my-4">
         <div className="grid  grid-cols-1 lg:grid-cols-2 gap-6">
