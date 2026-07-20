@@ -1,51 +1,56 @@
-// pages/index.js
+"use client";
 
 import { Input } from "@/components/ui/input";
+import { useGetAllConversationsQuery } from "@/redux/features/landlord/message/messageApi";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-// Fake data (you can replace this with your API call data)
-const chatData = [
-  {
-    id: 1,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "Now",
-  },
-  {
-    id: 2,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "5 min",
-  },
-  {
-    id: 3,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "5 min",
-  },
-  {
-    id: 4,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "12hr",
-  },
-  {
-    id: 5,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "12hr",
-  },
-  {
-    id: 6,
-    name: "John Whilham",
-    message: "Hi, I'm John! We're...",
-    time: "12hr",
-  },
-];
+// Helper function to format time to relative time
+function formatTime(createdAt: string): string {
+  const now = new Date();
+  const created = new Date(createdAt);
+  const diffMs = now.getTime() - created.getTime();
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffMinutes < 1) return "Now";
+  if (diffMinutes < 60) return `${diffMinutes} min`;
+  if (diffHours < 24) return `${diffHours}hr`;
+  if (diffDays < 7) return `${diffDays}d`;
+  return created.toLocaleDateString();
+}
+
+interface Participant {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string;
+  onlineStatus: string;
+}
+
+interface LastMessage {
+  id: string;
+  text: string | null;
+  attachmentType: string | null;
+  createdAt: string;
+  senderId: string;
+}
+
+interface ChatItem {
+  id: string;
+  participant: Participant;
+  lastMessage: LastMessage;
+  unreadCount: number;
+  updatedAt: string;
+  createdAt: string;
+}
 
 export default function LeftSideUser() {
+  const { data } = useGetAllConversationsQuery({});
+  const items: ChatItem[] = data?.data?.items || [];
+
   return (
     <div className="bg-white p-4 rounded-xl shadow-md overflow-x-auto h-[715px]">
       {/* Search bar */}
@@ -57,68 +62,48 @@ export default function LeftSideUser() {
         />
       </div>
 
-      <div className="overflow-x-auto pb-2">
-      <div className="flex gap-3">
-        {chatData.map((chat, idx) => (
-          <Link href={`/dashboard/admin-dashboard/massage/${chat.id}`} key={chat.id} className="relative">
-            {/* Avatar */}
-            <Image
-              src={`https://randomuser.me/api/portraits/men/${chat.id}.jpg`}
-              alt={chat.name}
-              className="w-14 h-14 rounded-full object-cover"
-              width={56}
-              height={56}
-            />
-            {/* Online dot for the second avatar as an example */}
-            {idx === 1 && (
-              <span className="absolute top-1 right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
-            )}
-          </Link>
-        ))}
-      </div>
-    </div>
-
       <div className="space-y-3">
         <h1 className="font-medium">Recent Chat</h1>
-        {/* Chat filter tabs */}
-        <div className="flex space-x-2 mb-4">
-          <button className="px-4 py-2 bg-gray-200 rounded-full text-sm hover:bg-gray-300 focus:outline-none">
-            Tenant
-          </button>
-          <button className="px-4 py-2 bg-gray-200 rounded-full text-sm hover:bg-gray-300 focus:outline-none">
-            Vendor
-          </button>
-          <button className="px-4 py-2 bg-gray-200 rounded-full text-sm hover:bg-gray-300 focus:outline-none">
-            Landlord
-          </button>
-          <button className="px-4 py-2 bg-gray-200 rounded-full text-sm hover:bg-gray-300 focus:outline-none">
-            Investor
-          </button>
-        </div>
 
         {/* Recent Chat List */}
         <div className="space-y-4">
-          {chatData?.map((chat) => (
-            <Link href={`/dashboard/landlord/massage/${chat.id}`}
+          {items?.map((chat) => (
+            <Link
+              href={`/dashboard/landlord/massage/${chat.participant.id}`}
               key={chat?.id}
               className="flex items-center space-x-4 border-b border-gray-200 pb-4"
             >
               {/* Avatar */}
-              <Image
-                src={`https://randomuser.me/api/portraits/men/${chat.id}.jpg`}
-                alt={chat.name}
-                className="w-12 h-12 rounded-full object-cover"
-                width={50}
-                height={50}
-              />
+              <div className="relative">
+                <Image
+                  src={
+                    chat.participant?.avatar ||
+                    `https://randomuser.me/api/portraits/men/1.jpg`
+                  }
+                  alt={chat.participant?.name || "User"}
+                  className="w-12 h-12 rounded-full object-cover"
+                  width={50}
+                  height={50}
+                />
+                {chat.participant?.onlineStatus === "online" && (
+                  <span className="absolute top-1 right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                )}
+              </div>
 
               {/* Chat Content */}
               <div className="flex-1">
                 <div className="flex justify-between">
-                  <span className="font-semibold text-sm">{chat.name}</span>
-                  <span className="text-xs text-gray-500">{chat.time}</span>
+                  <span className="font-semibold text-sm">
+                    {chat.participant?.name}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {formatTime(chat.updatedAt)}
+                  </span>
                 </div>
-                <div className="text-sm text-gray-700 mt-1">{chat.message}</div>
+                {/* <div className="text-sm text-gray-700 mt-1">
+                  {chat.lastMessage?.text ||
+                    (chat.lastMessage?.attachmentType ? "📎 Attachment" : "")}
+                </div> */}
               </div>
             </Link>
           ))}
