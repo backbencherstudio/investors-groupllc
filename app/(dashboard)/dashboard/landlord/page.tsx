@@ -308,7 +308,7 @@ export default function LandlordDashboard() {
         {/* Card Data */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedApartments.map((property: any) => (
+          {paginatedApartments?.map((property: any) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>

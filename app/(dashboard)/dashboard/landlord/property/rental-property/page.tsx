@@ -6,7 +6,6 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
-
 import { PropertyCard } from "./_components/property-card";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 import { useGetApartmentsQuery } from "@/redux/features/landlord/dashboard/apartments";
@@ -63,7 +62,7 @@ export default function RentalProperty() {
         {/* Card Data */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedApartments.map((property: any) => (
+          {paginatedApartments?.map((property: any) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
