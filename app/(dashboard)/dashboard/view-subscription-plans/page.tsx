@@ -6,6 +6,7 @@ import {
   useSubscriptionCreateMutation,
 } from "@/redux/features/landlord/dashboard/subscription";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Plan {
   id: string;
@@ -45,9 +46,10 @@ export default function Page() {
       if (result?.success) {
         router.push(result?.data?.checkoutUrl);
       }
-      console.log("result --->", result);
+      // console.log("result --->", result);
     } catch (error) {
-      console.error("Subscription create failed --->", error);
+      // console.error("Subscription create failed --->", error?.data?.error);
+      toast.error(error?.data?.error);
     }
   };
 
