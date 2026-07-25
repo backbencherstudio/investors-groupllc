@@ -30,6 +30,16 @@ export const messageApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    // ============================================
+    // Send message
+    // ============================================
+    sendMessage: builder.mutation({
+      query: ({ body, conversationId }) => ({
+        url: `/dashboard/messages/conversations/${conversationId}/messages`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -41,4 +51,5 @@ export const {
   useGetAllConversationsQuery,
   useCreateConversationsMutation,
   useGetAllMessagQuery,
+  useSendMessageMutation,
 } = messageApi;

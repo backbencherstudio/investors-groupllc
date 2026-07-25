@@ -9,7 +9,7 @@ const refreshFlowEnabled = () =>
 
 export async function setTokens(
   accessToken: string,
-  refreshToken?: string | null
+  refreshToken?: string | null,
 ) {
   const cookieStore = await cookies();
 

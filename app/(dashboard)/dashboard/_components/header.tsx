@@ -22,8 +22,8 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
     router.push("/login");
   };
 
-  const {user} = useAuth();
-  console.log(user);
+  const { user } = useAuth();
+  // console.log(user);
   // role
   const role = useRole();
 
@@ -113,14 +113,16 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                     <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
                       <Crown className="h-5 w-5" />
                       <span>Subscription</span>
-                    </button></Link>
+                    </button>
+                  </Link>
                 </li>
                 <li>
                   <Link href={`/dashboard/${role}/setting`}>
                     <button className="w-full flex items-center gap-3 px-5 py-2 text-zinc-800 hover:bg-zinc-100 transition">
                       <SettingsIcon className="h-5 w-5" />
                       <span>Settings</span>
-                    </button></Link>
+                    </button>
+                  </Link>
                 </li>
                 <li>
                   <button
