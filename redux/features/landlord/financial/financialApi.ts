@@ -1,23 +1,25 @@
 import { baseApi } from "@/redux/features/api/baseApi";
 
-export const propertyApi = baseApi.injectEndpoints({
+export const financialApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ============================================
-    // ALL investment
+    // ALL Rent Payment
     // ============================================
-    getInvestmentProperty: builder.query({
-      query: () => ({
-        url: `/investment/apartment-checkout`,
+    getRentPayment: builder.query({
+      query: (params?: { page?: number; limit?: number }) => ({
+        url: `/landlord/rent-payment`,
         method: "GET",
+        params,
       }),
     }),
     // ============================================
-    // Single apartments
+    // ALL Withdrawal My
     // ============================================
-    getSingleApartments: builder.query({
-      query: (id) => ({
-        url: `/apartments/details/${id}`,
+    getWithdrawalMy: builder.query({
+      query: (params?: { page?: number; limit?: number }) => ({
+        url: `/withdrawal/my`,
         method: "GET",
+        params,
       }),
     }),
   }),
@@ -27,5 +29,4 @@ export const propertyApi = baseApi.injectEndpoints({
 // ============================================
 // EXPORT HOOKS
 // ============================================
-export const { useGetInvestmentPropertyQuery, useGetSingleApartmentsQuery } =
-  propertyApi;
+export const { useGetRentPaymentQuery, useGetWithdrawalMyQuery } = financialApi;
