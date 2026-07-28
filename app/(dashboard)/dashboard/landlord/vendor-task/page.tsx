@@ -13,6 +13,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 import { ClipboardList, UserCheck, UserPlus } from "lucide-react";
 
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
+import { useGetVendorTaskQuery } from "@/redux/features/landlord/vendor-task/vendorTask";
 
 interface RequestData {
   id: string | number;
@@ -161,6 +162,9 @@ const cardData = [
 ];
 
 export default function VendorTask() {
+  const { data } = useGetVendorTaskQuery({});
+  console.log(data?.data);
+
   const [propertyStatus, setPropertyStatus] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
@@ -317,14 +321,21 @@ export default function VendorTask() {
               <SelectDropDown
                 value={propertyStatus}
                 onChange={setPropertyStatus}
-                options={[{ label: "In Review", value: "In Review" }, { label: "Completed", value: "Completed" }, { label: "On going", value: "On going" }]}
+                options={[
+                  { label: "In Review", value: "In Review" },
+                  { label: "Completed", value: "Completed" },
+                  { label: "On going", value: "On going" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={[{ label: "Property", value: "Property" }, { label: "Room", value: "Room" }]}
+                options={[
+                  { label: "Property", value: "Property" },
+                  { label: "Room", value: "Room" },
+                ]}
               />
             </div>
           </div>

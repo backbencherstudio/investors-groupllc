@@ -4,7 +4,6 @@ import Pending from "@/components/icons/finanacial/Pending";
 import RentPayment from "../tables/tenant-rental-payment-table";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
-
 const cardData = [
   {
     icon: BagMoney,
@@ -21,7 +20,6 @@ const cardData = [
 export default function TenantRentalPayments() {
   return (
     <div>
-
       {/* Card stats */}
       <section className="mt-4">
         <StatsCards />
@@ -29,7 +27,6 @@ export default function TenantRentalPayments() {
 
       {/* table */}
       <section className="mt-6">
-
         <RentPayment />
       </section>
     </div>

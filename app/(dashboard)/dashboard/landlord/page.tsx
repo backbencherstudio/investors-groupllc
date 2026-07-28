@@ -26,6 +26,7 @@ import Monthly from "@/components/icons/subscription/Monthly";
 import Diamond from "@/components/icons/subscription/Diamond";
 import Revinew from "@/components/icons/subscription/Revinew";
 import { PropertyCard } from "./property/rental-property/_components/property-card";
+import RentPayment from "./financial/_components/tables/tenant-rental-payment-table";
 
 const chatData = [
   {
@@ -329,7 +330,7 @@ export default function LandlordDashboard() {
 
       {/* Data Table */}
       <div className="mt-6">
-        <DataTable text="Tenant Rent Payment" />
+        <RentPayment />
       </div>
     </div>
   );
