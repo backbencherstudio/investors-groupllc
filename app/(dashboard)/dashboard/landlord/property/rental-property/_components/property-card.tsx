@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Bed, Bath, MapPin, Calendar, Building, Layers } from "lucide-react";
-import { useState } from "react";
+import { Bed, Bath, MapPin, Clock, Layers, Ruler } from "lucide-react";
 
 export function PropertyCard({ property }: { property: any }) {
+  // ---------- Image ----------
   const imageUrl =
     property?.images?.[0]?.url || property?.image || "/placeholder.jpg";
+
+  // ---------- Basic info ----------
   const title = property?.name || property?.title || "Untitled Property";
   const address = [
     property?.address,
@@ -17,36 +19,67 @@ export function PropertyCard({ property }: { property: any }) {
   ]
     .filter(Boolean)
     .join(", ");
-  const statusText = property?.isRented
+
+  const isRented = Boolean(property?.isRented);
+  const listingType = property?.listingType || "for_rent";
+  const statusLabel = isRented
     ? "Rented"
-    : property?.listingType === "for_rent"
+    : listingType === "for_rent"
       ? "For Rent"
-      : property?.status || "Available";
+      : "For Sale";
+
+  // ---------- Units (bedrooms/bathrooms/size/price live on each unit) ----------
+  const units: any[] = Array.isArray(property?.units) ? property.units : [];
+  const primaryUnit = units[0];
+
+  const beds = property?.beds ?? property?.bedrooms ?? primaryUnit?.bedrooms;
+  const baths =
+    property?.baths ?? property?.bathrooms ?? primaryUnit?.bathrooms;
+  const areaValue =
+    property?.area ??
+    property?.areaSqft ??
+    property?.squareFeet ??
+    primaryUnit?.sizeSqFt;
+  const floorCount = property?.numberOffloors ?? property?.floor;
+
+  // ---------- Price ----------
   const priceValue = property?.price ?? property?.rent ?? property?.monthlyRent;
+
+  const unitPrices = units.map((u) => u.price).filter((p) => p != null);
+  const unitPriceRange = (() => {
+    if (unitPrices.length === 0) return null;
+    const min = Math.min(...unitPrices);
+    const max = Math.max(...unitPrices);
+    return min === max
+      ? `$${min.toLocaleString()}`
+      : `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+  })();
+
   const formattedPrice =
     typeof priceValue === "number"
       ? `$${priceValue.toLocaleString()}`
-      : property?.price === null
-        ? "N/A"
-        : property?.price
-          ? `$${property.price}`
-          : "N/A";
-  const yearBuilt = property?.builtYear
-    ? new Date(property.builtYear).getFullYear()
-    : property?.year;
-  const beds = property?.beds ?? property?.bedrooms;
-  const baths = property?.baths ?? property?.bathrooms;
-  const floorCount = property?.numberOffloors ?? property?.floor;
-  const areaValue =
-    property?.area ?? property?.areaSqft ?? property?.squareFeet;
-  const amenities = Array.isArray(property?.amenities)
-    ? property.amenities
-    : [];
-  const listingType = property?.listingType || "for_rent";
-  const petFriendly = property?.petFriendly;
-  const utilities = Array.isArray(property?.utilitiesIncluded)
-    ? property.utilitiesIncluded
-    : [];
+      : unitPriceRange || "N/A";
+
+  // ---------- Age ----------
+  const age = (() => {
+    if (!property?.builtYear) return null;
+    const built = new Date(property.builtYear);
+    if (Number.isNaN(built.getTime())) return null;
+    const years = Math.max(1, new Date().getFullYear() - built.getFullYear());
+    return years;
+  })();
+
+  // ---------- Tenant (Rented by) ----------
+  const tenantName = property?.tenantName;
+  const tenantAvatar = property?.tenantAvatar;
+  const initials = tenantName
+    ? tenantName
+        .split(" ")
+        .map((p: string) => p[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "";
 
   return (
     <div className="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col group">
@@ -62,152 +95,127 @@ export function PropertyCard({ property }: { property: any }) {
         />
 
         {/* Status Badge */}
-        {/* <span
-          className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold ${
-            statusText === "Rented"
-              ? "bg-blue-100 text-blue-700"
-              : statusText === "For Rent"
-                ? "bg-emerald-100 text-emerald-700"
-                : "bg-gray-100 text-gray-700"
-          }`}
-        >
-          {statusText}
-        </span> */}
-
-        {/* Listing Type Badge */}
-        <span className="absolute top-3 left-3 px-3 py-1.5 rounded-md text-xs font-semibold bg-[#C2C2C2B2] text-white">
-          {listingType === "for_rent" ? "For Rent" : "For Sale"}
-        </span>
+        {isRented ? (
+          <span className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-black/35 text-white backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            Rented
+          </span>
+        ) : (
+          <span className="absolute top-3 left-3 px-3 py-1.5 rounded-md text-xs font-semibold bg-[#C2C2C2B2] text-white">
+            {statusLabel}
+          </span>
+        )}
       </div>
 
       {/* Content Section */}
       <div className="p-4 flex-1 flex flex-col">
         {/* Title & Price */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-slate-900 truncate">
-              {title}
-            </h3>
-            <div className="mt-1 flex items-center gap-1 text-sm text-slate-500">
-              <MapPin className="h-4 w-4 shrink-0" />
-              <span className="truncate">
-                {address || "Address not available"}
-              </span>
-            </div>
-          </div>
-          <div className="text-right shrink-0">
-            <div className="text-lg font-bold text-emerald-600 whitespace-nowrap">
-              {formattedPrice}
-            </div>
-            {listingType === "for_rent" && (
-              <div className="text-[10px] text-slate-400">/month</div>
-            )}
+        <div className="flex items-start justify-between gap-3 mb-1">
+          <h3 className="text-base font-semibold text-slate-900 truncate">
+            {title}
+          </h3>
+          <div className="text-base font-bold text-emerald-600 whitespace-nowrap">
+            {formattedPrice}
           </div>
         </div>
 
-        {/* Property Stats Grid - Beds, Baths, Year, Floors, Area */}
-        <div className="grid grid-cols-2 gap-2 text-slate-600 text-xs mb-3">
+        {/* Address */}
+        <div className="mb-3 flex items-center gap-1 text-sm text-slate-500">
+          <MapPin className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate">{address || "Address not available"}</span>
+        </div>
+
+        {/* Stats row 1 — Beds / Baths / Age */}
+        <div className="grid grid-cols-3 gap-2 text-slate-600 text-xs mb-2">
           {beds != null && (
-            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
-              <Bed className="h-4 w-4 text-slate-400 shrink-0" />
-              <span className="font-medium">{beds}</span>
-              <span className="text-slate-500">Beds</span>
-            </div>
+            <StatPill
+              icon={<Bed className="h-3.5 w-3.5" />}
+              value={beds}
+              label="Beds"
+            />
           )}
           {baths != null && (
-            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
-              <Bath className="h-4 w-4 text-slate-400 shrink-0" />
-              <span className="font-medium">{baths}</span>
-              <span className="text-slate-500">Baths</span>
-            </div>
+            <StatPill
+              icon={<Bath className="h-3.5 w-3.5" />}
+              value={baths}
+              label="Baths"
+            />
           )}
-          {yearBuilt && (
-            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
-              <Calendar className="h-4 w-4 text-slate-400 shrink-0" />
-              <span className="text-slate-500">Built</span>
-              <span className="font-medium">{yearBuilt}</span>
-            </div>
+          {age != null && (
+            <StatPill
+              icon={<Clock className="h-3.5 w-3.5" />}
+              value={age}
+              label="Year"
+            />
           )}
           {floorCount != null && (
-            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
-              <Building className="h-4 w-4 text-slate-400 shrink-0" />
-              <span className="font-medium">{floorCount}</span>
-              <span className="text-slate-500">
-                Floor{floorCount > 1 ? "s" : ""}
-              </span>
-            </div>
+            <StatPill
+              icon={<Layers className="h-3.5 w-3.5" />}
+              value={floorCount}
+              label="Floor"
+            />
           )}
           {areaValue != null && (
-            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 col-span-2">
-              <Layers className="h-4 w-4 text-slate-400 shrink-0" />
-              <span className="font-medium">{areaValue.toLocaleString()}</span>
-              <span className="text-slate-500">sq ft</span>
-            </div>
+            <StatPill
+              icon={<Ruler className="h-3.5 w-3.5" />}
+              value={Number(areaValue).toLocaleString()}
+              label="sq ft"
+            />
           )}
         </div>
 
-        {/* Description */}
-        {/* {property?.description && (
-          <div className="text-sm text-slate-500 mb-3 line-clamp-2">
-            {property.description}
+        {/* Rented by */}
+        {isRented && tenantName && (
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center shrink-0">
+              {tenantAvatar ? (
+                <Image
+                  src={tenantAvatar}
+                  alt={tenantName}
+                  width={32}
+                  height={32}
+                  unoptimized
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-[10px] font-semibold text-slate-600">
+                  {initials}
+                </span>
+              )}
+            </div>
+            <div className="text-xs leading-tight">
+              <div className="text-slate-400">Rented by</div>
+              <div className="font-medium text-slate-700">{tenantName}</div>
+            </div>
           </div>
-        )} */}
-
-        {/* Utilities */}
-        {/* {utilities.length > 0 && (
-          <div className="mb-2 flex flex-wrap gap-1.5">
-            {utilities.slice(0, 3).map((item: string) => (
-              <span
-                key={item}
-                className="rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-medium text-amber-700 border border-amber-200"
-              >
-                {item}
-              </span>
-            ))}
-            {utilities.length > 3 && (
-              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-medium text-slate-500">
-                +{utilities.length - 3}
-              </span>
-            )}
-          </div>
-        )} */}
-
-        {/* Pet Friendly Badge */}
-        {/* {petFriendly && (
-          <div className="mb-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-[10px] font-medium text-green-700 border border-green-200">
-              🐾 Pet Friendly
-            </span>
-          </div>
-        )} */}
-
-        {/* Amenities */}
-        {/* {amenities.length > 0 && (
-          <div className="mb-3 flex flex-wrap gap-1.5">
-            {amenities.slice(0, 4).map((item: string) => (
-              <span
-                key={item}
-                className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-medium text-slate-600"
-              >
-                {item}
-              </span>
-            ))}
-            {amenities.length > 4 && (
-              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-medium text-slate-500">
-                +{amenities.length - 4}
-              </span>
-            )}
-          </div>
-        )} */}
+        )}
 
         {/* Details Button */}
         <Link
           href={`/dashboard/landlord/property/rental-property/${property?.id}`}
-          className="mt-auto inline-flex items-center justify-center rounded-lg bg-[#DD8800] hover:bg-[#b97d05] text-white px-4 py-2.5 text-sm font-medium transition"
+          className="mt-auto inline-flex items-center justify-center rounded-lg border border-slate-200 hover:border-[#DD8800] hover:text-[#DD8800] text-slate-700 px-4 py-2.5 text-sm font-medium transition"
         >
-          View Details
+          Details
         </Link>
       </div>
+    </div>
+  );
+}
+
+function StatPill({
+  icon,
+  value,
+  label,
+}: {
+  icon: React.ReactNode;
+  value: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-2">
+      <span>{icon}</span>
+      <span>{value}</span>
+      <span>{label}</span>
     </div>
   );
 }

@@ -12,6 +12,16 @@ export const financialApi = baseApi.injectEndpoints({
         params,
       }),
     }),
+    // ============================================
+    // ALL Withdrawal My
+    // ============================================
+    getWithdrawalMy: builder.query({
+      query: (params?: { page?: number; limit?: number }) => ({
+        url: `/withdrawal/my`,
+        method: "GET",
+        params,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -19,4 +29,4 @@ export const financialApi = baseApi.injectEndpoints({
 // ============================================
 // EXPORT HOOKS
 // ============================================
-export const { useGetRentPaymentQuery } = financialApi;
+export const { useGetRentPaymentQuery, useGetWithdrawalMyQuery } = financialApi;
