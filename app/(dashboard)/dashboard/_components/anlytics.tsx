@@ -6,6 +6,7 @@ import React from "react";
 import { Landlords } from "@/icons/Landlords";
 import { Property } from "@/icons/Property";
 import { Vendors } from "@/icons/Vendors";
+import { useGetOverAllIncomeQuery } from "@/redux/features/dashboard/dashboardApi";
 
 // Mocked backend data
 const mockAnalyticsData = {
@@ -33,6 +34,10 @@ interface AnalyticsData {
 }
 
 export default function Analytics() {
+  
+  const { data: overAllIncome } = useGetOverAllIncomeQuery();
+  console.log(overAllIncome);
+
   const [analyticsData, setAnalyticsData] = useState({
     totalTenants: 0,
     totalProperties: 0,

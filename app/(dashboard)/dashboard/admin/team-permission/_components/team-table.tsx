@@ -4,17 +4,19 @@ import {
   Column,
   DashboardDataTable,
 } from "@/components/common/DashboardDataTable";
-import ThreeDot from "@/components/icons/common/three-dot";
 import { useDeleteTeamMemberMutation, useGetTeamMembersQuery } from "@/redux/features/team-permission/TeamPermissionApi";
 import type { TeamMember } from "@/redux/features/team-permission/TeamPermissionTypes";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import AddTeamMemberModal from "./add-team-modal";
 
 export default function TeamTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data, isLoading, isError, error } = useGetTeamMembersQuery({
+  const { data, isLoading, isError, error, refetch } = useGetTeamMembersQuery({
     page: currentPage,
     limit: 10,
     search: searchTerm,
@@ -30,21 +32,22 @@ export default function TeamTable() {
     try {
       await deleteTeamMember(id).unwrap();
       toast.success(`Successfully deleted "${name}"`);
-      // refetch();
+      refetch();
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to delete team member");
     }
   };
 
   const handleEdit = (row: TeamMember) => {
-    // if (onEdit) {
-    //   // onEdit(row);
-    // } else {
-    //   // Default edit behavior - you can open a modal or navigate
-    //   console.log("Edit member:", row);
-    // }
+    setEditingMember(row);
+    setIsEditModalOpen(true);
   };
 
+  const handleEditSuccess = () => {
+    setIsEditModalOpen(false);
+    setEditingMember(null);
+    refetch();
+  };
 
   const TeamTableCol: Column<TeamMember>[] = [
     {
@@ -130,6 +133,12 @@ export default function TeamTable() {
         <div className="text-red-600">
           Error loading team members: {(error as any)?.message || "Unknown error"}
         </div>
+        <button
+          onClick={() => refetch()}
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -173,6 +182,18 @@ export default function TeamTable() {
           </button>
         </div>
       )}
+
+      {/* Edit Modal */}
+      <AddTeamMemberModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingMember(null);
+        }}
+        onSuccess={handleEditSuccess}
+        editData={editingMember || undefined}
+        mode="edit"
+      />
     </div>
   );
 }

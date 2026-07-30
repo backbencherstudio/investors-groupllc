@@ -27,7 +27,7 @@ export const subscriptionColumns: Column<SubscriptionTableData>[] = [
     render: (_value: string, row: SubscriptionTableData) => (
       <div className="flex items-center gap-2">
         <Image
-          src={row.avatar}
+          src={row.avatar ? (row.avatar.startsWith("/") || row.avatar.startsWith("http") ? row.avatar : `/${row.avatar}`) : "/fallback-avatar.png"}
           alt={row.name}
           width={32}
           height={32}
@@ -49,13 +49,12 @@ export const subscriptionColumns: Column<SubscriptionTableData>[] = [
     accessor: "planType",
     render: (value: string) => (
       <span
-        className={`px-2 py-1 rounded text-xs font-semibold ${
-          value === "Premium"
+        className={`px-2 py-1 rounded text-xs font-semibold ${value === "Premium"
             ? "bg-blue-100 text-blue-600"
             : value === "Basic"
-            ? "bg-orange-100 text-orange-600"
-            : "bg-purple-100 text-purple-600"
-        }`}
+              ? "bg-orange-100 text-orange-600"
+              : "bg-purple-100 text-purple-600"
+          }`}
       >
         {value}
       </span>
@@ -74,13 +73,12 @@ export const subscriptionColumns: Column<SubscriptionTableData>[] = [
     accessor: "status",
     render: (value: string) => (
       <span
-        className={`px-2 py-1 rounded text-xs font-semibold ${
-          value === "Active"
+        className={`px-2 py-1 rounded text-xs font-semibold ${value === "Active"
             ? "bg-green-100 text-green-600"
             : value === "Expired"
-            ? "bg-red-100 text-red-500"
-            : "bg-gray-100 text-gray-600"
-        }`}
+              ? "bg-red-100 text-red-500"
+              : "bg-gray-100 text-gray-600"
+          }`}
       >
         {value}
       </span>
