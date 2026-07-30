@@ -32,8 +32,9 @@ const useAuth = () => {
   const login = useCallback(
     async (credentials: LoginCredentials) => {
       const user = await loginMutation(credentials).unwrap();
+      console.log("user----->", user);
       dispatch(setUser(user));
-      dispatch(setHydrated(true)); // mark hydrated so AuthGuard skips the /me refetch
+      dispatch(setHydrated(true));
       const role = user.type?.toLowerCase();
       if (role === "admin") {
         router.push("/dashboard/admin");
@@ -45,7 +46,7 @@ const useAuth = () => {
       }
       router.push("/dashboard");
     },
-    [loginMutation, dispatch, router]
+    [loginMutation, dispatch, router],
   );
 
   const logout = useCallback(async () => {

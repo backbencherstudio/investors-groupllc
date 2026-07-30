@@ -1,37 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { ClipboardList, Plus, UserCheck, UserPlus } from "lucide-react";
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
-
 import InvestmentCard from "./_components/investment-card";
-import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";;
-
-const cardData = [
-  {
-    icon: ClipboardList,
-    value: 52,
-    label: "Total Tenant",
-  },
-  {
-    icon: UserCheck,
-    value: 32,
-    label: "Active",
-  },
-  {
-    icon: UserPlus,
-    value: 20,
-    label: "New",
-  },
-  {
-    icon: UserCheck,
-    value: 32,
-    label: "Active",
-  },
-];
+import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
 
 // 1. Add fake property data
 const investmentList = [
@@ -176,7 +152,10 @@ export default function InvestmentProperty() {
               <SelectDropDown
                 value={propertyType}
                 onChange={setPropertyType}
-                options={[{ label: "Passive", value: "Passive" }, { label: "Active", value: "Active" }]}
+                options={[
+                  { label: "Passive", value: "Passive" },
+                  { label: "Active", value: "Active" },
+                ]}
               />
             </div>
           </div>

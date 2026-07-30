@@ -2,7 +2,6 @@ import { baseApi } from "@/redux/features/api/baseApi";
 import type {
   Subscription,
   CreateSubscriptionDto,
-  UpdateSubscriptionDto,
   SubscriptionResponse,
   SubscriptionStats,
   SubscriptionStatsResponse,
@@ -10,7 +9,6 @@ import type {
   PaginatedSubscriptionListResponse,
 } from "./SubscriptionTypes";
 
-/** Handles raw array, `{ data: Plan[] }`, or `{ data: { items: Plan[] } }` from the API. */
 function normalizeSubscriptionPlansPayload(res: unknown): Subscription[] {
   if (Array.isArray(res)) return res;
   if (!res || typeof res !== "object") return [];
@@ -25,8 +23,6 @@ function normalizeSubscriptionPlansPayload(res: unknown): Subscription[] {
 
 export const subscriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
-
     // get subscription stats
     getSubscriptionStats: builder.query<SubscriptionStats, void>({
       query: () => ({ url: "/admin/subscription-plan/stats", method: "GET" }),
@@ -52,46 +48,57 @@ export const subscriptionApi = baseApi.injectEndpoints({
       providesTags: ["Subscription"],
     }),
 
-
-
     getAllSubscriptions: builder.query<Subscription[], void>({
       query: () => ({
         url: "/admin/subscription-plan?includeInactive=true",
         method: "GET",
       }),
-      transformResponse: (res: unknown) => normalizeSubscriptionPlansPayload(res),
+      transformResponse: (res: unknown) =>
+        normalizeSubscriptionPlansPayload(res),
       providesTags: ["Subscription"],
     }),
 
     getSubscriptionById: builder.query<Subscription, string>({
       query: (id) => ({
         url: "/subscriptions/${id}",
-        method: "GET"
+        method: "GET",
       }),
       transformResponse: (res: SubscriptionResponse) => res.data,
       providesTags: (_result, _err, id) => [{ type: "Subscription", id }],
     }),
 
     createSubscription: builder.mutation<Subscription, CreateSubscriptionDto>({
-      query: (body) => ({ url: "/admin/subscription-plan", method: "POST", body }),
+      query: (body) => ({
+        url: "/admin/subscription-plan",
+        method: "POST",
+        body,
+      }),
       transformResponse: (res: SubscriptionResponse) => res.data,
       invalidatesTags: ["Subscription"],
     }),
     // Update subscription (PATCH)
-    updateSubscription: builder.mutation<Subscription, { id: string } & Partial<CreateSubscriptionDto>>({
+    updateSubscription: builder.mutation<
+      Subscription,
+      { id: string } & Partial<CreateSubscriptionDto>
+    >({
       query: ({ id, ...body }) => ({
         url: `/admin/subscription-plan/${id}`,
-        method: 'PATCH',
-        body
+        method: "PATCH",
+        body,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Subscription', id }, 'Subscription'],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Subscription", id },
+        "Subscription",
+      ],
     }),
 
     deleteSubscription: builder.mutation<void, string>({
-      query: (id) => ({ url: `/admin/subscription-plan/${id}`, method: "DELETE" }),
+      query: (id) => ({
+        url: `/admin/subscription-plan/${id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ["Subscription"],
     }),
-
   }),
   // overrideExisting: process.env.NODE_ENV === "development",
 });

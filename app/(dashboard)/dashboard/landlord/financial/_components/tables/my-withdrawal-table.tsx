@@ -4,74 +4,84 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState } from "react";
-import { Column, DashboardDataTable } from "@/components/common/DashboardDataTable";
-import Image from "next/image";
+import {
+  Column,
+  DashboardDataTable,
+} from "@/components/common/DashboardDataTable";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 
 import { TablePagination } from "@/components/common/TablePagination";
+import { useGetWithdrawalMyQuery } from "@/redux/features/landlord/financial/financialApi";
+import TenantRequestDetails from "../../../request/_components/others/tenant-request-details";
+
+// API response item shape from /withdrawal/my
+interface WithdrawalResponse {
+  id: string;
+  amount: string;
+  method: string;
+  status: string;
+  note: string | null;
+  adminNote: string | null;
+  cardHolderName: string | null;
+  cardNumber: string | null;
+  expiryDate: string | null;
+  saveCard: boolean;
+  paymentDetails: string | null;
+  approvedAt: string | null;
+  rejectedAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+}
 
 interface WithdrawData {
   reqDate: string;
   name: string;
-  avatar: string;
-  phone: string;
-  id: string;
-  userType: string;
   amount: string;
   method: string;
-  status: "Approved" | "Pending" | "Rejected";
+  id: string;
+  status: string;
 }
 
-const withdrawData: WithdrawData[] = [
-  {
-    reqDate: "Apr 28, 2025",
-    name: "Kathryn Murphy",
-    avatar: "/avatars/kathryn.jpg",
-    phone: "+231 06-758207...",
-    id: "RW-24571",
-    userType: "Vendor",
-    amount: "$300",
-    method: "Bank Transfer",
-    status: "Approved",
-  },
-  {
-    reqDate: "Apr 28, 2025",
-    name: "Esther Howard",
-    avatar: "/avatars/esther.jpg",
-    phone: "+231 06-758207...",
-    id: "RW-24572",
-    userType: "Investor",
-    amount: "$450",
-    method: "Credit",
-    status: "Pending",
-  },
-  {
-    reqDate: "Apr 28, 2025",
-    name: "Esther Howard",
-    avatar: "/avatars/esther.jpg",
-    phone: "+231 06-758207...",
-    id: "RW-24573",
-    userType: "Vendor",
-    amount: "$450",
-    method: "Credit",
-    status: "Rejected",
-  },
-  {
-    reqDate: "Apr 28, 2025",
-    name: "Esther Howard",
-    avatar: "/avatars/esther.jpg",
-    phone: "+231 06-758207...",
-    id: "RW-24574",
-    userType: "Vendor",
-    amount: "$450",
-    method: "Credit",
-    status: "Rejected",
-  },
-];
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+}
+
+function formatMethod(method: string): string {
+  const map: Record<string, string> = {
+    CREDIT_DEBIT_CARD: "Credit/Debit Card",
+    BANK_TRANSFER: "Bank Transfer",
+    PAYPAL: "PayPal",
+    CASH: "Cash",
+  };
+  return map[method] || method;
+}
+
+function normalizeStatus(status: string): string {
+  // "PENDING" → "Pending", "APPROVED" → "Approved", "REJECTED" → "Rejected"
+  if (!status) return "";
+  return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+}
 
 export default function MyWithdrawalTable() {
+  const { data } = useGetWithdrawalMyQuery({});
+  const rawData: WithdrawalResponse[] = data?.data || [];
+
+  const withdrawData: WithdrawData[] = rawData.map((item) => ({
+    reqDate: formatDate(item.createdAt),
+    name: item.cardHolderName || "N/A",
+    amount: `$${parseFloat(item.amount).toFixed(2)}`,
+    method: formatMethod(item.method),
+    id: item.id,
+    status: normalizeStatus(item.status),
+  }));
+
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
   const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
@@ -79,33 +89,23 @@ export default function MyWithdrawalTable() {
   const itemsPerPage = 5;
   const totalPages = Math.ceil(withdrawData.length / itemsPerPage);
 
-  // TODO: Replace with SWR/React Query call to your API
-
-  // fetched from backend
-
   const columns: Column<WithdrawData>[] = [
     { header: "Req date", accessor: "reqDate" as keyof WithdrawData },
     {
       header: "Name",
       accessor: "name" as keyof WithdrawData,
-      render: (value: string | undefined, row: WithdrawData) => (
+      render: (value: string | undefined) => (
         <div className="flex items-center gap-2">
-          <Image
-            src={row.avatar}
-            alt={value || ""}
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
+          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">
+            {value ? value.charAt(0).toUpperCase() : "?"}
+          </div>
           <div>
             <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.phone}</div>
           </div>
         </div>
       ),
     },
     { header: "ID", accessor: "id" as keyof WithdrawData },
-    { header: "User Type", accessor: "userType" as keyof WithdrawData },
     { header: "Amount", accessor: "amount" as keyof WithdrawData },
     { header: "Method", accessor: "method" as keyof WithdrawData },
     {
@@ -118,10 +118,8 @@ export default function MyWithdrawalTable() {
     {
       header: "Action",
       accessor: "action" as keyof WithdrawData,
-      render: () => (
-        <button className="text-gray-600 hover:text-primary">
-          <EyeIcon />
-        </button>
+      render: (value: string | number, row) => (
+        <TenantRequestDetails data={row} />
       ),
     },
   ];
@@ -140,9 +138,12 @@ export default function MyWithdrawalTable() {
                 <SelectDropDown
                   value={tenantStatus}
                   onChange={setTenantStatus}
-                  options={[{ label: "Paid", value: "Paid" }, { label: "Due", value: "Due" }]
-                  }
-                  />
+                  options={[
+                    { label: "Approved", value: "Approved" },
+                    { label: "Pending", value: "Pending" },
+                    { label: "Rejected", value: "Rejected" },
+                  ]}
+                />
               </div>
               <div className="w-[47.5%] md:w-auto ">
                 <DatePicker value={tenantDate} onChange={setTenantDate} />

@@ -52,26 +52,6 @@ export default function FinancialPageContent() {
         onValueChange={(value) => setActiveTab(value as TabKey)}
       >
         <div className="relative">
-          {/* <TabsList className="gap-10">
-            <TabsTrigger
-              value="tenant-rental-payments"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
-            >
-              Tenant Rental Payments
-            </TabsTrigger>
-            <TabsTrigger
-              value="investor-transaction"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none "
-            >
-              Investor Transaction
-            </TabsTrigger>
-            <TabsTrigger
-              value="withdrawals"
-              className="data-[state=active]:text-[#170A00] text-[#707070] text-lg data-[state=active]:font-semibold pb-4 rounded-none"
-            >
-              Withdrawals
-            </TabsTrigger>
-          </TabsList> */}
           <hr className=" absolute bottom-0.5 w-full" />
 
           <TabsList className="gap-10">

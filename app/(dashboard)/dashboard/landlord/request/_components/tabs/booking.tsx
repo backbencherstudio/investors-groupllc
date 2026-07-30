@@ -8,16 +8,19 @@ import {
 } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-// import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
-// import { RentPaymentDetails } from "../../../user-manage/tenant/paid-history/_components/rent-payment-details";
 import TenantRequestDetails from "../others/tenant-request-details";
+import {
+  useGetBookingQuery,
+  useGetSingleBookingQuery,
+} from "@/redux/features/landlord/request/booking";
 
 interface BookingData {
   reqDate: string;
   name: string;
   id: string;
+  requestId: string;
   property: string;
   amount: string;
   method: string;
@@ -28,55 +31,88 @@ interface BookingData {
   propertyAddress: string;
 }
 
-const bookingData: BookingData[] = [
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#R-00123",
-    property: "Murphy House",
-    amount: "$300",
-    method: "Bank Transfer",
-    status: "Approved",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#R-00124",
-    property: "Murphy House",
-    amount: "$450",
-    method: "Credit",
-    status: "In Review",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#R-00126",
-    property: "Murphy House",
-    amount: "$450",
-    method: "Credit",
-    status: "Rejected",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-  },
-  // Additional data rows as needed...
-];
+interface BookingApiData {
+  id: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  tenant: {
+    id: string;
+    username: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    type: string;
+    avatar_url: string | null;
+  };
+  apartment: {
+    id: string;
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    first_image_url: string;
+  };
+}
 
 export default function Booking() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
   const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
+    null,
+  );
   const itemsPerPage = 5;
+  const { data } = useGetBookingQuery({});
+  const bookings: BookingApiData[] = data ?? [];
+  const { data: singleBooking } = useGetSingleBookingQuery(
+    selectedBookingId ?? "",
+    {
+      skip: !selectedBookingId,
+    },
+  );
+
+  console.log(singleBooking);
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const capitalizeStatus = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
+
+  const getUserName = (user: BookingApiData["tenant"]) => {
+    if (user.first_name && user.last_name) {
+      return `${user.first_name} ${user.last_name}`;
+    }
+    if (user.username) return user.username;
+    return "Unknown";
+  };
+
+  const bookingData: BookingData[] = (bookings || []).map(
+    (booking: BookingApiData) => ({
+      reqDate: formatDate(booking.createdAt),
+      name: getUserName(booking.tenant),
+      id: `#${booking.id.slice(0, 7).toUpperCase()}`,
+      requestId: booking.id,
+      property: booking.apartment?.name || "N/A",
+      amount: "",
+      method: "",
+      status: capitalizeStatus(booking.status),
+      action: "View",
+      avatar: booking.tenant?.avatar_url || "/placeholder-avatar.png",
+      phone: "",
+      propertyAddress: `${booking.apartment?.address || ""}, ${booking.apartment?.city || ""}, ${booking.apartment?.state || ""}`,
+    }),
+  );
+
   const totalPages = Math.ceil(bookingData.length / itemsPerPage);
 
   const tenantColumns: Column<BookingData>[] = [
@@ -113,8 +149,8 @@ export default function Booking() {
         </div>
       ),
     },
-    { header: "Amount", accessor: "amount" as keyof BookingData },
-    { header: "Method", accessor: "method" as keyof BookingData },
+    // { header: "Amount", accessor: "amount" as keyof BookingData },
+    // { header: "Method", accessor: "method" as keyof BookingData },
     {
       header: "Status",
       accessor: "status" as keyof BookingData,
@@ -135,7 +171,10 @@ export default function Booking() {
       header: "Action",
       accessor: "action",
       render: (value: string | undefined, row: BookingData) => (
-        <TenantRequestDetails reqId={row.id} />
+        <TenantRequestDetails
+          data={singleBooking}
+          onOpen={() => setSelectedBookingId(row.requestId)}
+        />
       ),
     },
   ];
@@ -153,7 +192,11 @@ export default function Booking() {
               <SelectDropDown
                 value={tenantStatus}
                 onChange={setTenantStatus}
-                options={[{ label: "Approved", value: "Approved" }, { label: "In Review", value: "In Review" }, { label: "Rejected", value: "Rejected" }]}
+                options={[
+                  { label: "Approved", value: "Approved" },
+                  { label: "In Review", value: "In Review" },
+                  { label: "Rejected", value: "Rejected" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">

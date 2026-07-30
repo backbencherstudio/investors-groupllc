@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import AdminDashboard from "./admin/page";
 import LandlordDashboard from "./landlord/page";
 import { useRole } from "@/hooks/use-role";

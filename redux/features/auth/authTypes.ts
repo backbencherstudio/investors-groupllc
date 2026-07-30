@@ -25,6 +25,7 @@ export interface User {
   docs_url: string | null;
   photoIdUrl: string | null;
   proofOfIncomeUrl: string | null;
+  hasActiveSubscription: boolean;
 }
 
 export interface LoginCredentials {
