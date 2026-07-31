@@ -144,7 +144,7 @@ export function PropertyCard({ property }: { property: any }) {
           </div>
         )}
         <Link
-          href={`/dashboard/admin-dashboard/property/rental-property/${property.id}`}
+          href={`/dashboard/admin/property/rental-property/${property.id}`}
           className="mt-4 border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition text-center"
         >
           Details
