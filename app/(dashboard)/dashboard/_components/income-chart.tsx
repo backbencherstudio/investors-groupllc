@@ -6,6 +6,8 @@ import React from "react";
 
 import { useGetOverAllIncomeQuery } from "@/redux/features/dashboard/dashboardApi";
 import IncomeChart from "./IncomeChart";
+import Sidebar from "./team-sidebar";
+import { DashboardOverviewData } from "@/redux/features/dashboard/dashboardTypes";
 
 // Sample data
 const data = [
@@ -36,7 +38,7 @@ type TooltipPayload = {
 }[];
 
 
-export default function IncomeChartSidebar() {
+export default function IncomeChartSidebar({ data }: { data: DashboardOverviewData }) {
   return (
     <>
       <div className="flex flex-col lg:flex-row gap-6">
@@ -46,78 +48,10 @@ export default function IncomeChartSidebar() {
         </div>
         <div className="w-full lg:w-[25%]  rounded-md">
           {/* 259px div content */}
-          <Sidebar />
+          <Sidebar sidebarData={data} />
         </div>
       </div>
     </>
   );
 }
 
-
-const Sidebar = () => {
-  return (
-    <div className="bg-white rounded-2xl px-6 py-5 shadow-sm w-full ">
-      {/* Rent Collected Section */}  
-      <div className="border border-gray-200 rounded-xl px-6 py-4 mb-6">
-        <p className="text-sm text-[#404040] mb-2">This Month</p>
-        <h2 className="text-2xl font-bold text-[#170A00]">$52,400</h2>
-        <p className="text-gray-600 font-medium">Rent Collected</p>
-
-        {/* Progress Bar */}
-        <div className="my-2">
-          <div className="h-1 rounded-full bg-[#EDEDED] w-full">
-            <div
-              className="h-1 rounded-full bg-[#DD8800]"
-              style={{ width: `${(1005 / 1205) * 100}%` }}
-            />
-          </div>
-          <p className="text-sm text-[#707070] mt-2">1,005/1,205</p>
-        </div>
-      </div>
-
-      {/* Team Section */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Team</h3>
-
-      <ul className="space-y-4">
-        {teamMembers.map((member) => (
-          <li key={member.name} className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                src={member.image}
-                alt={member.name}
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-              />
-              <div>
-                <p className="font-medium text-sm text-gray-900 truncate">
-                  {member.name}
-                </p>
-                <p className="text-xs text-gray-500">{member.role}</p>
-              </div>
-            </div>
-            <MoreVertical className="w-4 h-4 text-gray-500" />
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const teamMembers = [
-  {
-    name: "Esther Howard",
-    role: "Financial",
-    image: "/images/team1.jpg", // Replace with actual path
-  },
-  {
-    name: "Darlene Robertson",
-    role: "Financial",
-    image: "/images/team2.jpg",
-  },
-  {
-    name: "Bessie Cooper",
-    role: "Assignment",
-    image: "/images/team3.jpg",
-  },
-];

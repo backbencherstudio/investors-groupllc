@@ -168,3 +168,68 @@ export interface IncomeChartResponse {
 
 // For your API query
 export type GetOverAllIncomeResponse = IncomeChartResponse;
+
+
+
+// =====================================================
+
+// Sub-type for rent collection progress
+export interface RentCollectionProgress {
+  paidTenants: number;
+  totalTenantsWithDueRent: number;
+}
+
+// Sub-type for investments stats
+export interface InvestmentsOverview {
+  totalInvestors: number;
+  passiveInvestors: number;
+  activeInvestors: number;
+  totalInvestmentAmount: number;
+}
+
+// Sub-type for maintenance request metrics
+export interface MaintenanceOverview {
+  pending: number;
+  inProgress: number;
+  completed: number;
+  urgentRequests: number;
+  emergencyRequests: number;
+}
+
+// Sub-type for financial collection stats
+export interface TotalCollectionOverview {
+  total: number;
+  income: number;
+  expense: number;
+  changePercent: number;
+}
+
+// Sub-type for team members listed in the dashboard
+export interface DashboardTeamMember {
+  id: string;
+  name: string;
+  phone: string | null;
+  avatar: string | null;
+  role: string;
+}
+
+// Main Data Payload
+export interface DashboardOverviewData {
+  activeTenants: number;
+  activeVendors: number;
+  totalProperties: number;
+  landlords: number;
+  rentCollectedThisMonth: number;
+  rentCollectionProgress: RentCollectionProgress;
+  investments: InvestmentsOverview;
+  maintenance: MaintenanceOverview;
+  totalCollection: TotalCollectionOverview;
+  team: DashboardTeamMember[];
+}
+
+// API Response Wrapper
+export interface DashboardOverviewResponse {
+  success: boolean;
+  message: string;
+  data: DashboardOverviewData;
+}

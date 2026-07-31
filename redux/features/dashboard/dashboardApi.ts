@@ -7,6 +7,7 @@ import type {
     WithdrawalResponse,
     WithdrawalsQueryParams,
     GetOverAllIncomeResponse,
+    DashboardOverviewResponse,
 } from "./dashboardTypes";
 
 const buildAnalyticsParams = (
@@ -47,6 +48,12 @@ const buildWithdrawalsParams = (params?: WithdrawalsQueryParams) => {
 export const dashboardApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
 
+        getDashboardOverview: builder.query<DashboardOverviewResponse, void>({
+            query: () => ({
+                url: "/dashboard/analytics/overview",
+                method: "GET",
+            }),
+        }),
         getOverAllIncome: builder.query<GetOverAllIncomeResponse, void>({
             query: () => ({
                 url: "/dashboard/analytics/income-chart?period=this_year",
@@ -98,6 +105,7 @@ export const dashboardApi = baseApi.injectEndpoints({
 });
 
 export const {
+    useGetDashboardOverviewQuery,
     useGetDashboardDataQuery,
     useGetRentPaymentsQuery,
     useGetInvestorTransactionsQuery,
