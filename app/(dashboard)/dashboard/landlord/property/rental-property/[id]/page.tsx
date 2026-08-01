@@ -139,42 +139,8 @@ export default function PropertyDetails() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-xl shadow p-6">
         {/* ---------------- Left column ---------------- */}
         <div className="flex flex-col gap-6">
-          {/* Main image + thumbnails */}
-          <div>
-            <div className="rounded-xl overflow-hidden h-56 w-full bg-gray-100">
-              {property ? (
-                <PropertyImage property={property} />
-              ) : (
-                <img
-                  src={images[activeImage]}
-                  alt="Property"
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
-            {images.length > 1 && (
-              <div className="flex gap-2 mt-2">
-                {images.slice(0, 3).map((img, i) => (
-                  <button
-                    type="button"
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`w-16 h-14 rounded-md overflow-hidden border-2 ${
-                      activeImage === i
-                        ? "border-[#d48806]"
-                        : "border-transparent"
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`thumbnail-${i}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Image gallery */}
+          <ImageGallery images={images} />
 
           {/* Virtual video */}
           <div>
@@ -396,6 +362,47 @@ export default function PropertyDetails() {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Image gallery — renders the real images from apartment.images     */
+/* ------------------------------------------------------------------ */
+
+function ImageGallery({ images }: { images: string[] }) {
+  const [active, setActive] = useState(0);
+
+  if (images.length === 0) {
+    return (
+      <div className="w-full h-64 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+        No images available
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <img
+        src={images[active]}
+        alt="Property"
+        className="w-full h-64 object-cover rounded-lg"
+      />
+      {images.length > 1 && (
+        <div className="flex gap-2 mt-2 overflow-x-auto">
+          {images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`Property thumbnail ${idx + 1}`}
+              onClick={() => setActive(idx)}
+              className={`w-16 h-16 object-cover rounded-md cursor-pointer border-2 ${
+                idx === active ? "border-[#d48806]" : "border-transparent"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
