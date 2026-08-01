@@ -48,7 +48,6 @@ export default function Page() {
       }
       // console.log("result --->", result);
     } catch (error) {
-      // console.error("Subscription create failed --->", error?.data?.error);
       toast.error(error?.data?.error);
     }
   };
