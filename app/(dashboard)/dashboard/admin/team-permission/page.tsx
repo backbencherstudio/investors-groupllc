@@ -13,10 +13,10 @@ export default function page() {
 
   return (
     <div>
-      <div className="flex justify-between items-center border mb-6">
+      <div className="flex justify-between items-center  mb-6">
         <h3 className="text-lg font-medium ">Team Permission</h3>
 
-        <Button className="bg-black text-white border rounded font-normal  hover:bg-gray-700 cursor-pointer" onClick={() => router.push('/dashboard/admin/team-permission/roles')}>
+        <Button className="bg-black text-white border font-normal  hover:bg-gray-700 cursor-pointer rounded-lg" onClick={() => router.push('/dashboard/admin/team-permission/roles')}>
           
           Roles Management
         </Button>

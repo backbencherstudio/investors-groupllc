@@ -12,15 +12,17 @@ import TenantRentalPayments from "./tabs/tenant-rental-payments";
 import InvestorTransaction from "./tabs/investor-transection"; // Consider renaming the file/component for consistency
 import Withdrawals from "./tabs/withdrawals";
 import CustomBreadSeparator from "../../../_components/common/CustomBreadSeparator";
+import InvestorTransactionList from "./tabs/investor-transection-list";
+import RentPaymentList from "./tabs/rent-payment-list";
 
 const TAB_CONFIG = {
   "tenant-rental-payments": {
     label: "Tenant Rental Payments",
-    content: <TenantRentalPayments />,
+    content: <RentPaymentList />,
   },
   "investor-transaction": {
     label: "Investor Transaction",
-    content: <InvestorTransaction />,
+    content: <InvestorTransactionList />,
   },
   withdrawals: {
     label: "Withdrawals",

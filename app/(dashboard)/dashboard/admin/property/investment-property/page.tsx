@@ -7,7 +7,21 @@ import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 import InvestmentCard from "./_components/investment-card";
+import PropertyStats from "./_components/property-stats";
 import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
+
+const tabs = [
+  {
+    label: "Rental Property",
+    value: "Rental Property",
+    href: "/dashboard/admin/property/rental-property",
+  },
+  {
+    label: "Investment Property",
+    value: "Investment Property",
+    href: "/dashboard/admin/property/investment-property",
+  },
+];
 
 // 1. Add fake property data
 const investmentList = [
@@ -128,7 +142,43 @@ export default function InvestmentProperty() {
 
   return (
     <div>
+      <div className="mb-6">
+        <p className="pb-4">
+          Property Management
+          <span className="text-[18px] font-semibold">
+            <span className="font-normal mx-2">&gt;</span>
+            Investment Property
+          </span>
+        </p>
+
+        <div className="w-full bg-transparent overflow-x-auto">
+          <nav className="flex border-b border-gray-200 bg-transparent">
+            {tabs.map((tab) => (
+              <Link href={tab.href} key={tab.value}>
+                <button
+                  className={`relative px-6 py-3 text-[17px] font-semibold transition-colors duration-200 ${
+                    tab.value === "Investment Property"
+                      ? "text-black"
+                      : "text-gray-500"
+                  } cursor-pointer`}
+                >
+                  {tab.label}
+                  <span
+                    className={`absolute left-0 -bottom-[1px] h-0.5 w-full bg-orange-500 transition-transform duration-200 origin-left ${
+                      tab.value === "Investment Property"
+                        ? "scale-x-100"
+                        : "scale-x-0"
+                    }`}
+                  />
+                </button>
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <StatsCards />
+      <PropertyStats />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">My Property List</h2>
@@ -141,7 +191,7 @@ export default function InvestmentProperty() {
             </div>
 
             <Link
-              href="/dashboard/admin-dashboard/property/investment-property/add-investment-property"
+              href="/dashboard/admin/property/investment-property/add-investment-property"
               className="bg-[#DD8800] hover:bg-[#b97d05] text-white rounded-lg px-6 py-2 flex items-center gap-2 cursor-pointer"
             >
               <Plus className="w-5 h-5" />

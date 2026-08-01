@@ -41,7 +41,7 @@ interface InvestorTableData {
   action: string;
 }
 
-export default function InvestorTransactionTable() {
+export default function InvestorTransactionList() {    
   // Filter states
   const [investorStatus, setInvestorStatus] = useState<string>("");
   const [investorSearch, setInvestorSearch] = useState<string>("");
@@ -280,7 +280,7 @@ export default function InvestorTransactionTable() {
                   placeholder="Search investors..."
                 />
               </div>
-              {/* <div className="w-[47.5%] md:w-auto">
+              <div className="w-[47.5%] md:w-auto">
                 <SelectDropDown
                   value={investorStatus}
                   onChange={setInvestorStatus}
@@ -321,7 +321,7 @@ export default function InvestorTransactionTable() {
               </div>
               <div className="w-[47.5%] md:w-auto">
                 <DatePicker value={investorDate} onChange={setInvestorDate} />
-              </div> */}
+              </div>
             </div>
           </div>
           

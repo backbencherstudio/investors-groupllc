@@ -8,6 +8,9 @@ export const TAG_TYPES = [
   "Message",
   "Permission",
   "Role",
-  "SubscriptionPlans",, "Test"] as const;
+  "TeamMember",
+  "SubscriptionPlans",
+  "Apartment",
+] as const;
 
 export type TagType = (typeof TAG_TYPES)[number];

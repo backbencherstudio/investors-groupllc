@@ -6,6 +6,8 @@ import React from "react";
 import { Landlords } from "@/icons/Landlords";
 import { Property } from "@/icons/Property";
 import { Vendors } from "@/icons/Vendors";
+import { useGetOverAllIncomeQuery } from "@/redux/features/dashboard/dashboardApi";
+import { DashboardOverviewData } from "@/redux/features/dashboard/dashboardTypes";
 
 // Mocked backend data
 const mockAnalyticsData = {
@@ -32,7 +34,17 @@ interface AnalyticsData {
   totalIncome: number;
 }
 
-export default function Analytics() {
+export default function Analytics({ statsData }: { statsData: DashboardOverviewData }) {
+
+  console.log(statsData,"statsData");
+
+  const { activeTenants, activeVendors, totalProperties } = statsData || {};
+
+  
+  
+  const { data: overAllIncome } = useGetOverAllIncomeQuery();
+  console.log(overAllIncome);
+
   const [analyticsData, setAnalyticsData] = useState({
     totalTenants: 0,
     totalProperties: 0,
@@ -68,28 +80,24 @@ export default function Analytics() {
       <div>
         <h3 className="text-lg font-medium text-[#707070] mb-4">Analytics</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <StatCard
             title="Total Tenants"
-            value={analyticsData.totalTenants}
+            value={activeTenants}
             icon={<Tenants />}
           />
           <StatCard
             title="Total Vendors"
-            value={analyticsData.totalIncome}
+            value={activeVendors}
             icon={<Vendors />}
           />
 
           <StatCard
             title="Total Properties"
-            value={analyticsData.totalProperties}
+            value={totalProperties}
             icon={<Landlords />}
           />
-          <StatCard
-            title="Total Leases"
-            value={analyticsData.totalLeases}
-            icon={<Property />}
-          />
+          
         </div>
       </div>
     </>

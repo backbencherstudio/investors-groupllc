@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 
 export default function InvestmentCard({ investment }: { investment: any }) {
-
   return (
     <div className="bg-white rounded-xl shadow border overflow-hidden flex flex-col">
       <div className="relative">
@@ -73,10 +72,12 @@ export default function InvestmentCard({ investment }: { investment: any }) {
           <span className="text-xs text-gray-500">Invested by</span>
           <span className="text-xs font-medium">{investment.owner?.name}</span>
         </div>
-        <Link href={`/dashboard/admin-dashboard/property/investment-property/${investment.id}`}>
-        <button className="mt-auto border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition cursor-pointer">
-          Details
-        </button>
+        <Link
+          href={`/dashboard/admin/property/investment-property/${investment.id}`}
+        >
+          <button className="mt-auto border border-gray-300 rounded-lg py-2 w-full font-medium hover:bg-gray-50 transition cursor-pointer">
+            Details
+          </button>
         </Link>
       </div>
     </div>

@@ -14,11 +14,13 @@ export default function DatePicker({
   onChange,
   label = "",
   id = "date",
+  placeholderText = "Select date",
 }: {
   value: Date | undefined;
   onChange: (date: Date | undefined) => void;
   label?: string;
   id?: string;
+  placeholderText?: string;
 }) {
   const [open, setOpen] = useState(false);
 
