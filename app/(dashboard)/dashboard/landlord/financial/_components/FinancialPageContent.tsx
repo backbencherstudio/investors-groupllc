@@ -8,7 +8,6 @@ import {
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-// import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator";
 import TenantRentalPayments from "./tabs/tenant-rental-payments";
 
 import CustomBreadSeparator from "../../../_components/common/CustomBreadSeparator";
@@ -51,7 +50,7 @@ export default function FinancialPageContent() {
         value={activeTab}
         onValueChange={(value) => setActiveTab(value as TabKey)}
       >
-        <div className="relative">
+        <div className="relative overflow-auto w-full">
           <hr className=" absolute bottom-0.5 w-full" />
 
           <TabsList className="gap-10">
@@ -66,8 +65,6 @@ export default function FinancialPageContent() {
             ))}
           </TabsList>
         </div>
-
-        <div></div>
 
         <TabsContent value="tenant-rental-payments">
           <div>

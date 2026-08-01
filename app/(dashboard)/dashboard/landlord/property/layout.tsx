@@ -52,7 +52,7 @@ export default function PropertyLayout({
 
         {/* Tab Navigation */}
         <div className="w-full bg-transparent overflow-x-auto">
-          <nav className="flex border-b border-gray-200 bg-transparent">
+          <nav className="flex border-b border-gray-200 bg-transparent text-nowrap">
             {tabs.map((tab) =>
               tab.value === "Investment For Property" &&
               !data?.hasActiveSubscription ? (

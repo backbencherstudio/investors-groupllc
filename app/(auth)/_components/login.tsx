@@ -21,8 +21,6 @@ const getLoginErrorMessage = (err: unknown): string => {
   return "Invalid email or password";
 };
 
-const isDev = process.env.NODE_ENV === "development";
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
