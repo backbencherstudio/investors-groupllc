@@ -137,7 +137,7 @@ export default function ProfileEditForm() {
   }
 
   return (
-    <div className="space-y-6 p-6 bg-white rounded-lg shadow">
+    <div className="space-y-6 p-4 sm:p-6 bg-white rounded-lg shadow">
       {/* Profile Update Form */}
       <form
         onSubmit={handleSubmitProfile(onProfileSubmit)}

@@ -91,12 +91,12 @@ export default function SettingPage() {
           className="w-full"
         >
           <div className="border-b-2 rounded-none h-13.5 overflow-x-auto py-2">
-            <TabsList className="">
+            <TabsList className="min-w-max">
               {tabsItems.map((item) => (
                 <TabsTrigger
                   key={item.value}
                   value={item.value}
-                  className="tab-item  px-4 text-lg font-medium text-gray-600 hover:text-orange-800/70 border-transparent h-13 cursor-pointer"
+                  className="tab-item px-4 text-base sm:text-lg font-medium text-gray-600 hover:text-orange-800/70 border-transparent h-13 cursor-pointer whitespace-nowrap"
                 >
                   {item.label}
                 </TabsTrigger>

@@ -34,14 +34,15 @@ interface AnalyticsData {
   totalIncome: number;
 }
 
-export default function Analytics({ statsData }: { statsData: DashboardOverviewData }) {
-
-  console.log(statsData,"statsData");
+export default function Analytics({
+  statsData,
+}: {
+  statsData: DashboardOverviewData;
+}) {
+  console.log(statsData, "statsData");
 
   const { activeTenants, activeVendors, totalProperties } = statsData || {};
 
-  
-  
   const { data: overAllIncome } = useGetOverAllIncomeQuery();
   console.log(overAllIncome);
 
@@ -80,7 +81,7 @@ export default function Analytics({ statsData }: { statsData: DashboardOverviewD
       <div>
         <h3 className="text-lg font-medium text-[#707070] mb-4">Analytics</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           <StatCard
             title="Total Tenants"
             value={activeTenants}
@@ -97,7 +98,6 @@ export default function Analytics({ statsData }: { statsData: DashboardOverviewD
             value={totalProperties}
             icon={<Landlords />}
           />
-          
         </div>
       </div>
     </>

@@ -9,22 +9,23 @@ import useAuth from "@/hooks/useAuth";
 const getLoginErrorMessage = (err: unknown): string => {
   if (err instanceof Error) return err.message;
   if (typeof err === "object" && err !== null) {
-    const e = err as { data?: { message?: string }; error?: string; message?: string };
-    return e.data?.message ?? e.error ?? e.message ?? "Invalid email or password";
+    const e = err as {
+      data?: { message?: string };
+      error?: string;
+      message?: string;
+    };
+    return (
+      e.data?.message ?? e.error ?? e.message ?? "Invalid email or password"
+    );
   }
   return "Invalid email or password";
 };
 
 const isDev = process.env.NODE_ENV === "development";
 
-const DEFAULT_VALUES = {
-  email: isDev ? "anik.wdev@gmail.com" : "",
-  password: isDev ? "12345678" : "",
-};
-
 export default function Login() {
-  const [email, setEmail] = useState(DEFAULT_VALUES.email);
-  const [password, setPassword] = useState(DEFAULT_VALUES.password);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login, isLoading } = useAuth();
 
@@ -108,7 +109,7 @@ export default function Login() {
       </div>
 
       <div className="md:hidden flex items-center justify-center rounded-2xl overflow-hidden mt-4 w-60">
-        <LoginLogo  />
+        <LoginLogo />
       </div>
     </div>
   );

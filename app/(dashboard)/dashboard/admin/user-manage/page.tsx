@@ -14,7 +14,7 @@ import Vendor from "./vendor/vendor";
 import Landlord from "./landlord/landlord";
 
 export default function Page() {
-  type TabKey = "tenant" | "vendor" | "investor" ;
+  type TabKey = "tenant" | "vendor" | "investor";
 
   // Initialize the active tab with "tenant" as default
   const [activeTab, setActiveTab] = useState<TabKey>("tenant");
@@ -25,7 +25,7 @@ export default function Page() {
     if (
       savedTab === "tenant" ||
       savedTab === "vendor" ||
-      savedTab === "investor" 
+      savedTab === "investor"
     ) {
       setActiveTab(savedTab as TabKey);
     }
@@ -71,13 +71,13 @@ export default function Page() {
         }}
         className="my-6"
       >
-        <div className=" overflow-x-auto h-10 border-b-2 mb-4">
-          <TabsList className="gap-8">
+        <div className="overflow-x-auto h-10 border-b-2 mb-4">
+          <TabsList className="gap-4 sm:gap-8 min-w-max">
             {Object.entries(tabItemsTitle).map(([key, value]) => (
               <TabsTrigger
                 key={key}
                 value={key}
-                className="tab-item  px-8 text-lg font-semibold text-gray-600 hover:text-orange-800/70 border-transparent h-10 cursor-pointer"
+                className="tab-item px-4 sm:px-8 text-base sm:text-lg font-semibold text-gray-600 hover:text-orange-800/70 border-transparent h-10 cursor-pointer whitespace-nowrap"
               >
                 {value}
               </TabsTrigger>

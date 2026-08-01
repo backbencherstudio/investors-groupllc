@@ -32,9 +32,6 @@
 //   );
 // }
 
-
-
-
 import {
   Select,
   SelectTrigger,
@@ -66,7 +63,7 @@ export default function SelectDropDown({
       value={value || EMPTY_VALUE}
       onValueChange={(val) => onChange(val === EMPTY_VALUE ? "" : val)}
     >
-      <SelectTrigger className="w-full md:w-[140px]">
+      <SelectTrigger className="w-full sm:w-[140px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

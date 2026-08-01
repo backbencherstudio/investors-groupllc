@@ -1,8 +1,6 @@
 // UserTable.tsx
 "use client";
-import {
-  DashboardDataTable,
-} from "@/components/common/DashboardDataTable";
+import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
@@ -39,14 +37,13 @@ function transformToTableData(users: any[]): UserTableData[] {
     email: user.email,
     status: user.status || user.rentStatus,
 
-
     // Tenant specific
     leaseStart: user.leaseStart,
     leaseEnd: user.leaseEnd,
     propertyName: user.propertyName,
     propertyImage: user.propertyImage,
     propertyAddress: user.propertyAddress,
-    
+
     // Investor specific
     investCount: user.investCount,
     totalInvested: user.totalInvested,
@@ -59,7 +56,6 @@ function transformToTableData(users: any[]): UserTableData[] {
     // Vendor specific
     vendorType: user.vendorType,
     serviceCount: user.serviceCount,
-    
   }));
 }
 
@@ -78,15 +74,19 @@ function transformToTableData(users: any[]): UserTableData[] {
 
 export function UserTable({ userType, title }: UserTableProps) {
   const { search, setSearch } = useTableSearch();
-  
+
   const { filters, setFilter } = useTableFilters<{
     search?: string;
     status?: string;
   }>();
-  
+
   const { currentPage, setCurrentPage, itemsPerPage } = useTablePagination();
 
-  const { data: apiData, isLoading, isError } = useGetAllUsersQuery({
+  const {
+    data: apiData,
+    isLoading,
+    isError,
+  } = useGetAllUsersQuery({
     page: currentPage,
     limit: itemsPerPage,
     search: search || undefined,
@@ -135,20 +135,21 @@ export function UserTable({ userType, title }: UserTableProps) {
     <Card className="w-full overflow-hidden ">
       <div className="p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <h2 className="text-2xl font-bold">
-            {title || `${userType.charAt(0) + userType.slice(1).toLowerCase()}s`}
+          <h2 className="text-xl sm:text-2xl font-bold">
+            {title ||
+              `${userType.charAt(0) + userType.slice(1).toLowerCase()}s`}
           </h2>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="w-full md:w-64">
-              <SearchInput 
-                value={search} 
+          <div className="flex flex-wrap gap-3 w-full md:w-auto">
+            <div className="w-full sm:w-64">
+              <SearchInput
+                value={search}
                 onChange={setSearch}
                 placeholder="Search by name or contact..."
               />
             </div>
 
-            <div className="w-full md:w-36">
+            <div className="w-full sm:w-36">
               <SelectDropDown
                 value={filters.status || ""}
                 onChange={(val) => setFilter("status", val || undefined)}
@@ -159,10 +160,7 @@ export function UserTable({ userType, title }: UserTableProps) {
         </div>
 
         <div className="w-full overflow-x-auto">
-          <DashboardDataTable 
-            columns={columns} 
-            data={tableData}
-          />
+          <DashboardDataTable columns={columns} data={tableData} />
         </div>
 
         {pagination && pagination.totalPages > 1 && (

@@ -260,13 +260,15 @@ export default function RentPayment() {
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
-        <div className="flex flex-col md:flex-row justify-between md:items-center ">
-          <h2 className="text-2xl font-semibold">Tenant Rent Payment</h2>
-          <div className="flex flex-wrap gap-4">
-            <div className="w-full md:w-auto">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+          <h2 className="text-xl sm:text-2xl font-semibold">
+            Tenant Rent Payment
+          </h2>
+          <div className="flex flex-wrap gap-3 sm:gap-4 w-full md:w-auto">
+            <div className="w-full sm:w-auto">
               <SearchInput value={paymentSearch} onChange={setPaymentSearch} />
             </div>
-            <div className="w-[47.5%] md:w-auto">
+            <div className="w-full sm:w-auto">
               <SelectDropDown
                 value={paymentStatus}
                 onChange={setPaymentStatus}
@@ -278,7 +280,7 @@ export default function RentPayment() {
                 ]}
               />
             </div>
-            <div className="w-[47.5%] md:w-auto">
+            <div className="w-full sm:w-auto">
               <DatePicker value={paymentDate} onChange={setPaymentDate} />
             </div>
           </div>

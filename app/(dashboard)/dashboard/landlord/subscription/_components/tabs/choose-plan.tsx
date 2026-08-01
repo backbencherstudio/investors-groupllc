@@ -64,18 +64,17 @@ export default function ChoosePlan() {
   return (
     <>
       {/* plan info */}
-      <div className="p-6 rounded-[12px] space-y-6 bg-white">
+      <div className="p-4 sm:p-6 rounded-[12px] space-y-6 bg-white">
         <div className="">
           <div className="flex gap-2">
             <span>{giftIcon}</span>
-            <h4 className="text-[#101010] text-lg font-bold mb-1">
-              You’re currently on a Premium Trial
+            <h4 className="text-[#101010] text-base sm:text-lg font-bold mb-1">
+              You're currently on a Premium Trial
             </h4>
           </div>
-          <p className="text-[#707070] font-medium">
+          <p className="text-[#707070] font-medium text-sm sm:text-base">
             Your trial ends in 14 days. Upgrade now to avoid losing access to
-            premium features like <br /> investment tools and full maintenance
-            control.
+            premium features like investment tools and full maintenance control.
           </p>
         </div>
 
@@ -89,8 +88,8 @@ export default function ChoosePlan() {
       </h2>
 
       {/* price card */}
-      <div className="bg-white p-6 rounded-md">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+      <div className="bg-white p-4 sm:p-6 rounded-md">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 place-items-center">
           {plans.map((plan) => (
             <SubscriptionCard
               variant="landlord"

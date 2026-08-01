@@ -3,7 +3,6 @@ import { MoreVertical } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-
 import { useGetOverAllIncomeQuery } from "@/redux/features/dashboard/dashboardApi";
 import IncomeChart from "./IncomeChart";
 import Sidebar from "./team-sidebar";
@@ -37,16 +36,19 @@ type TooltipPayload = {
   name: string;
 }[];
 
-
-export default function IncomeChartSidebar({ data }: { data: DashboardOverviewData }) {
+export default function IncomeChartSidebar({
+  data,
+}: {
+  data: DashboardOverviewData;
+}) {
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-[75%] bg-gray-100 p-4 rounded-md">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+        <div className="w-full lg:w-[75%] bg-gray-100 p-3 sm:p-4 rounded-md">
           {/* 795px div content */}
           <IncomeChart />
         </div>
-        <div className="w-full lg:w-[25%]  rounded-md">
+        <div className="w-full lg:w-[25%] rounded-md">
           {/* 259px div content */}
           <Sidebar sidebarData={data} />
         </div>
@@ -54,4 +56,3 @@ export default function IncomeChartSidebar({ data }: { data: DashboardOverviewDa
     </>
   );
 }
-

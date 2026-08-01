@@ -26,22 +26,22 @@ export default function StatsCards({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
       {cardData?.map((item: any, idx: number) => (
         <div
           key={idx}
-          className="flex items-center bg-white rounded-xl shadow p-4 lg:p-6 min-w-[180px]"
+          className="flex items-center bg-white rounded-xl shadow p-3 sm:p-4 lg:p-6 w-full"
         >
           {/* Icon box */}
-          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-orange-50 mr-4 ">
+          <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-lg bg-orange-50 mr-3 sm:mr-4 shrink-0">
             {item.icon && <item.icon />}
           </div>
           {/* Number and label */}
-          <div>
-            <div className="text-3xl font-bold text-neutral-900 leading-tight">
+          <div className="min-w-0">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-neutral-900 leading-tight truncate">
               {item.value}
             </div>
-            <div className="text-gray-500 text-lg font-medium mt-1">
+            <div className="text-sm sm:text-base lg:text-lg text-gray-500 font-medium mt-1 truncate">
               {item.label}
             </div>
           </div>

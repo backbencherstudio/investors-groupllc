@@ -4,7 +4,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ProfileEditForm from "../others/account-setting";
 import PaymentSetting from "../others/payment-setting";
 
-
 // Define the structure for the subtabs
 interface Subtab {
   label: string;
@@ -32,12 +31,12 @@ export default function GeneralSettings() {
         onValueChange={(value) => setActiveSubtab(value)}
         className="w-full"
       >
-        <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4">
+        <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4 overflow-x-auto">
           {subtabs.map((subtab) => (
             <TabsTrigger
               key={subtab.value}
               value={subtab.value}
-              className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2 text-[#707070 font-normal"
+              className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2 text-[#707070 font-normal whitespace-nowrap"
             >
               {subtab.label}
             </TabsTrigger>

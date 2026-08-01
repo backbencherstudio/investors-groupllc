@@ -73,21 +73,21 @@ export default function NotificationDropdown() {
       notifications.map((notification) => ({
         ...notification,
         read: true,
-      }))
+      })),
     );
   };
 
   const markAsRead = (id: string) => {
     setNotifications(
       notifications.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification
-      )
+        notification.id === id ? { ...notification, read: true } : notification,
+      ),
     );
   };
 
   const removeNotification = (id: string) => {
     setNotifications(
-      notifications.filter((notification) => notification.id !== id)
+      notifications.filter((notification) => notification.id !== id),
     );
   };
 
@@ -116,7 +116,10 @@ export default function NotificationDropdown() {
           )} */}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="md:w-[440px] min-w-auto ml-4">
+      <DropdownMenuContent
+        align="end"
+        className="w-[calc(100vw-2rem)] sm:w-[440px] max-w-[440px] ml-2 sm:ml-4"
+      >
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gray-100">
@@ -142,13 +145,13 @@ export default function NotificationDropdown() {
                 key={notification.id}
                 className={cn(
                   "flex gap-3 p-3 hover:bg-gray-50",
-                  !notification.read && "bg-[#FCF1E6]"
+                  !notification.read && "bg-[#FCF1E6]",
                 )}
               >
                 <div
                   className={cn(
                     "mt-1.5  p-2 text-amber-500 rounded-md border border-[#FCF1E6] bg-amber-100/50",
-                    !notification.read && "bg-[#D80] text-white"
+                    !notification.read && "bg-[#D80] text-white",
                   )}
                 >
                   {getIcon(notification.type)}
@@ -158,7 +161,7 @@ export default function NotificationDropdown() {
                     <p
                       className={cn(
                         "text-sm font-medium",
-                        !notification.read && "font-semibold"
+                        !notification.read && "font-semibold",
                       )}
                     >
                       {notification.title}

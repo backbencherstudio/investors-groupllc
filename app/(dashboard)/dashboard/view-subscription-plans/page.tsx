@@ -54,7 +54,7 @@ export default function Page() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-10">
       <div className="mb-8 text-center">
         <h1 className="text-2xl font-semibold text-gray-900">
           Subscription Plans

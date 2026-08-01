@@ -31,11 +31,11 @@ export default function SubscriptionPage() {
       <div>
         <Tabs defaultValue="choose-plan">
           {/* tabs button */}
-          <div className="border-b-2 h-[42px] mb-4">
-            <TabsList className="gap-10 ">
+          <div className="border-b-2 h-[42px] mb-4 overflow-x-auto">
+            <TabsList className="gap-4 sm:gap-10 min-w-max">
               {tabItems.map((item) => (
                 <TabsTrigger
-                  className="h-[43px] px-6"
+                  className="h-[43px] px-4 sm:px-6 whitespace-nowrap"
                   key={item.value}
                   value={item.value}
                 >

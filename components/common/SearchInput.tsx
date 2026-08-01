@@ -12,7 +12,7 @@ export default function SearchInput({
   className?: string;
 }) {
   return (
-    <div className={`relative w-full lg:w-[250px] ${className}`}>
+    <div className={`relative w-full sm:w-[250px] ${className}`}>
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@ export default function SearchInput({
       <Input
         type="text"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="pl-9 pr-4 py-2 bg-zinc-100 rounded-md"
       />

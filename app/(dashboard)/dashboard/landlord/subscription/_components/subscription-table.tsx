@@ -1,8 +1,6 @@
 // SubscriptionTable.tsx
 "use client";
-import {
-  DashboardDataTable,
-} from "@/components/common/DashboardDataTable";
+import { DashboardDataTable } from "@/components/common/DashboardDataTable";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
@@ -15,9 +13,6 @@ import { useTableFilters } from "@/hooks/table/useTableFilters";
 import { useTablePagination } from "@/hooks/table/useTablePagination";
 import { SubscriptionListItem } from "@/redux/features/subscription/SubscriptionTypes";
 import { subscriptionColumns } from "./subscriptionTableCol";
-
-
-
 
 // types.ts
 export interface SubscriptionTableData {
@@ -32,16 +27,15 @@ export interface SubscriptionTableData {
   status: string;
 }
 
-
-
 // constants.ts
-export const STATUS_OPTIONS: { label: DisplayStatus; value: DisplayStatus }[] = [
-  { label: "Trial", value: "Trial" },
-  { label: "Paid", value: "Paid" },
-  { label: "Free Plan", value: "Free Plan" },
-  { label: "Active", value: "Active" },
-  { label: "Expired", value: "Expired" },
-];
+export const STATUS_OPTIONS: { label: DisplayStatus; value: DisplayStatus }[] =
+  [
+    { label: "Trial", value: "Trial" },
+    { label: "Paid", value: "Paid" },
+    { label: "Free Plan", value: "Free Plan" },
+    { label: "Active", value: "Active" },
+    { label: "Expired", value: "Expired" },
+  ];
 
 export const DISPLAY_TO_API_STATUS: Record<DisplayStatus, ApiStatus> = {
   Trial: "pending",
@@ -63,7 +57,12 @@ export const PERIOD_OPTIONS: { label: string; value: string | undefined }[] = [
 export const FALLBACK_AVATAR = "https://randomuser.me/api/portraits/lego/1.jpg";
 
 export type ApiStatus = "pending" | "active" | "past_due" | "canceled";
-export type DisplayStatus = "Trial" | "Paid" | "Free Plan" | "Active" | "Expired";
+export type DisplayStatus =
+  | "Trial"
+  | "Paid"
+  | "Free Plan"
+  | "Active"
+  | "Expired";
 
 // utils.ts
 export function deriveStatus(item: SubscriptionListItem): string {
@@ -71,9 +70,8 @@ export function deriveStatus(item: SubscriptionListItem): string {
   return new Date(item.expiryDate) > new Date() ? "Active" : "Expired";
 }
 
-
 export function transformToTableData(
-  items: SubscriptionListItem[]
+  items: SubscriptionListItem[],
 ): SubscriptionTableData[] {
   return items.map((item) => ({
     id: item.id,
@@ -86,7 +84,7 @@ export function transformToTableData(
       year: "numeric",
     }),
     planType: item.plan.name,
-    amount:   "-",
+    amount: "-",
     methods: "-",
     // amount: item.amount ? `$${item.amount}` : "-",
     // methods: item.paymentMethod || "-",
@@ -94,21 +92,24 @@ export function transformToTableData(
   }));
 }
 
-
 export function SubscriptionTable() {
   const { search, setSearch } = useTableSearch();
 
   const { filters, setFilter } = useTableFilters<{
     search?: string;
     status?: DisplayStatus;
-    period?: typeof PERIOD_OPTIONS[number]["value"];
+    period?: (typeof PERIOD_OPTIONS)[number]["value"];
   }>();
 
   const { currentPage, setCurrentPage, itemsPerPage } = useTablePagination();
 
   const periodValue = filters.period || undefined;
 
-  const { data: apiData, isLoading, isError } = useGetSubscriptionListQuery({
+  const {
+    data: apiData,
+    isLoading,
+    isError,
+  } = useGetSubscriptionListQuery({
     page: currentPage,
     limit: itemsPerPage,
     search: search || undefined,
@@ -150,14 +151,14 @@ export function SubscriptionTable() {
   return (
     <Card className="w-full overflow-hidden p-6">
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-        <h2 className="text-2xl font-semibold">Subscriptions</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold">Subscriptions</h2>
 
-        <div className="flex flex-wrap gap-4">
-          <div className="w-full md:w-auto">
+        <div className="flex flex-wrap gap-3 sm:gap-4 w-full md:w-auto">
+          <div className="w-full sm:w-auto">
             <SearchInput value={search} onChange={setSearch} />
           </div>
 
-          <div className="w-[47.5%] md:w-auto">
+          <div className="w-full sm:w-auto">
             <SelectDropDown
               value={filters.status || ""}
               onChange={(val) =>
@@ -167,11 +168,15 @@ export function SubscriptionTable() {
             />
           </div>
 
-          <div className="w-[47.5%] md:w-auto">
+          <div className="w-full sm:w-auto">
             <SelectDropDown
               value={filters.period || ""}
               onChange={(val) => {
-                setFilter("period", val as typeof PERIOD_OPTIONS[number]["value"] || undefined);
+                setFilter(
+                  "period",
+                  (val as (typeof PERIOD_OPTIONS)[number]["value"]) ||
+                    undefined,
+                );
               }}
               options={PERIOD_OPTIONS as { label: string; value: string }[]}
             />

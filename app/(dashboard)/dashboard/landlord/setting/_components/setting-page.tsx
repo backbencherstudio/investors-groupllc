@@ -65,12 +65,12 @@ export default function SettingPage() {
           onValueChange={(value) => setActiveSubtab(value)}
           className="w-full"
         >
-          <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4">
+          <TabsList className="flex gap-4 bg-transparent p-0 border-none mb-4 overflow-x-auto">
             {subtabs.map((subtab) => (
               <TabsTrigger
                 key={subtab.value}
                 value={subtab.value}
-                className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2 text-[#707070 font- cursor-pointer"
+                className="after:bg-transparent border rounded-md data-[state=active]:border-[#D80] data-[state=active]:bg-[#D80] data-[state=active]:text-white px-4 py-2 text-[#707070 font- cursor-pointer whitespace-nowrap"
               >
                 {subtab.label}
               </TabsTrigger>
