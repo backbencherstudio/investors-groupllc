@@ -4,7 +4,10 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState, useEffect, useMemo } from "react";
-import { DashboardDataTable, Column } from "@/components/common/DashboardDataTable";
+import {
+  DashboardDataTable,
+  Column,
+} from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
@@ -15,7 +18,6 @@ import type {
   RentPaymentItem,
   RentPaymentsQueryParams,
 } from "@/redux/features/dashboard/dashboardTypes";
-
 
 // Transform API data to match table format
 interface TenantData {
@@ -46,51 +48,62 @@ export default function TenantTable() {
   const itemsPerPage = 5;
 
   // Build query params
-  const queryParams = useMemo<RentPaymentsQueryParams>(() => ({
-    page: currentPage,
-    limit: itemsPerPage,
-    search: tenantSearch,
-    status: tenantStatus,
-    dateFrom: tenantDate ? tenantDate.toISOString() : "",
-    dateTo: "",
-  }), [tenantStatus, tenantSearch, tenantDate, currentPage, itemsPerPage]);
+  const queryParams = useMemo<RentPaymentsQueryParams>(
+    () => ({
+      page: currentPage,
+      limit: itemsPerPage,
+      search: tenantSearch,
+      status: tenantStatus,
+      dateFrom: tenantDate ? tenantDate.toISOString() : "",
+      dateTo: "",
+    }),
+    [tenantStatus, tenantSearch, tenantDate, currentPage, itemsPerPage],
+  );
 
-  const { data: apiResponse, isLoading, isError, error } =
-    useGetRentPaymentsQuery(queryParams);
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+    error,
+  } = useGetRentPaymentsQuery(queryParams);
 
   // Transform API data to table format
   const tenantData = useMemo(() => {
     if (!apiResponse?.data?.items) return [];
 
-    return apiResponse.data.items.map((item: RentPaymentItem): TenantData => ({
-      id: item.id,
-      displayId: item.displayId,
-      paidDate: item.paidDate ? new Date(item.paidDate).toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: '2-digit'
-      }) : '-',
-      paymentStatus: item.paymentStatus,
-      recipient: item.recipient.name,
-      recipientId: item.recipient.id,
-      recipientPhone: item.recipient.phone,
-      recipientAvatar: item.recipient.avatar,
-      property: item.property.name,
-      propertyAddress: item.property.address,
-      propertyImage: item.property.imageUrl,
-      amount: `$${item.amount.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`,
-      dueDate: new Date(item.dueDate).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric'
+    return apiResponse.data.items.map(
+      (item: RentPaymentItem): TenantData => ({
+        id: item.id,
+        displayId: item.displayId,
+        paidDate: item.paidDate
+          ? new Date(item.paidDate).toLocaleDateString("en-US", {
+              month: "2-digit",
+              day: "2-digit",
+              year: "2-digit",
+            })
+          : "-",
+        paymentStatus: item.paymentStatus,
+        recipient: item.recipient.name,
+        recipientId: item.recipient.id,
+        recipientPhone: item.recipient.phone,
+        recipientAvatar: item.recipient.avatar,
+        property: item.property.name,
+        propertyAddress: item.property.address,
+        propertyImage: item.property.imageUrl,
+        amount: `$${item.amount.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
+        dueDate: new Date(item.dueDate).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        status: item.status,
+        transactionId: item.transaction.id,
+        transactionGateway: item.transaction.gateway,
+        transactionStatus: item.transaction.status,
       }),
-      status: item.status,
-      transactionId: item.transaction.id,
-      transactionGateway: item.transaction.gateway,
-      transactionStatus: item.transaction.status,
-    }));
+    );
   }, [apiResponse]);
 
   const totalItems = apiResponse?.data?.pagination?.total || 0;
@@ -106,7 +119,8 @@ export default function TenantTable() {
     {
       header: "Payment",
       accessor: "paymentStatus",
-      render: (value) => <StatusBadge status={value ?? ""} />,    },
+      render: (value) => <StatusBadge status={value ?? ""} />,
+    },
     {
       header: "Recipient",
       accessor: "recipient",
@@ -115,7 +129,8 @@ export default function TenantTable() {
           {row.recipientAvatar && (
             <Image
               src={row.recipientAvatar}
-              alt={value ?? ""}              width={32}
+              alt={value ?? ""}
+              width={32}
               height={32}
               className="rounded-full object-cover"
             />
@@ -133,7 +148,8 @@ export default function TenantTable() {
     {
       header: "Property",
       accessor: "property",
-      render: (value, row: TenantData) => (        <div>
+      render: (value, row: TenantData) => (
+        <div>
           <div className="font-medium">{value}</div>
           {row.propertyAddress && (
             <div className="text-xs text-gray-500 truncate max-w-[200px]">
@@ -143,21 +159,22 @@ export default function TenantTable() {
         </div>
       ),
     },
-    { 
-      header: "Amount", 
+    {
+      header: "Amount",
       accessor: "amount",
-      render: (value) => (
-        <span className="font-medium">{value}</span>
-      )    },
+      render: (value) => <span className="font-medium">{value}</span>,
+    },
     { header: "Due date", accessor: "dueDate" },
     {
       header: "Status",
       accessor: "status",
-      render: (value) => <StatusBadge status={value ?? ""} />,    },
+      render: (value) => <StatusBadge status={value ?? ""} />,
+    },
     {
       header: "Action",
       accessor: "id",
-      render: (_value, row: TenantData) => (        <button 
+      render: (_value, row: TenantData) => (
+        <button
           className="text-gray-600 hover:text-primary transition-colors"
           onClick={() => console.log("View tenant:", row.id)}
         >
@@ -196,17 +213,19 @@ export default function TenantTable() {
     <div className="">
       <Card className="w-full overflow-hidden p-6">
         <div className="">
-          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-            <h2 className="text-2xl font-semibold">Tenant Rent Payment</h2>
-            <div className="flex flex-wrap gap-4 mt-4 md:mt-0">
-              <div className="w-full md:w-auto">
-                <SearchInput 
-                  value={tenantSearch} 
-                  onChange={setTenantSearch} 
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            <h2 className="text-xl sm:text-2xl font-semibold">
+              Tenant Rent Payment
+            </h2>
+            <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 md:mt-0 w-full md:w-auto">
+              <div className="w-full sm:w-auto">
+                <SearchInput
+                  value={tenantSearch}
+                  onChange={setTenantSearch}
                   placeholder="Search tenants..."
                 />
               </div>
-              {/* <div className="w-[47.5%] md:w-auto">
+              {/* <div className="w-full sm:w-auto">
                 <SelectDropDown
                   value={tenantStatus}
                   onChange={setTenantStatus}
@@ -219,17 +238,14 @@ export default function TenantTable() {
                   ]}
                 />
               </div>
-              <div className="w-[47.5%] md:w-auto">
+              <div className="w-full sm:w-auto">
                 <DatePicker value={tenantDate} onChange={setTenantDate} />
               </div> */}
             </div>
           </div>
-          
+
           <div className="w-full overflow-hidden mb-6">
-            <DashboardDataTable 
-              columns={tenantColumns} 
-              data={tenantData}
-            />
+            <DashboardDataTable columns={tenantColumns} data={tenantData} />
           </div>
 
           {/* Pagination */}

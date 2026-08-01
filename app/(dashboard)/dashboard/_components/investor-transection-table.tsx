@@ -4,7 +4,10 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState, useMemo, useEffect } from "react";
-import { DashboardDataTable, Column } from "@/components/common/DashboardDataTable";
+import {
+  DashboardDataTable,
+  Column,
+} from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
@@ -52,79 +55,84 @@ export default function InvestorTransactionTable() {
   const itemsPerPage = 5;
 
   // Build query params
-  const queryParams = useMemo<InvestorTransactionsQueryParams>(() => ({
-    page: currentPage,
-    limit: itemsPerPage,
-    search: investorSearch,
-    status: investorStatus,
-    dateFrom: investorDate ? investorDate.toISOString() : "",
-    dateTo: "",
-  }), [
-    investorStatus,
-    investorSearch,
-    investorDate,
-    currentPage,
-    itemsPerPage,
-  ]);
+  const queryParams = useMemo<InvestorTransactionsQueryParams>(
+    () => ({
+      page: currentPage,
+      limit: itemsPerPage,
+      search: investorSearch,
+      status: investorStatus,
+      dateFrom: investorDate ? investorDate.toISOString() : "",
+      dateTo: "",
+    }),
+    [investorStatus, investorSearch, investorDate, currentPage, itemsPerPage],
+  );
 
   // Fetch real data from API
-  const { 
-    data: apiResponse, 
-    isLoading, 
-    isError, 
-    error 
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+    error,
   } = useGetInvestorTransactionsQuery(queryParams);
 
   // Transform API data to table format
   const investorData = useMemo(() => {
     if (!apiResponse?.data?.items) return [];
 
-    return apiResponse.data.items.map((item: InvestorTransaction): InvestorTableData => {
-      // Format paid date
-      let formattedPaidDate = '-';
-      if (item.paidDate) {
-        formattedPaidDate = new Date(item.paidDate).toLocaleDateString('en-US', {
-          month: '2-digit',
-          day: '2-digit',
-          year: '2-digit'
-        });
-      }
+    return apiResponse.data.items.map(
+      (item: InvestorTransaction): InvestorTableData => {
+        // Format paid date
+        let formattedPaidDate = "-";
+        if (item.paidDate) {
+          formattedPaidDate = new Date(item.paidDate).toLocaleDateString(
+            "en-US",
+            {
+              month: "2-digit",
+              day: "2-digit",
+              year: "2-digit",
+            },
+          );
+        }
 
-      // Format amount
-      const formattedAmount = `$${item.amount.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`;
+        // Format amount
+        const formattedAmount = `$${item.amount.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`;
 
-      // Format created date
-      const formattedCreatedAt = new Date(item.createdAt).toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+        // Format created date
+        const formattedCreatedAt = new Date(item.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          },
+        );
 
-      return {
-        id: item.id,
-        displayId: item.displayId,
-        paidDate: formattedPaidDate,
-        paymentStatus: item.paymentStatus,
-        recipient: item.recipient.name,
-        recipientId: item.recipient.id,
-        recipientPhone: item.recipient.phone,
-        recipientAvatar: item.recipient.avatar,
-        property: item.property.name,
-        propertyAddress: item.property.address,
-        propertyImage: item.property.imageUrl,
-        amount: formattedAmount,
-        status: item.status,
-        investmentType: item.investmentType,
-        recordStatus: item.recordStatus,
-        createdAt: formattedCreatedAt,
-        action: "View",
-      };
-    });
+        return {
+          id: item.id,
+          displayId: item.displayId,
+          paidDate: formattedPaidDate,
+          paymentStatus: item.paymentStatus,
+          recipient: item.recipient.name,
+          recipientId: item.recipient.id,
+          recipientPhone: item.recipient.phone,
+          recipientAvatar: item.recipient.avatar,
+          property: item.property.name,
+          propertyAddress: item.property.address,
+          propertyImage: item.property.imageUrl,
+          amount: formattedAmount,
+          status: item.status,
+          investmentType: item.investmentType,
+          recordStatus: item.recordStatus,
+          createdAt: formattedCreatedAt,
+          action: "View",
+        };
+      },
+    );
   }, [apiResponse]);
 
   // Get pagination data from API
@@ -134,7 +142,13 @@ export default function InvestorTransactionTable() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [investorStatus, investorSearch, investorDate, investmentType, recordStatus]);
+  }, [
+    investorStatus,
+    investorSearch,
+    investorDate,
+    investmentType,
+    recordStatus,
+  ]);
 
   // Handle view action
   const handleView = (id: string) => {
@@ -143,16 +157,14 @@ export default function InvestorTransactionTable() {
   };
 
   const investorColumns: Column<InvestorTableData>[] = [
-    { 
-      header: "Paid Date", 
-      accessor: "paidDate" 
+    {
+      header: "Paid Date",
+      accessor: "paidDate",
     },
     {
       header: "Payment",
       accessor: "paymentStatus",
-      render: (value) => (
-        <StatusBadge status={value || ""} />
-      ),
+      render: (value) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Recipient",
@@ -177,9 +189,9 @@ export default function InvestorTransactionTable() {
         </div>
       ),
     },
-    { 
-      header: "ID", 
-      accessor: "displayId" 
+    {
+      header: "ID",
+      accessor: "displayId",
     },
     {
       header: "Property",
@@ -195,33 +207,25 @@ export default function InvestorTransactionTable() {
         </div>
       ),
     },
-    { 
-      header: "Amount", 
+    {
+      header: "Amount",
       accessor: "amount",
-      render: (value) => (
-        <span className="font-medium">{value}</span>
-      )
+      render: (value) => <span className="font-medium">{value}</span>,
     },
-    { 
-      header: "Status", 
+    {
+      header: "Status",
       accessor: "status",
-      render: (value) => (
-        <StatusBadge status={value || ""} />
-      ),
+      render: (value) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Investment Type",
       accessor: "investmentType",
-      render: (value) => (
-        <span className="capitalize">{value}</span>
-      ),
+      render: (value) => <span className="capitalize">{value}</span>,
     },
     {
       header: "Record Status",
       accessor: "recordStatus",
-      render: (value) => (
-        <StatusBadge status={value || ""} />
-      ),
+      render: (value) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Created At",
@@ -231,7 +235,7 @@ export default function InvestorTransactionTable() {
       header: "Action",
       accessor: "id",
       render: (_value, row: InvestorTableData) => (
-        <button 
+        <button
           className="text-gray-600 hover:text-primary transition-colors"
           onClick={() => handleView(row.id)}
         >
@@ -270,13 +274,15 @@ export default function InvestorTransactionTable() {
     <div className="">
       <Card className="w-full overflow-hidden p-6">
         <div className="">
-          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-            <h2 className="text-2xl font-semibold">Investor Transactions</h2>
-            <div className="flex flex-wrap gap-4 mt-4 md:mt-0">
-              <div className="w-full md:w-auto">
-                <SearchInput 
-                  value={investorSearch} 
-                  onChange={setInvestorSearch} 
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            <h2 className="text-xl sm:text-2xl font-semibold">
+              Investor Transactions
+            </h2>
+            <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 md:mt-0 w-full md:w-auto">
+              <div className="w-full sm:w-auto">
+                <SearchInput
+                  value={investorSearch}
+                  onChange={setInvestorSearch}
                   placeholder="Search investors..."
                 />
               </div>
@@ -324,11 +330,11 @@ export default function InvestorTransactionTable() {
               </div> */}
             </div>
           </div>
-          
+
           <div className="w-full overflow-hidden mb-6">
-            <DashboardDataTable 
-              columns={investorColumns} 
-              data={investorData} 
+            <DashboardDataTable
+              columns={investorColumns}
+              data={investorData}
               // emptyMessage="No investor transactions found"
             />
           </div>

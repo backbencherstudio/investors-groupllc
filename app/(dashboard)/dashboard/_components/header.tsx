@@ -46,21 +46,21 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   }, [open]);
 
   return (
-    <div className="w-full flex items-center justify-between px-4 md:px-6 pt-[32px] pb-[24px] bg-white">
-      <div className="flex items-center gap-2">
+    <div className="w-full flex items-center justify-between px-3 sm:px-4 md:px-6 pt-4 sm:pt-6 md:pt-[32px] pb-3 sm:pb-4 md:pb-[24px] bg-white">
+      <div className="flex items-center gap-2 min-w-0">
         {/* Mobile Menu Trigger */}
         <button
           onClick={onMobileMenuClick}
-          className="lg:hidden p-1 hover:bg-zinc-100 rounded-md"
+          className="lg:hidden p-1 hover:bg-zinc-100 rounded-md shrink-0"
         >
           <Menu className="h-6 w-6 text-zinc-700" />
         </button>
-        <h1 className="text-xl md:text-2xl font-semibold text-zinc-900">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-zinc-900 truncate">
           <span className=" capitalize">{role} </span> Dashboard
         </h1>
       </div>
       {/* Right section */}
-      <div className="flex items-center gap-4 relative">
+      <div className="flex items-center gap-2 sm:gap-4 relative shrink-0">
         {/* Search Input - Hidden on mobile */}
         <div className="hidden md:block relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
@@ -93,7 +93,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         {/* Profile Image and Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
-            className="flex items-center cursor-pointer border rounded-full w-10 h-10 "
+            className="flex items-center cursor-pointer border rounded-full w-9 h-9 sm:w-10 sm:h-10"
             onClick={() => setOpen((v) => !v)}
             aria-label="Open user menu"
           >

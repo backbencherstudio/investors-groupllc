@@ -4,13 +4,19 @@ import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import React, { useState, useMemo, useEffect } from "react";
-import { DashboardDataTable, Column } from "@/components/common/DashboardDataTable";
+import {
+  DashboardDataTable,
+  Column,
+} from "@/components/common/DashboardDataTable";
 import StatusBadge from "@/components/common/StatusBadges";
 import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 import { useGetWithdrawalsQuery } from "@/redux/features/dashboard/dashboardApi";
-import type { WithdrawalItem, WithdrawalsQueryParams } from "@/redux/features/dashboard/dashboardTypes";
+import type {
+  WithdrawalItem,
+  WithdrawalsQueryParams,
+} from "@/redux/features/dashboard/dashboardTypes";
 import { format } from "date-fns";
 
 interface WithdrawalTableData {
@@ -58,52 +64,56 @@ export default function WithdrawalTable() {
 
     // Remove undefined values (matches buildWithdrawalsParams behavior)
     return Object.fromEntries(
-      Object.entries(params).filter(([, value]) => value !== undefined)
+      Object.entries(params).filter(([, value]) => value !== undefined),
     ) as WithdrawalsQueryParams;
   }, [status, search, userType, fromDate, toDate, currentPage]);
 
   // Fetch real data from API
-  const { 
-    data: apiResponse, 
-    isLoading, 
-    isError, 
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
     error,
-    refetch
+    refetch,
   } = useGetWithdrawalsQuery(queryParams);
 
   // Transform API data to table format
   const withdrawalData = useMemo(() => {
     if (!apiResponse?.data?.items) return [];
 
-    return apiResponse.data.items.map((item: WithdrawalItem): WithdrawalTableData => {
-      const formattedRequestDate = new Date(item.requestDate).toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+    return apiResponse.data.items.map(
+      (item: WithdrawalItem): WithdrawalTableData => {
+        const formattedRequestDate = new Date(
+          item.requestDate,
+        ).toLocaleDateString("en-US", {
+          month: "2-digit",
+          day: "2-digit",
+          year: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
-      const formattedAmount = `$${item.amount.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`;
+        const formattedAmount = `$${item.amount.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`;
 
-      return {
-        id: item.id,
-        displayId: item.displayId,
-        requestDate: formattedRequestDate,
-        name: item.name,
-        phone: item.phone,
-        avatar: item.avatar,
-        userType: item.userType,
-        amount: formattedAmount,
-        method: item.method,
-        status: item.status,
-        statusLabel: item.statusLabel,
-        action: "View",
-      };
-    });
+        return {
+          id: item.id,
+          displayId: item.displayId,
+          requestDate: formattedRequestDate,
+          name: item.name,
+          phone: item.phone,
+          avatar: item.avatar,
+          userType: item.userType,
+          amount: formattedAmount,
+          method: item.method,
+          status: item.status,
+          statusLabel: item.statusLabel,
+          action: "View",
+        };
+      },
+    );
   }, [apiResponse]);
 
   const totalItems = apiResponse?.data?.pagination?.total || 0;
@@ -125,9 +135,9 @@ export default function WithdrawalTable() {
 
   const columns: Column<WithdrawalTableData>[] = [
     { header: "Request Date", accessor: "requestDate" },
-    { 
-      header: "ID", 
-      accessor: "displayId" 
+    {
+      header: "ID",
+      accessor: "displayId",
     },
     {
       header: "User",
@@ -144,36 +154,28 @@ export default function WithdrawalTable() {
     {
       header: "User Type",
       accessor: "userType",
-      render: (value) => (
-        <StatusBadge status={value || ""} />
-      ),
+      render: (value) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Amount",
       accessor: "amount",
-      render: (value) => (
-        <span className="font-medium">{value}</span>
-      )
+      render: (value) => <span className="font-medium">{value}</span>,
     },
     {
       header: "Method",
       accessor: "method",
-      render: (value) => (
-        <span className="capitalize">{value}</span>
-      ),
+      render: (value) => <span className="capitalize">{value}</span>,
     },
     {
       header: "Status",
       accessor: "status",
-      render: (value) => (
-        <StatusBadge status={value || ""} />
-      ),
+      render: (value) => <StatusBadge status={value || ""} />,
     },
     {
       header: "Action",
       accessor: "id",
       render: (_value, row: WithdrawalTableData) => (
-        <button 
+        <button
           className="text-gray-600 hover:text-primary transition-colors"
           onClick={() => handleView(row.id)}
         >
@@ -216,17 +218,17 @@ export default function WithdrawalTable() {
 
   return (
     <Card className="w-full overflow-hidden p-6">
-      <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-        <h2 className="text-2xl font-semibold">Withdrawals</h2>
-        <div className="flex flex-wrap gap-4 mt-4 md:mt-0">
-          <div className="w-full md:w-auto">
-            <SearchInput 
-              value={search} 
-              onChange={setSearch} 
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-semibold">Withdrawals</h2>
+        <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 md:mt-0 w-full md:w-auto">
+          <div className="w-full sm:w-auto">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
               placeholder="Search by name or ID..."
             />
           </div>
-          <div className="w-[47.5%] md:w-auto">
+          <div className="w-full sm:w-auto">
             <SelectDropDown
               value={status}
               onChange={setStatus}
@@ -240,7 +242,7 @@ export default function WithdrawalTable() {
               ]}
             />
           </div>
-          <div className="w-[47.5%] md:w-auto">
+          <div className="w-full sm:w-auto">
             <SelectDropDown
               value={userType}
               onChange={setUserType}
@@ -252,7 +254,7 @@ export default function WithdrawalTable() {
               ]}
             />
           </div>
-          <div className="w-[47.5%] md:w-auto">
+          <div className="w-full sm:w-auto">
             <SelectDropDown
               value={method}
               onChange={setMethod}
@@ -266,26 +268,26 @@ export default function WithdrawalTable() {
               ]}
             />
           </div>
-          <div className="w-[47.5%] md:w-auto">
-            <DatePicker 
-              value={fromDate} 
+          <div className="w-full sm:w-auto">
+            <DatePicker
+              value={fromDate}
               onChange={setFromDate}
               // placeholderText="From Date"
             />
           </div>
-          <div className="w-[47.5%] md:w-auto">
-            <DatePicker 
-              value={toDate} 
+          <div className="w-full sm:w-auto">
+            <DatePicker
+              value={toDate}
               onChange={setToDate}
               // placeholderText="To Date"
             />
           </div>
         </div>
       </div>
-      
+
       <div className="w-full overflow-hidden mb-6">
-        <DashboardDataTable 
-          columns={columns} 
+        <DashboardDataTable
+          columns={columns}
           data={withdrawalData}
           // emptyMessage="No withdrawals found"
         />

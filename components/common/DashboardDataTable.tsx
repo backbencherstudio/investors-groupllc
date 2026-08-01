@@ -31,8 +31,8 @@ export function DashboardDataTable<T extends { id: string | number }>({
   return (
     <div className="relative w-full">
       <div className="rounded-md border overflow-hidden">
-        <div className="w-full overflow-x-auto ">
-          <div className="min-w-[800px] md:min-w-0 ">
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-[600px]">
             <Table>
               <TableHeader className="bg-[#F5F5F5] rounded-t-md">
                 <TableRow>
@@ -41,7 +41,7 @@ export function DashboardDataTable<T extends { id: string | number }>({
                       key={idx}
                       className={`${
                         col.className || ""
-                      } whitespace-rnowap text-[#707070]`}
+                      } whitespace-nowrap text-[#707070]`}
                     >
                       {col.header}
                     </TableHead>

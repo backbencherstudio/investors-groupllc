@@ -87,12 +87,12 @@ export function TablePagination({
         {`Showing ${startIdx}–${endIdx} of ${total} results`}
       </div>
 
-      <nav className="inline-flex rounded-lg border border-zinc-200 bg-white overflow-hidden">
+      <nav className="inline-flex rounded-lg border border-zinc-200 bg-white overflow-x-auto max-w-full">
         <ul className="flex divide-x divide-zinc-200">
           {showFirstLast && (
             <li>
               <button
-                className="px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-3 md:px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 onClick={() => onPageChange(1)}
                 disabled={page === 1}
               >
@@ -103,7 +103,7 @@ export function TablePagination({
 
           <li>
             <button
-              className="px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 md:px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               onClick={() => onPageChange(page - 1)}
               disabled={page === 1}
             >
@@ -114,12 +114,12 @@ export function TablePagination({
           {pages.map((p, index) => (
             <li key={index}>
               {p === "..." ? (
-                <span className="px-4 py-2 text-sm text-zinc-500 bg-white select-none">
+                <span className="px-3 md:px-4 py-2 text-sm text-zinc-500 bg-white select-none">
                   ...
                 </span>
               ) : (
                 <button
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 text-sm font-medium transition-colors ${
                     p === page
                       ? "bg-orange-500 text-white"
                       : "bg-white text-zinc-700 hover:bg-zinc-100"
@@ -134,7 +134,7 @@ export function TablePagination({
 
           <li>
             <button
-              className="px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 md:px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               onClick={() => onPageChange(page + 1)}
               disabled={page === totalPages}
             >
@@ -145,7 +145,7 @@ export function TablePagination({
           {showFirstLast && (
             <li>
               <button
-                className="px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-3 md:px-4 py-2 text-sm text-zinc-500 bg-white hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 onClick={() => onPageChange(totalPages)}
                 disabled={page === totalPages}
               >

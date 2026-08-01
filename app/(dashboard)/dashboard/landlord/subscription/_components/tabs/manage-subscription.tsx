@@ -4,7 +4,7 @@ import { SubscriptionTable } from "../subscription-table";
 export default function ManageSubscription() {
   return (
     <div className="space-y-6">
-      <div className="p-6 rounded-xl bg-white space-y-4">
+      <div className="p-4 sm:p-6 rounded-xl bg-white space-y-4">
         <div>
           <p className="text-[#707070] mb-1">Premium</p>
           <h4 className="text-[#101010] font-semibold text-lg">

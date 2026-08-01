@@ -24,7 +24,7 @@ export const SubscriptionCard = ({
   onGetStarted,
 }: PriceCard) => {
   return (
-    <Card className="w-full rounded-md py-4 gap-3 max-w-md ">
+    <Card className="w-full rounded-md py-4 gap-3 max-w-md">
       <CardHeader className="px-4">
         <div className="flex justify-between items-center">
           <h3 className="font-semibold text-[#404040]">{data.name}</h3>
