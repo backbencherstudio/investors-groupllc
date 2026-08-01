@@ -1,46 +1,66 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
-import { SubscriptionCard } from "../../../../_components/common/PriceCard";
+import {
+  useGetViewSubscriptionPlansQuery,
+  useSubscriptionCreateMutation,
+} from "@/redux/features/landlord/dashboard/subscription";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { SubscriptionCard } from "@/app/(dashboard)/dashboard/_components/common/PriceCard";
 
-// fake data
-const pricingPlans = [
-  {
-    id: "standard",
-    name: "Standard",
-    price: "$0/monthly",
-    description: "Unlock exclusive features for a better rental experience.",
-    features: [
-      { label: "Add & manage rental listings", included: true },
-      { label: "Communicate with tenants", included: true },
-      { label: "Access basic contractor messaging", included: true },
-      { label: "No investment access", included: false },
-      { label: "No full maintenance control", included: false },
-      { label: "No advanced contractor tools", included: false },
-    ],
+interface Plan {
+  id: string;
+  name: string;
+  description: string;
+  amount: number;
+  currency: string;
+  interval: string;
+  trialDays: number;
+  benefits: string[];
+}
+
+export default function ChoosePlan() {
+  const { data, isLoading } = useGetViewSubscriptionPlansQuery({});
+  const [subscriptionCreate] = useSubscriptionCreateMutation();
+  const router = useRouter();
+
+  const plans: Plan[] = data ?? [];
+
+  const handleSubscriptionPlans = async (planId: string) => {
+    try {
+      const result = (await subscriptionCreate({ planId }).unwrap()) as {
+        success: boolean;
+        data?: { checkoutUrl?: string };
+      };
+      if (result?.success) {
+        router.push(result?.data?.checkoutUrl ?? "");
+      }
+      // console.log("result --->", result);
+    } catch (error: any) {
+      // console.error("Subscription create failed --->", error?.data?.error);
+      toast.error(error?.data?.error);
+    }
+  };
+
+  const formatPrice = (plan: Plan) => {
+    const symbol = plan.currency === "usd" ? "$" : plan.currency + " ";
+    const amount = (plan.amount / 100).toFixed(0);
+    return `${symbol}${amount}/${plan.interval}`;
+  };
+
+  const mapPlanToCard = (plan: Plan) => ({
+    id: plan.id,
+    name: plan.name,
+    price: formatPrice(plan),
+    description: plan.description,
+    features: plan.benefits.map((benefit) => ({
+      label: benefit,
+      included: true,
+    })),
     isPopular: false,
     savings: "",
     editIcon: true,
-  },
-  {
-    id: "premium",
-    name: "Premium",
-    price: "$299/monthly",
-    description: "Unlock exclusive features for a better rental experience.",
-    features: [
-      { label: "Add & manage rental listings", included: true },
-      { label: "Communicate with tenants", included: true },
-      { label: "Access contractor messaging", included: true },
-      { label: "Investment access", included: true },
-      { label: "Full maintenance control dashboard", included: true },
-      { label: "Contractor coordination tools", included: true },
-    ],
-    isPopular: true,
-    savings: "Save 10%",
-    editIcon: true,
-  },
-];
+  });
 
-export default function ChoosePlan() {
   return (
     <>
       {/* plan info */}
@@ -64,13 +84,20 @@ export default function ChoosePlan() {
         </Button>
       </div>
 
-      <h2 className="font-semibold text-[#170A00] text-lg my-6">Choose Your Plan</h2>
+      <h2 className="font-semibold text-[#170A00] text-lg my-6">
+        Choose Your Plan
+      </h2>
 
       {/* price card */}
       <div className="bg-white p-6 rounded-md">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
-          {pricingPlans.map((plan) => (
-            <SubscriptionCard variant="landlord" key={plan.id} data={plan} />
+          {plans.map((plan) => (
+            <SubscriptionCard
+              variant="landlord"
+              key={plan.id}
+              data={mapPlanToCard(plan)}
+              onGetStarted={handleSubscriptionPlans}
+            />
           ))}
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function InvestmentProperty() {
       <StatsCards />
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-          <h2 className="text-2xl font-semibold">My Property List</h2>
+          <h2 className="text-2xl font-semibold">Investment Property</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto cursor-pointer">
               <SearchInput
@@ -33,13 +33,13 @@ export default function InvestmentProperty() {
               />
             </div>
 
-            <Link
-              href="/dashboard/admin-dashboard/property/investment-property/add-investment-property"
+            {/* <Link
+              href="/dashboard/landlord/property/investment-property/add-investment-property"
               className="bg-[#DD8800] hover:bg-[#b97d05] text-white rounded-lg px-6 py-2 flex items-center gap-2 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
               Add Investment Property
-            </Link>
+            </Link> */}
 
             <div className="w-[47.5%] md:w-auto cursor-pointer">
               <SelectDropDown

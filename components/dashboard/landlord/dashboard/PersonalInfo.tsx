@@ -44,7 +44,7 @@ export default function PersonalInfo() {
                 </div>
                 <div className="flex items-center gap-2 relative">
                   <button
-                    className="bg-orange-500 hover:bg-orange-600 rounded-lg p-2 text-white cursor-pointer"
+                    className="bg-[#DD8800] rounded-lg p-2 text-white cursor-pointer"
                     title="Chat"
                   >
                     <MessageCircle className="w-5 h-5" />
