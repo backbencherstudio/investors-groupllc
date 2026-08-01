@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
@@ -27,9 +26,12 @@ type PasswordFormData = {
 };
 
 export default function ProfileEditForm() {
-  const { data: userData, isLoading: isLoadingUser } = useGetGeneralSettingsQuery();
-  const [updateGeneralSettings, { isLoading: isUpdatingProfile }] = useUpdateGeneralSettingsMutation();
-  const [updatePassword, { isLoading: isUpdatingPassword }] = useUpdatePasswordMutation();
+  const { data: userData, isLoading: isLoadingUser } =
+    useGetGeneralSettingsQuery();
+  const [updateGeneralSettings, { isLoading: isUpdatingProfile }] =
+    useUpdateGeneralSettingsMutation();
+  const [updatePassword, { isLoading: isUpdatingPassword }] =
+    useUpdatePasswordMutation();
 
   const {
     register: registerProfile,
@@ -73,10 +75,9 @@ export default function ProfileEditForm() {
 
       const result = await updateGeneralSettings(formData).unwrap();
       toast.success((result as any).message || "Profile updated successfully");
-      
+
       // Reset photo state
       setPhoto(null);
-      
     } catch (error: any) {
       console.error("Error updating profile:", error);
       toast.error(error?.data?.message || "Failed to update profile");
@@ -98,14 +99,13 @@ export default function ProfileEditForm() {
       }).unwrap();
 
       toast.success((result as any).message || "Password updated successfully");
-      
+
       // Clear password fields
       resetPassword({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
       });
-      
     } catch (error: any) {
       console.error("Error updating password:", error);
       toast.error(error?.data?.message || "Failed to update password");
@@ -116,7 +116,7 @@ export default function ProfileEditForm() {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setPhoto(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -139,7 +139,10 @@ export default function ProfileEditForm() {
   return (
     <div className="space-y-6 p-6 bg-white rounded-lg shadow">
       {/* Profile Update Form */}
-      <form onSubmit={handleSubmitProfile(onProfileSubmit)} className="space-y-4">
+      <form
+        onSubmit={handleSubmitProfile(onProfileSubmit)}
+        className="space-y-4"
+      >
         <div className="flex items-center gap-6">
           <img
             src={previewImage || "https://randomuser.me/img/creator_keith.png"}
@@ -182,7 +185,9 @@ export default function ProfileEditForm() {
               placeholder="Name"
             />
             {profileErrors.name && (
-              <p className="text-red-500 text-sm">{profileErrors.name.message}</p>
+              <p className="text-red-500 text-sm">
+                {profileErrors.name.message}
+              </p>
             )}
 
             <Input
@@ -197,25 +202,25 @@ export default function ProfileEditForm() {
               placeholder="Email"
             />
             {profileErrors.email && (
-              <p className="text-red-500 text-sm">{profileErrors.email.message}</p>
+              <p className="text-red-500 text-sm">
+                {profileErrors.email.message}
+              </p>
             )}
-            
+
             <Input
               {...registerProfile("phone", { required: "Phone is required" })}
               placeholder="Phone"
             />
             {profileErrors.phone && (
-              <p className="text-red-500 text-sm">{profileErrors.phone.message}</p>
+              <p className="text-red-500 text-sm">
+                {profileErrors.phone.message}
+              </p>
             )}
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button 
-            type="submit" 
-            variant="default"
-            disabled={isUpdatingProfile}
-          >
+          <Button type="submit" variant="default" disabled={isUpdatingProfile}>
             {isUpdatingProfile ? "Updating..." : "Update Profile"}
           </Button>
         </div>
@@ -224,7 +229,10 @@ export default function ProfileEditForm() {
       <hr className="my-6" />
 
       {/* Change Password Form */}
-      <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-4">
+      <form
+        onSubmit={handleSubmitPassword(onPasswordSubmit)}
+        className="space-y-4"
+      >
         <div className="flex flex-col md:flex-row justify-between items-start gap-4">
           <div className="w-full md:w-1/3 mt-0.5">
             <Label>Change Password</Label>
@@ -252,9 +260,11 @@ export default function ProfileEditForm() {
               </button>
             </div>
             {passwordErrors.currentPassword && (
-              <p className="text-red-500 text-sm">{passwordErrors.currentPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {passwordErrors.currentPassword.message}
+              </p>
             )}
-            
+
             <div className="relative">
               <Input
                 {...registerPassword("newPassword", {
@@ -277,15 +287,18 @@ export default function ProfileEditForm() {
               </button>
             </div>
             {passwordErrors.newPassword && (
-              <p className="text-red-500 text-sm">{passwordErrors.newPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {passwordErrors.newPassword.message}
+              </p>
             )}
-            
+
             <div className="relative">
               <Input
                 {...registerPassword("confirmPassword", {
                   required: "Please confirm your password",
                   validate: (value, formValues) =>
-                    value === formValues.newPassword || "Passwords do not match",
+                    value === formValues.newPassword ||
+                    "Passwords do not match",
                 })}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
@@ -300,17 +313,15 @@ export default function ProfileEditForm() {
               </button>
             </div>
             {passwordErrors.confirmPassword && (
-              <p className="text-red-500 text-sm">{passwordErrors.confirmPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {passwordErrors.confirmPassword.message}
+              </p>
             )}
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button 
-            type="submit" 
-            variant="default"
-            disabled={isUpdatingPassword}
-          >
+          <Button type="submit" variant="default" disabled={isUpdatingPassword}>
             {isUpdatingPassword ? "Updating..." : "Update Password"}
           </Button>
         </div>

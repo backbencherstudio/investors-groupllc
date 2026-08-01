@@ -1,5 +1,4 @@
 import AddButton from "@/components/common/AddButton";
-import React from "react";
 import { SubscriptionTable } from "../subscription-table";
 
 export default function ManageSubscription() {

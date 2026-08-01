@@ -12,8 +12,8 @@ import {
 
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ProfileEditForm from "./others/account-setting";
 import PaymentSetting from "./others/payment-setting";
+import ProfileEditForm from "../../../admin/setting/_components/others/account-setting";
 
 // Define the structure for the subtabs
 interface Subtab {
@@ -28,11 +28,11 @@ const subtabs: Subtab[] = [
     value: "account-setting",
     content: <ProfileEditForm />,
   },
-  {
-    label: "Payment Setting",
-    value: "payment-setting",
-    content: <PaymentSetting />,
-  },
+  // {
+  //   label: "Payment Setting",
+  //   value: "payment-setting",
+  //   content: <PaymentSetting />,
+  // },
 ];
 
 export default function SettingPage() {
