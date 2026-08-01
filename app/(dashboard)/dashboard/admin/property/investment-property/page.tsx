@@ -7,8 +7,9 @@ import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
 import InvestmentCard from "./_components/investment-card";
-import PropertyStats from "./_components/property-stats";
-import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
+import InvestorPropertyStats from "./_components/investor-property-stats";
+import { useGetInvestmentPropertiesListQuery } from "@/redux/features/apartments/apartmentsApi";
+import { InvestmentApartment } from "@/redux/features/apartments/apartmentsTypes";
 
 const tabs = [
   {
@@ -23,122 +24,28 @@ const tabs = [
   },
 ];
 
-// 1. Add fake property data
-const investmentList = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Darlene Robertson",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Ralph Edwards",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80",
-    status: "Rented",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: {
-      name: "Wade Warren",
-      avatar: "https://randomuser.me/api/portraits/men/43.jpg",
-    },
-    ownerLabel: "Rented by",
-  },
-  {
-    id: 4,
-    image:
-      "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    status: "For Rent",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-  {
-    id: 5,
-    image:
-      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80",
-    status: "For Rent",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-  {
-    id: 6,
-    image:
-      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    status: "For Sale",
-    title: "Elm Apartment",
-    price: 3000,
-    address: "1234 Elm Street, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    year: 1,
-    floor: 12,
-    area: 950,
-    owner: null,
-    ownerLabel: null,
-  },
-];
-
 export default function InvestmentProperty() {
   const [propertyType, setPropertyType] = useState("");
   const [propertySearch, setPropertySearch] = useState("");
-  // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(investmentList.length / itemsPerPage);
+  const itemsPerPage = 6;
+
+  // RTK Query parameters
+  const {
+    data: investmentProperty,
+    isLoading,
+    isError,
+  } = useGetInvestmentPropertiesListQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    searchTerm: propertySearch,
+    investmentType: propertyType ? propertyType.toLowerCase() : undefined,
+  });
+
+  const apartmentsList: InvestmentApartment[] = investmentProperty?.data || [];
+  const meta = investmentProperty?.meta;
+  const totalPages = meta?.totalPages || 1;
+  const totalResults = meta?.total || 0;
 
   return (
     <div>
@@ -177,8 +84,8 @@ export default function InvestmentProperty() {
         </div>
       </div>
 
-      <StatsCards />
-      <PropertyStats />
+      <InvestorPropertyStats />
+
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <h2 className="text-2xl font-semibold">My Property List</h2>
@@ -186,7 +93,10 @@ export default function InvestmentProperty() {
             <div className="w-full md:w-auto cursor-pointer">
               <SearchInput
                 value={propertySearch}
-                onChange={setPropertySearch}
+                onChange={(value) => {
+                  setPropertySearch(value);
+                  setCurrentPage(1); // Reset page to 1 on search
+                }}
               />
             </div>
 
@@ -201,8 +111,12 @@ export default function InvestmentProperty() {
             <div className="w-[47.5%] md:w-auto cursor-pointer">
               <SelectDropDown
                 value={propertyType}
-                onChange={setPropertyType}
+                onChange={(value) => {
+                  setPropertyType(value);
+                  setCurrentPage(1); // Reset page to 1 on filter
+                }}
                 options={[
+                  { label: "All Types", value: "" },
                   { label: "Passive", value: "Passive" },
                   { label: "Active", value: "Active" },
                 ]}
@@ -211,21 +125,43 @@ export default function InvestmentProperty() {
           </div>
         </div>
 
-        {/* Card Data */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {investmentList.map((investment) => (
-            <InvestmentCard key={investment.id} investment={investment} />
-          ))}
-        </div>
+        {/* Loading and Error States */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-10">
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
+                className="h-64 bg-gray-100 animate-pulse rounded-xl"
+              />
+            ))}
+          </div>
+        ) : isError ? (
+          <div className="text-center py-10 text-red-500 font-medium">
+            Failed to load properties. Please try again.
+          </div>
+        ) : apartmentsList.length === 0 ? (
+          <div className="text-center py-10 text-gray-500 font-medium">
+            No properties found.
+          </div>
+        ) : (
+          /* Card Data */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {apartmentsList.map((investment) => (
+              <InvestmentCard key={investment.id} investment={investment} />
+            ))}
+          </div>
+        )}
 
         {/* Pagination */}
-        <TablePagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          totalResults={investmentList.length}
-          pageSize={itemsPerPage}
-        />
+        {!isLoading && apartmentsList.length > 0 && (
+          <TablePagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            totalResults={totalResults}
+            pageSize={itemsPerPage}
+          />
+        )}
       </div>
     </div>
   );

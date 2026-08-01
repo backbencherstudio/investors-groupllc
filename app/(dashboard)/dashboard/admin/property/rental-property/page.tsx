@@ -6,12 +6,11 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
 import { TablePagination } from "@/components/common/TablePagination";
 import Link from "next/link";
-
 import { PropertyCard } from "./_components/property-card";
-import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
-import PropertyStats from "../investment-property/_components/property-stats";
+
 import { useGetRentalPropertiesListQuery } from "@/redux/features/apartments/apartmentsApi";
 import { Apartment } from "@/redux/features/apartments/apartmentsTypes";
+import RentalPropertyStats from "./_components/rental-property-stats";
 
 const tabs = [
   {
@@ -87,19 +86,17 @@ export default function RentalProperty() {
             {tabs.map((tab) => (
               <Link href={tab.href} key={tab.value}>
                 <button
-                  className={`relative px-6 py-3 text-[17px] font-semibold transition-colors duration-200 ${
-                    tab.value === "Rental Property"
+                  className={`relative px-6 py-3 text-[17px] font-semibold transition-colors duration-200 ${tab.value === "Rental Property"
                       ? "text-black"
                       : "text-gray-500"
-                  } cursor-pointer`}
+                    } cursor-pointer`}
                 >
                   {tab.label}
                   <span
-                    className={`absolute left-0 -bottom-[1px] h-0.5 w-full bg-orange-500 transition-transform duration-200 origin-left ${
-                      tab.value === "Rental Property"
+                    className={`absolute left-0 -bottom-[1px] h-0.5 w-full bg-orange-500 transition-transform duration-200 origin-left ${tab.value === "Rental Property"
                         ? "scale-x-100"
                         : "scale-x-0"
-                    }`}
+                      }`}
                   />
                 </button>
               </Link>
@@ -108,8 +105,9 @@ export default function RentalProperty() {
         </div>
       </div>
 
-      <StatsCards />
-      <PropertyStats />
+      <RentalPropertyStats />
+
+   
 
       <div className="w-full overflow-hidden p-6 mt-6 bg-white rounded-lg shadow-md">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
@@ -126,13 +124,13 @@ export default function RentalProperty() {
               />
             </div>
 
-            <Link
+            {/* <Link
               href="/dashboard/admin/property/rental-property/add-new-property"
               className="bg-[#DD8800] hover:bg-[#b97d05] text-white rounded-lg px-6 py-2 flex items-center gap-2 cursor-pointer transition-colors"
             >
               <Plus className="w-5 h-5" />
               Add New Property
-            </Link>
+            </Link> */}
 
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
