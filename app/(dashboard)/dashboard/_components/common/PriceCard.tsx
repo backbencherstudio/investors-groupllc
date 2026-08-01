@@ -15,9 +15,14 @@ type SubscriptionFeature = { included?: boolean; label?: string };
 type PriceCard = {
   variant?: string;
   data: any;
+  onGetStarted?: (planId: string) => void;
 };
 
-export const SubscriptionCard = ({ variant = "admin", data }: PriceCard) => {
+export const SubscriptionCard = ({
+  variant = "admin",
+  data,
+  onGetStarted,
+}: PriceCard) => {
   return (
     <Card className="w-full rounded-md py-4 gap-3 max-w-md ">
       <CardHeader className="px-4">
@@ -60,7 +65,10 @@ export const SubscriptionCard = ({ variant = "admin", data }: PriceCard) => {
 
       {variant === "landlord" && (
         <CardAction className="px-5 mt-4">
-          <Button  className={`${data.name === "Premium" && "bg-[#d80]"} cursor-pointer`}>
+          <Button
+            onClick={() => onGetStarted?.(data.id)}
+            className={`${data.name === "Premium" && "bg-[#d80]"} cursor-pointer`}
+          >
             Get Started
           </Button>
         </CardAction>

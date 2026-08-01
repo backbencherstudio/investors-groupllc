@@ -20,6 +20,15 @@ export const propertyApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    // ============================================
+    // Single investment apartment-checkout
+    // ============================================
+    getSingleInvestmentApartments: builder.query({
+      query: (id) => ({
+        url: `/investment/apartment-checkout/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -27,5 +36,8 @@ export const propertyApi = baseApi.injectEndpoints({
 // ============================================
 // EXPORT HOOKS
 // ============================================
-export const { useGetInvestmentPropertyQuery, useGetSingleApartmentsQuery } =
-  propertyApi;
+export const {
+  useGetInvestmentPropertyQuery,
+  useGetSingleApartmentsQuery,
+  useGetSingleInvestmentApartmentsQuery,
+} = propertyApi;

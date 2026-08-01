@@ -22,8 +22,8 @@ async function fetchAnalyticsData() {
   // Simulate network delay with a timeout
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(mockAnalyticsData); // Return the mocked data
-    }, 1000); // 1 second delay to simulate fetching
+      resolve(mockAnalyticsData);
+    }, 1000);
   });
 }
 
@@ -58,7 +58,7 @@ export default function Analytics({ statsData }: { statsData: DashboardOverviewD
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await fetchAnalyticsData(); // Fetch the mocked data
+        const data = await fetchAnalyticsData();
         setAnalyticsData(data as AnalyticsData);
       } catch (error) {
         console.error("Error fetching data:", error);

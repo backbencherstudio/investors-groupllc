@@ -1,6 +1,10 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import {
+  useGetInvestmentMyStatisticsQuery,
+  useGetLandlordStatsQuery,
+} from "@/redux/features/landlord/dashboard/dashboard";
+import { useGetInvestmentPropertyQuery } from "@/redux/features/landlord/property/propertyApi";
 import { useState } from "react";
 import {
   CartesianGrid,
@@ -11,34 +15,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import SearchInput from "@/components/common/SearchInput";
-import Link from "next/link";
-import SelectDropDown from "@/components/common/SelectDropDown";
+import InvestmentCard from "../property/investment-property/_components/investment-card";
 import { TablePagination } from "@/components/common/TablePagination";
-import StatsCards from "@/app/(dashboard)/dashboard/admin/subscription/_components/StatsCards";
-import { useGetApartmentsQuery } from "@/redux/features/landlord/dashboard/apartments";
-import PersonalInfo from "@/components/dashboard/landlord/dashboard/PersonalInfo";
-import Maintenance from "@/components/dashboard/landlord/dashboard/Maintenance";
-import {
-  useGetApartmentsStatsQuery,
-  useGetInvestmentMyStatisticsQuery,
-  useGetLandlordStatsQuery,
-} from "@/redux/features/landlord/dashboard/dashboard";
-import People from "@/components/icons/subscription/People";
-import Monthly from "@/components/icons/subscription/Monthly";
-import Diamond from "@/components/icons/subscription/Diamond";
-import Revinew from "@/components/icons/subscription/Revinew";
-import { PropertyCard } from "./property/rental-property/_components/property-card";
-import RentPayment from "./financial/_components/tables/tenant-rental-payment-table";
 
-export default function LandlordDashboard() {
-  const { data } = useGetApartmentsQuery({});
-  const apartments = data?.data || [];
-
-  // const { data: stats, isLoading, error } = useGetSubscriptionStatsQuery();
-  const { data: stats, isLoading, error } = useGetApartmentsStatsQuery({});
+export default function page() {
   const { data: landlordStats } = useGetLandlordStatsQuery({});
   const { data: ivestmentMyStatistics } = useGetInvestmentMyStatisticsQuery({});
+  const { data, isLoading } = useGetInvestmentPropertyQuery({});
+  const apiData = data?.data || [];
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(apiData.length / itemsPerPage);
 
   const chartData = (ivestmentMyStatistics?.data?.chartData || []).map(
     (item: { label: string; value: number; date: string }) => ({
@@ -48,66 +35,9 @@ export default function LandlordDashboard() {
       date: item.date,
     }),
   );
-
-  const [propertyType, setPropertyType] = useState("");
-  const [propertySearch, setPropertySearch] = useState("");
-  // const [propertyDate, setPropertyDate] = useState<Date | undefined>(undefined);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
-  const totalPages = Math.ceil(apartments.length / itemsPerPage);
-  const paginatedApartments = apartments.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
-  // Prepare card data from real API response
-  const cardData = [
-    {
-      icon: People,
-      value: stats?.propertyCount ?? 0,
-      label: "Properties",
-    },
-    {
-      icon: Monthly,
-      value: stats?.tenantCount ?? 0,
-      label: "Active Tenant",
-    },
-    {
-      icon: Diamond,
-      value: stats?.totalRentReceived ?? 0,
-      label: "Total Rent",
-    },
-    {
-      icon: Revinew,
-      value: `$${stats?.balance ?? 0}`,
-      label: "Balance",
-    },
-  ];
-
   return (
     <div>
-      <StatsCards cardData={cardData} isLoading={isLoading} error={error} />
-
-      <div className="my-4">
-        <div className="grid  grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Section */}
-          <PersonalInfo />
-
-          {/* Right Section */}
-          <Maintenance />
-        </div>
-      </div>
-
       <div className="bg-white rounded-xl p-4 shadow-sm w-full">
-        {/* <div className="flex justify-between mb-3">
-          <h2 className="text-2xl font-medium">Portfolio</h2>
-          <Link
-            href={"/dashboard/landlord/portfolio-details"}
-            className="border border-[##DD8800] text-[#DD8800] rounded-md px-6 py-2 font-medium text-[15px] w-fit"
-          >
-            View All
-          </Link>
-        </div> */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
           {/* Left: Total Investment Return */}
           <div className="col-span-1 lg:col-span-3 flex items-center justify-center bg-zinc-50 rounded-lg min-h-[140px]">
@@ -118,7 +48,7 @@ export default function LandlordDashboard() {
               <div className="text-3xl font-semibold text-neutral-900 mb-1">
                 $ {landlordStats?.data?.totalInvestmentReturnAmmount}
               </div>
-              {/* <div className="flex items-center justify-center gap-1 text-xs">
+              <div className="flex items-center justify-center gap-1 text-xs">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                   <path
                     d="M5 12l5 5L20 7"
@@ -128,9 +58,11 @@ export default function LandlordDashboard() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span className="text-green-500 font-medium">+$50 (0.5%)</span>
+                <span className="text-green-500 font-medium">
+                  {landlordStats?.data?.monthlyReturnPercentage} %
+                </span>
                 <span className="text-zinc-400">Monthly return</span>
-              </div> */}
+              </div>
             </div>
           </div>
 
@@ -246,62 +178,35 @@ export default function LandlordDashboard() {
         </div>
       </div>
 
-      <div className="w-full p-6 mt-6 bg-white rounded-lg shadow-md">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-          <h2 className="text-2xl font-semibold">My Property List</h2>
-          <div className="flex flex-wrap gap-4">
-            <div className="w-full md:w-auto cursor-pointer">
-              <SearchInput
-                value={propertySearch}
-                onChange={setPropertySearch}
-              />
-            </div>
-
-            <Link
-              href="/dashboard/admin-dashboard/property/rental-property/add-new-property"
-              className="bg-[#DD8800] hover:bg-[#b97d05] text-white rounded-lg px-6 py-2 flex items-center gap-2 cursor-pointer"
-            >
-              <Plus className="w-5 h-5" />
-              Add New Property
-            </Link>
-
-            <div className="w-[47.5%] md:w-auto cursor-pointer">
-              <SelectDropDown
-                value={propertyType}
-                onChange={setPropertyType}
-                options={[
-                  { label: "Property", value: "Property" },
-                  { label: "Room", value: "Room" },
-                ]}
-              />
-            </div>
+      {/* Card Data */}
+      <div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#DD8800]" />
           </div>
-        </div>
-        {/* Card Data */}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedApartments?.map((property: any) => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
-        </div>
+        ) : apiData.length === 0 ? (
+          <div className="flex justify-center items-center py-20 text-gray-400">
+            <p className="text-lg">No investment property found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {apiData.map((investment: any) => (
+              <InvestmentCard
+                key={investment.id || investment.apartmentId}
+                investment={investment}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Pagination */}
-        <div className="mt-6">
-          <TablePagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={(page) => {
-              setCurrentPage(page);
-            }}
-            totalResults={apartments.length}
-            pageSize={itemsPerPage}
-          />
-        </div>
-      </div>
-
-      {/* Data Table */}
-      <div className="mt-6">
-        <RentPayment />
+        <TablePagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalResults={apiData.length}
+          pageSize={itemsPerPage}
+        />
       </div>
     </div>
   );
