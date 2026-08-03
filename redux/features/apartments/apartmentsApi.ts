@@ -1,6 +1,6 @@
 import { baseApi } from "../api/baseApi";
 import { ApiResponse, InvestmentApartmentItem } from "./apartmentsDetailsTypes";
-import { FetchApartmentsResponse, FetchApartmentStatsResponse, GetApartmentsQueryParams, GetInvestmentApartmentsQueryParams, GetInvestmentApartmentsResponse, InvestorStatsResponse } from "./apartmentsTypes";
+import { FetchApartmentsResponse, FetchApartmentStatsResponse, GetApartmentsQueryParams, GetInvestmentApartmentsQueryParams, GetInvestmentApartmentsResponse, InvestorStatsResponse, RentalPropertyResponse } from "./apartmentsTypes";
 
 export const apartmentsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,8 +47,23 @@ export const apartmentsApi = baseApi.injectEndpoints({
       providesTags: ["Apartments"], // Optional: add if you handle cache invalidation
     }),
 
-    // ===============================
-    // Get single investment property
+    // ====================   Get single rental property    =============
+
+    getSingleRentalProperty: builder.query<
+    RentalPropertyResponse,
+      string
+    >({
+      query: (id: string) => ({
+        url: `/apartments/admin-all-apartments/details/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'InvestmentApartment', id }],
+
+    })
+
+    ,
+    // ==================  Get single investment property =============
+
     getSingleInvestmentProperty: builder.query<
       InvestmentApartmentItem,
       string
@@ -66,4 +81,4 @@ export const apartmentsApi = baseApi.injectEndpoints({
 })
 
 
-export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery } = apartmentsApi;   
+export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery, useGetSingleRentalPropertyQuery } = apartmentsApi;   

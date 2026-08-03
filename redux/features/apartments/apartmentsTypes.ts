@@ -201,3 +201,83 @@ export interface GetInvestmentApartmentsResponse {
   data: InvestmentApartment[];
   meta: MetaData;
 }
+
+// ============================================================================
+
+
+export interface RentalPropertyResponse {
+  success: boolean;
+  message: string;
+  data: ApartmentData;
+}
+
+export interface ApartmentData {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  builtYear: string; // ISO date string
+  price: number | null;
+  securityDeposit: number | null;
+  availabilityDate: string | null; // ISO date string
+  numberOffloors: number;
+  description: string;
+  utilitiesIncluded: string[];
+  petFriendly: boolean;
+  amenities: string[];
+  country: string;
+  video: string | null;
+  tourVideo: string;
+  isRented: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  landlordId: string;
+  adminaproved: boolean;
+  listingType: 'for_rent' | 'for_sale'; // assuming possible values
+  isFeatured: boolean;
+  units: Unit[];
+  images: Image[];
+  landlord: Landlord;
+  wishlisted: boolean;
+  hasAvailabilityNow: boolean;
+  availability: 'available' | 'rented' | 'unavailable'; // assuming possible values
+  otherPropertiesByLandlord: any[]; // define if structure is known
+}
+
+export interface Unit {
+  id: string;
+  apartmentId: string;
+  unitNumber: string;
+  floor: number;
+  bedrooms: number;
+  bathrooms: number;
+  sizeSqFt: number;
+  price: number;
+  securityDeposit: number | null;
+  availabilityDate: string | null; // ISO date string
+  amenities: string[];
+  leaseTerm: string;
+  isRented: boolean;
+  rentalLock: boolean;
+  rentedById: string | null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  availableNow: boolean;
+  availableFrom: string | null; // ISO date string
+}
+
+export interface Image {
+  id: string;
+  url: string;
+  apartmentId: string;
+  createdAt: string; // ISO date string
+  investmentApartmentId: string | null;
+}
+
+export interface Landlord {
+  id: string;
+  name: string;
+  avatar: string | null;
+}
