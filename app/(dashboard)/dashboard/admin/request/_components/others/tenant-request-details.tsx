@@ -75,13 +75,13 @@ export default function TenantRequestDetails({ reqId }: { reqId: string }) {
           <div className="flex flex-col gap-6 border-b border-zinc-200 pb-6">
             <div className="flex justify-between items-center ">
               {/* Left side - Tenant Info */}
-              <div className="flex items-center gap-4">
+              <div className="flex  items-center gap-4 shrink-0 ">
                 <Image
                   width={40}
                   height={40}
                   src={tenant.avatar}
                   alt={tenant.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full object-cover shrink-0"
                 />
                 <div>
                   <div className="font-semibold">{tenant.name}</div>
@@ -256,22 +256,6 @@ const LeaseDoc = () => {
         ))}
       </div>
 
-      {/* <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
-                <FileText className="w-5 h-5 text-red-500" />
-              </div>
-              <div>
-                <div className="font-medium text-gray-900 text-sm">
-                  {documents[2].name}
-                </div>
-                <div className="text-xs text-gray-500">{documents[2].size}</div>
-              </div>
-            </div>
-            <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-              <Download className="w-4 h-4 text-gray-600" />
-            </button>
-          </div> */}
     </div>
   );
 };

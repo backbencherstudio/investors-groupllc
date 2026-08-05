@@ -313,8 +313,10 @@ export interface PropertyTourRequestDetailsResponse {
 export interface GetPropertyTourRequestsQueryParams {
   page?: number;
   limit?: number;
-  search?: string;
-  status?: string;
-  from_date?: string;
-  to_date?: string;
+  [key: string]: any;
 }
+
+
+
+
+

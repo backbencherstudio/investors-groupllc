@@ -45,6 +45,7 @@ const useAuth = () => {
         return;
       }
       router.push("/dashboard");
+      
     },
     [loginMutation, dispatch, router],
   );

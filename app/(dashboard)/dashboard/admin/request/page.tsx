@@ -18,14 +18,15 @@ import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator"
 const tabs = [
   { label: "Tenant Requests", value: "tenant-requests" },
   { label: "Investment Applications", value: "investment-applications" },
-  { label: "Property Listing Requests", value: "property-listing-requests" },
+  // { label: "Property Listing Requests", value: "property-listing-requests" },
 ];
 // Sub-tabs data
 const subtabs = [
   { label: "Booking", value: "booking" },
-  { label: "Transfer", value: "transfer" },
+  // { label: "Transfer", value: "transfer" },
   { label: "Maintenance", value: "maintenance" },
   { label: "Property Tour", value: "property-tour" },
+  { label: "Apartment Request", value: "apartment-request" },
 ];
 export default function RequestPage() {
   const [activeTab, setActiveTab] = useState("tenant-requests");

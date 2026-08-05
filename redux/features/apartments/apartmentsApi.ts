@@ -1,6 +1,7 @@
 import { baseApi } from "../api/baseApi";
 import { ApiResponse, InvestmentApartmentItem } from "./apartmentsDetailsTypes";
 import { FetchApartmentsResponse, FetchApartmentStatsResponse, GetApartmentsQueryParams, GetInvestmentApartmentsQueryParams, GetInvestmentApartmentsResponse, InvestorStatsResponse, RentalPropertyResponse } from "./apartmentsTypes";
+import { CreateApiResponse, CreateInvestmentApartmentItem } from "./createPropertyTypes";
 
 export const apartmentsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -73,12 +74,29 @@ export const apartmentsApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
       providesTags: (result, error, id) => [{ type: 'InvestmentApartment', id }],
-      transformResponse: (response: ApiResponse<InvestmentApartmentItem>) =>
-        response.data,
+      transformResponse: (response: InvestmentApartmentItem) =>
+        response,
     }),
+
+
+     // Create investment property
+     createInvestmentProperty: builder.mutation<
+     CreateApiResponse<CreateInvestmentApartmentItem>,
+     FormData
+   >({
+     query: (formData) => ({
+       url: '/dashboard/a/investment-properties',
+       method: 'POST',
+       body: formData,
+       formData: true,
+     }),
+     invalidatesTags: ['InvestmentApartment'],
+
+  
+   }),
   }),
 
 })
 
 
-export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery, useGetSingleRentalPropertyQuery } = apartmentsApi;   
+export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery, useGetSingleRentalPropertyQuery, useCreateInvestmentPropertyMutation } = apartmentsApi;   

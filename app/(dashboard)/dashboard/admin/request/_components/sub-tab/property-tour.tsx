@@ -1,105 +1,56 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+
 import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
-import { useState } from "react";
+import DatePicker from "@/components/common/DatePicker";
+import StatusBadge from "@/components/common/StatusBadges";
+import { TablePagination } from "@/components/common/TablePagination";
+import TenantRequestDetails from "../others/tenant-request-details";
 import {
   DashboardDataTable,
   Column,
 } from "@/components/common/DashboardDataTable";
-// import Image from "next/image";
-import StatusBadge from "@/components/common/StatusBadges";
-import DatePicker from "@/components/common/DatePicker";
-import { TablePagination } from "@/components/common/TablePagination";
-import TenantRequestDetails from "../others/tenant-request-details";
-import Image from "next/image";
 
-interface MaintenanceData {
-  reqDate: string;
-  name: string;
-  id: string;
-  tourId: string;
+import { useGetPropertyTourRequestsQuery } from "@/redux/features/request/RequestApi";
+import { PropertyTourRequest } from "@/redux/features/request/RequestTypes";
+import PropertyTourDetails from "./PropertyTourDetails";
 
-  issueType: string;
-  property: string;
-  status: string;
-  action: string;
-  avatar: string;
-  phone: string;
-  propertyAddress: string;
-  requestId: string;
-}
-
-const maintenanceData: MaintenanceData[] = [
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00123",
-    tourId: "#T-00123",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Pending",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00123",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00124",
-    tourId: "#T-00124",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00124",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00125",
-    tourId: "#T-00125",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00125",
-  },
-];
 
 export default function PropertyTour() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
   const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(maintenanceData.length / itemsPerPage);
 
-  const tenantColumns: Column<MaintenanceData>[] = [
+  const itemsPerPage = 10;
+
+  const { data, isLoading, isFetching } = useGetPropertyTourRequestsQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    search: tenantSearch,
+    status: tenantStatus,
+    // date: tenantDate, // Uncomment if your API supports date filtering
+  });
+
+  const tenantColumns: Column<PropertyTourRequest>[] = [
     {
       header: "Request ID",
-      accessor: "name" as keyof MaintenanceData,
-      render: (value: string, row: MaintenanceData) => (
-        <div className="flex items-center gap-2">
+      accessor: "requestId",
+      render: (_, row) => (
+        <div className="flex items-center gap-2 shrink-0">
           <Image
-            src={row.avatar}
-            alt={value}
+            src={row.requester.avatar || "/placeholder-avatar.png"}
+            alt={row.requester.name}
             width={32}
             height={32}
-            className="rounded-full"
+            className="w-8 h-8 rounded-full object-cover shrink-0"
           />
           <div>
-            <div className="font-semibold">{value}</div>
+            <div className="font-semibold">{row.requester.name}</div>
             <div className="text-xs text-gray-500">{row.requestId}</div>
           </div>
         </div>
@@ -107,79 +58,111 @@ export default function PropertyTour() {
     },
     {
       header: "Tour ID",
-      accessor: "tourId" as keyof MaintenanceData,
+      accessor: "requestId",
     },
-    // { header: "Issue Type", accessor: "issueType" as keyof MaintenanceData },
     {
       header: "Property Info",
-      accessor: "property" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
+      accessor: "property",
+      render: (_, row) => (
         <div className="flex items-center gap-2">
           <Image
-            src={row.avatar}
-            alt={value || ""}
+            src={row.property.imageUrl || "/placeholder-property.png"}
+            alt={row.property.name}
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-md object-cover"
           />
           <div>
-            <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.requestId}</div>
+            <div className="font-semibold">{row.property.name}</div>
+            <div className="text-xs text-gray-500">
+              {row.property.address}
+            </div>
           </div>
         </div>
       ),
     },
-    { header: "Req Date", accessor: "reqDate" as keyof MaintenanceData },
+    {
+      header: "Req Date",
+      accessor: "requestedAt",
+      render: (value: any) =>
+        new Date(value).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+    },
     {
       header: "Status",
-      accessor: "status" as keyof MaintenanceData,
-      render: (value: string | undefined) => (
-        <StatusBadge status={value || ""} />
-      ),
+      accessor: "status",
+      render: (value: any) => <StatusBadge status={value} />,
     },
     {
       header: "Action",
-      accessor: "action" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
-        <TenantRequestDetails reqId={row.id} />
-      ),
+      accessor: "id",
+      render: (_, row) => <PropertyTourDetails reqId={row.id} />,
     },
   ];
+
+  if (isLoading || isFetching) {
+    return (
+      <Card className="p-6">
+        <div className="text-center py-10">Loading...</div>
+      </Card>
+    );
+  }
 
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-          <h2 className="text-2xl font-semibold">Property Tour Requests</h2>
+          <h2 className="text-2xl font-semibold">
+            Property Tour Requests
+          </h2>
+
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">
-              <SearchInput value={tenantSearch} onChange={setTenantSearch} />
+              <SearchInput
+                value={tenantSearch}
+                onChange={setTenantSearch}
+              />
             </div>
+
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
                 value={tenantStatus}
                 onChange={setTenantStatus}
-                options={[{ label: "Pending", value: "Pending" }, { label: "Assigned", value: "Assigned" }, { label: "Completed", value: "Completed" }]}
+                options={[
+                  { label: "All", value: "" },
+                  { label: "Pending", value: "pending" },
+                  { label: "In Review", value: "requested" },
+                  { label: "Approved", value: "approved" },
+                  { label: "Rejected", value: "rejected" },
+                ]}
               />
             </div>
+
             <div className="w-[47.5%] md:w-auto">
-              <DatePicker value={tenantDate} onChange={setTenantDate} />
+              <DatePicker
+                value={tenantDate}
+                onChange={setTenantDate}
+              />
             </div>
           </div>
         </div>
 
-        {/* Data Table */}
-        <div className="w-full overflow-hidden">
-          <DashboardDataTable columns={tenantColumns} data={maintenanceData} />
+        <div className="w-full overflow-hidden mt-6">
+          <DashboardDataTable
+            columns={tenantColumns}
+            data={data?.items ?? []}
+          />
         </div>
 
-        {/* Pagination */}
         <TablePagination
-          totalPages={totalPages}
           currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          totalResults={maintenanceData.length}
+          totalPages={data?.pagination.totalPages ?? 1}
+          totalResults={data?.pagination.total ?? 0}
           pageSize={itemsPerPage}
+          onPageChange={setCurrentPage}
         />
       </Card>
     </div>
