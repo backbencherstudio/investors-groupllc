@@ -4,6 +4,7 @@ import Booking from "./sub-tab/booking";
 import Transfer from "./sub-tab/transfer";
 import MaintenanceRequests from "./sub-tab/maintenance";
 import PropertyTour from "./sub-tab/property-tour";
+import ApartmentRequest from "./sub-tab/apartment-request";
 
 interface Subtab {
   label: string;
@@ -19,7 +20,11 @@ const loadSubtabContent = (subtabValue: string) => {
     return <MaintenanceRequests />;
   } else if (subtabValue === "property-tour") {
     return <PropertyTour />;
-  } else {
+  }
+  else if (subtabValue === "apartment-request") {
+    return <ApartmentRequest/>
+  }
+  else {
     return <div>Invalid Subtab</div>;
   }
 };
@@ -70,7 +75,7 @@ export default function TenantRequests({
         </TabsContent>
         <TabsContent value="property-tour"></TabsContent> */}
 
-        {["booking", "transfer", "maintenance", "property-tour"].map(
+        {["booking", "transfer", "maintenance", "property-tour", "apartment-request"].map(
           (item, idx) => (
             <TabsContent key={idx} value={item}>
               {loadSubtabContent(item)}

@@ -1,20 +1,18 @@
 "use client";
-// import { useEffect, useState } from "react";
-// import { Card } from "@/components/ui/card";
+
 import Tenants from "@/icons/Tenants";
 import { Landlords } from "@/icons/Landlords";
 import { Property } from "@/icons/Property";
 import { Vendors } from "@/icons/Vendors";
 
-// Replacing the data with static values from your design
-const analyticsData = {
-  totalApply: 45,
-  pending: 12,
-  approved: 29,
-  rejected: 4,
-};
 
-export default function InvestmentApplicationStats() {
+
+export default function InvestmentApplicationStats({ statsData }: any) {
+ 
+
+  const {total, pending, approved, rejected} = statsData || {};
+
+
   return (
     <>
       <div>
@@ -23,25 +21,25 @@ export default function InvestmentApplicationStats() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Total Apply"
-            value={analyticsData.totalApply}
+            value={total}
             icon={<Tenants />}
             bgColor="bg-[#F4F1E6]"
           />
           <StatCard
             title="Pending"
-            value={analyticsData.pending}
+            value={pending}
             icon={<Landlords />}
             bgColor="bg-[#FFF2E6]"
           />
           <StatCard
             title="Approved"
-            value={analyticsData.approved}
+            value={approved}
             icon={<Vendors />}
             bgColor="bg-[#E6F5F1]"
           />
           <StatCard
             title="Rejected"
-            value={analyticsData.rejected}
+            value={rejected}
             icon={<Property />}
             bgColor="bg-[#FFE6E6]"
           />

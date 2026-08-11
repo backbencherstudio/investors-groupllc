@@ -4,8 +4,6 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbItem,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
@@ -20,6 +18,7 @@ const tabs = [
   { label: "Investment Applications", value: "investment-applications" },
   // { label: "Property Listing Requests", value: "property-listing-requests" },
 ];
+
 // Sub-tabs data
 const subtabs = [
   { label: "Booking", value: "booking" },

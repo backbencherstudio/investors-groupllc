@@ -1,214 +1,219 @@
 import { Card } from "@/components/ui/card";
 import SearchInput from "@/components/common/SearchInput";
 import SelectDropDown from "@/components/common/SelectDropDown";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   DashboardDataTable,
   Column,
 } from "@/components/common/DashboardDataTable";
-// import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
-
 import Image from "next/image";
-import TenantRequestDetails from "./others/tenant-request-details";
+
 import InvestmentApplicationStats from "./others/investment-application-stats";
 
-interface MaintenanceData {
-  reqDate: string;
-  name: string;
-  id: string;
-  investmentId: string;
-
-  issueType: string;
-  property: string;
-  status: string;
-  action: string;
-  avatar: string;
-  phone: string;
-  propertyAddress: string;
-  requestId: string;
-  amount: string;
-}
-
-const investmentData: MaintenanceData[] = [
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00123",
-    investmentId: "#T-00123",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Pending",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00123",
-    amount: "$100,000",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00124",
-    investmentId: "#T-00124",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00124",
-    amount: "$100,000",
-  },
-  {
-    reqDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00125",
-    investmentId: "#T-00125",
-
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00125",
-    amount: "$100,000",
-  },
-];
+import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetInvestmentApplicationsQuery, useUpdateInvestmentApplicationStatusMutation } from "@/redux/features/request/RequestApi";
+import InvestmentApplicationDetails from "./others/InvestmentApplicationDetails";
+import { toast } from "sonner";
 
 function InvestmentApplicationsTable() {
-  const [tenantStatus, setTenantStatus] = useState("");
-  const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(investmentData.length / itemsPerPage);
+  const itemsPerPage = 10;
 
-  const tenantColumns: Column<MaintenanceData>[] = [
+  // Fetch data from API
+  const { data, isLoading, isError } = useGetInvestmentApplicationsQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    status: statusFilter || undefined,
+    search: searchTerm || undefined,
+  });
+
+ 
+  // console.log("Data is ", data?.stats)
+  const statsData= data?.stats;
+  console.log("Stats Data", statsData)
+
+  // Transform API data to match table format
+  const tableData = useMemo(() => {
+    if (!data?.items) return [];
+
+    return data.items.map((item) => ({
+      id: item.id,
+      requestId: item.requestId,
+      name: item.requester.name,
+      avatar: item.requester.avatar,
+      property: item.property.name,
+      propertyAddress: item.property.address,
+      propertyImage: item.property.imageUrl,
+      amount: `$${item.amount.toLocaleString()}`,
+      amountRaw: item.amount,
+      status: item.status,
+      statusRaw: item.statusRaw,
+      requestedAt: format(new Date(item.requestedAt), "MMM dd, yyyy"),
+      requesterId: item.requester.id,
+      requesterRole: item.requester.role,
+    }));
+  }, [data]);
+
+  // Status options for filter
+  const statusOptions = [
+    { label: "All Status", value: "" },
+    { label: "Pending", value: "pending" },
+    { label: "Approved", value: "approved" },
+    { label: "Rejected", value: "rejected" },
+  ];
+
+  const columns: Column<any>[] = [
     {
       header: "Request ID",
-      accessor: "name" as keyof MaintenanceData,
-      render: (value: string, row: MaintenanceData) => (
+      accessor: "name",
+      render: (value: string, row: any) => (
         <div className="flex items-center gap-2">
           <Image
-            src={row.avatar}
+            src={row.avatar || "/placeholder-avatar.png"}
             alt={value}
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-full object-cover"
           />
           <div>
-            <div className="font-semibold">{value}</div>
+            <div className="font-semibold text-sm">{value}</div>
             <div className="text-xs text-gray-500">{row.requestId}</div>
           </div>
         </div>
       ),
     },
     {
-      header: "Property Info",
-      accessor: "property" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
+      header: "Property",
+      accessor: "property",
+      render: (value: string, row: any) => (
         <div className="flex items-center gap-2">
           <Image
-            src={row.avatar}
-            alt={value || ""}
+            src={row.propertyImage || "/placeholder-property.png"}
+            alt={value}
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded object-cover"
           />
           <div>
-            <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.requestId}</div>
+            <div className="font-semibold text-sm">{value}</div>
+            <div className="text-xs text-gray-500">{row.propertyAddress}</div>
           </div>
         </div>
       ),
     },
     {
       header: "Amount",
-      accessor: "amount" as keyof MaintenanceData,
+      accessor: "amount",
       render: (value: string) => (
-          <div className="text-sm font-medium text-gray-900">
-          {value}
-        </div>
+        <div className="text-sm font-semibold text-gray-900">{value}</div>
       ),
     },
     {
-      header: "Request ID",
-      accessor: "requestId" as keyof MaintenanceData,
+      header: "Req Date",
+      accessor: "requestedAt",
     },
-    // { header: "Issue Type", accessor: "issueType" as keyof MaintenanceData },
-
-    { header: "Req Date", accessor: "reqDate" as keyof MaintenanceData },
     {
       header: "Status",
-      accessor: "status" as keyof MaintenanceData,
-      render: (value: string | undefined) => (
-        <StatusBadge status={value || ""} />
-      ),
+      accessor: "status",
+      render: (value: string) => <StatusBadge status={value} />,
     },
     {
       header: "Action",
-      accessor: "action" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
-        <TenantRequestDetails reqId={row.id} />
+      accessor: "id",
+      render: (value: string, row: any) => (
+        <InvestmentApplicationDetails
+          applicationId={row.id}
+          requestId={row.requestId}
+        />
       ),
     },
   ];
 
-  return (
-    <div>
+  // Loading state
+  if (isLoading) {
+    return (
       <Card className="w-full overflow-hidden p-6">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <h2 className="text-2xl font-semibold">Property Tour Requests</h2>
-          <div className="flex flex-wrap gap-4">
-            <div className="w-full md:w-auto">
-              <SearchInput value={tenantSearch} onChange={setTenantSearch} />
-            </div>
-            <div className="w-[47.5%] md:w-auto">
-              <SelectDropDown
-                value={tenantStatus}
-                onChange={setTenantStatus}
-                options={[{ label: "Pending", value: "Pending" }, { label: "Assigned", value: "Assigned" }, { label: "Completed", value: "Completed" }]}
-              />
-            </div>
-            <div className="w-[47.5%] md:w-auto">
-              <DatePicker value={tenantDate} onChange={setTenantDate} />
-            </div>
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </Card>
+    );
+  }
+
+  // Error state
+  if (isError) {
+    return (
+      <Card className="w-full overflow-hidden p-6">
+        <div className="text-center py-8">
+          <p className="text-red-500">Failed to load investment applications</p>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full overflow-hidden p-6">
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+        <h2 className="text-2xl font-semibold">Investment Applications</h2>
+        <div className="flex flex-wrap gap-4">
+          <div className="w-full md:w-auto">
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder="Search by name or ID..."
+            />
+          </div>
+          <div className="w-[47.5%] md:w-auto">
+            <SelectDropDown
+              value={statusFilter}
+              onChange={setStatusFilter}
+              options={statusOptions}
+              placeholder="Filter by status"
+            />
+          </div>
+          <div className="w-[47.5%] md:w-auto">
+            <DatePicker
+              value={selectedDate}
+              onChange={setSelectedDate}
+            />
           </div>
         </div>
+      </div>
 
-        {/* Data Table */}
-        <div className="w-full overflow-hidden">
-          <DashboardDataTable columns={tenantColumns} data={investmentData} />
-        </div>
+      <InvestmentApplicationStats statsData={statsData} />
 
-        {/* Pagination */}
+      {/* Data Table */}
+      <div className="w-full overflow-hidden">
+        <DashboardDataTable columns={columns} data={tableData} />
+      </div>
+
+      {/* Pagination */}
+      {data?.pagination && (
         <TablePagination
-          totalPages={totalPages}
+          totalPages={data.pagination.totalPages}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
-          totalResults={investmentData.length}
+          totalResults={data.pagination.total}
           pageSize={itemsPerPage}
         />
-      </Card>
-    </div>
+      )}
+    </Card>
   );
 }
 
-
-
-
 const InvestmentApplications = () => {
   return (
-    <div className="space-y-6">
-      <InvestmentApplicationStats />
+    <div className="space-y-0">
+
       <InvestmentApplicationsTable />
     </div>
   );

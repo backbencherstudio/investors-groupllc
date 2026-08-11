@@ -16,6 +16,17 @@ import type {
   PropertyTourRequestsResponse,
   PropertyTourRequestDetails,
   PropertyTourRequestDetailsResponse,
+  InvestmentApplicationDetailsResponse,
+  InvestmentApplicationDetails,
+  InvestmentApplicationsResponse,
+  InvestmentApplicationsData,
+  GetInvestmentApplicationsQueryParams,
+  // Import new types for apartment requests
+  ApartmentRequestsData,
+  GetApartmentRequestsQueryParams,
+  ApartmentRequestsResponse,
+  ApartmentRequestDetails,
+  ApartmentRequestDetailsResponse,
 } from "./RequestTypes";
 
 export const requestApi = baseApi.injectEndpoints({
@@ -59,7 +70,6 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
 
-
     getPropertyTourRequests: builder.query<PropertyTourRequestsData, GetPropertyTourRequestsQueryParams>({
       query: (params) => ({
         url: "/dashboard/a/tenant-requests/property-tour",
@@ -79,6 +89,84 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
 
+    // Get all investment applications with pagination and filtering
+    getInvestmentApplications: builder.query<InvestmentApplicationsData, GetInvestmentApplicationsQueryParams>({
+      query: (params) => ({
+        url: "/dashboard/a/investment-applications",
+        method: "GET",
+        params,
+      }),
+      transformResponse: (res: InvestmentApplicationsResponse) => res.data,
+      providesTags: ["InvestmentApplication"],
+    }),
+
+    // Get investment application by ID
+    getInvestmentApplicationById: builder.query<InvestmentApplicationDetails, string>({
+      query: (id) => ({
+        url: `/dashboard/a/investment-applications/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (res: InvestmentApplicationDetailsResponse) => res.data,
+      providesTags: (_result, _err, id) => [{ type: "InvestmentApplication", id }],
+    }),
+
+    // Update investment application status
+    updateInvestmentApplicationStatus: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; status: 'pending' | 'active' | 'cancelled' }
+    >({
+      query: ({ id, status }) => ({
+        url: `/dashboard/a/investment-applications/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (_result, _err, { id }) => [
+        { type: "InvestmentApplication", id },
+        "InvestmentApplication",
+      ],
+    }),
+
+    // ============================================
+    // NEW: Apartment Request Endpoints
+    // ============================================
+
+    // Get all apartment requests with pagination and filtering
+    getApartmentRequests: builder.query<ApartmentRequestsData, GetApartmentRequestsQueryParams>({
+      query: (params) => ({
+        url: "/dashboard/a/tenant-requests/apartment-request",
+        method: "GET",
+        params,
+      }),
+      transformResponse: (res: ApartmentRequestsResponse) => res.data,
+      providesTags: ["Request"],
+    }),
+
+    // Get apartment request by ID
+    getApartmentRequestById: builder.query<ApartmentRequestDetails, string>({
+      query: (id) => ({
+        url: `/dashboard/a/tenant-requests/apartment-request/${id}`,
+        // url: `/dashboard/a/tenant-requests/apartment-request/${id}`,  
+        method: "GET",
+      }),
+      transformResponse: (res: ApartmentRequestDetailsResponse) => res.data,
+      providesTags: (_result, _err, id) => [{ type: "Request", id }],
+    }),
+
+    // Update apartment request status (if applicable)
+    // updateApartmentRequestStatus: builder.mutation<
+    //   { success: boolean; message: string },
+    //   { id: string; status: 'pending' | 'approved' | 'rejected' | 'canceled' }
+    // >({
+    //   query: ({ id, status }) => ({
+    //     url: `/dashboard/a/tenant-requests/apartment-request/${id}/status`,
+    //     method: "PATCH",
+    //     body: { status },
+    //   }),
+    //   invalidatesTags: (_result, _err, { id }) => [
+    //     { type: "Request", id },
+    //     "Request",
+    //   ],
+    // }),
 
   }),
   overrideExisting: false,
@@ -91,4 +179,11 @@ export const {
   useGetMaintenanceRequestByIdQuery,
   useGetPropertyTourRequestsQuery,
   useGetPropertyTourRequestByIdQuery,
+  useGetInvestmentApplicationsQuery,
+  useGetInvestmentApplicationByIdQuery,
+  useUpdateInvestmentApplicationStatusMutation,
+  // New exports for apartment requests
+  useGetApartmentRequestsQuery,
+  useGetApartmentRequestByIdQuery,
+  // useUpdateApartmentRequestStatusMutation,
 } = requestApi;
