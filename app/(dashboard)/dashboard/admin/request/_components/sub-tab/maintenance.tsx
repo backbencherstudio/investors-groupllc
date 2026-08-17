@@ -133,7 +133,7 @@ export default function MaintenanceRequests() {
   if (isLoading && currentPage === 1) {
     return (
       <div className="p-6 flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#DD8800]"></div>
       </div>
     );
   }

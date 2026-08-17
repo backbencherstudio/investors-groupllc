@@ -49,7 +49,7 @@ export default function Page() {
       // console.log("result --->", result);
     } catch (error) {
       // console.error("Subscription create failed --->", error?.data?.error);
-      toast.error((error as any)?.data?.error as string);
+      toast.error((error as any)?.data?.error ?? "Something went wrong");
     }
   };
 
