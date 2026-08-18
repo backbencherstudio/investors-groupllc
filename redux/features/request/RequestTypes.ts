@@ -605,3 +605,20 @@ export interface Pagination {
   from: number;
   to: number;
 }
+
+// ============================================
+// APARTMENT STATS TYPES
+// ============================================
+
+export interface ApartmentStats {
+  totalApartments: number;
+  totalRentApartments: number;
+  totalSoldApartments: number;
+  totalInvestments: number;
+}
+
+export interface ApartmentStatsResponse {
+  success: boolean;
+  message: string;
+  data: ApartmentStats;
+}

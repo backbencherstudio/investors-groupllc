@@ -27,6 +27,9 @@ import type {
   ApartmentRequestsResponse,
   ApartmentRequestDetails,
   ApartmentRequestDetailsResponse,
+  // Apartment stats types
+  ApartmentStats,
+  ApartmentStatsResponse,
 } from "./RequestTypes";
 
 export const requestApi = baseApi.injectEndpoints({
@@ -152,6 +155,19 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
 
+
+
+
+    // Get apartment stats
+    getApartmentStats: builder.query<ApartmentStats, void>({
+      query: () => ({
+        url: "/apartments/admin-apartments-stats",
+        method: "GET",
+      }),
+      transformResponse: (res: ApartmentStatsResponse) => res.data,
+      providesTags: ["Request"],
+    }),
+
     // Update apartment request status (if applicable)
     // updateApartmentRequestStatus: builder.mutation<
     //   { success: boolean; message: string },
@@ -185,5 +201,6 @@ export const {
   // New exports for apartment requests
   useGetApartmentRequestsQuery,
   useGetApartmentRequestByIdQuery,
+  useGetApartmentStatsQuery,
   // useUpdateApartmentRequestStatusMutation,
 } = requestApi;

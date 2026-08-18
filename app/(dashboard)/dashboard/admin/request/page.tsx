@@ -16,7 +16,7 @@ import CustomBreadSeparator from "../../_components/common/CustomBreadSeparator"
 const tabs = [
   { label: "Tenant Requests", value: "tenant-requests" },
   { label: "Investment Applications", value: "investment-applications" },
-  // { label: "Property Listing Requests", value: "property-listing-requests" },
+  { label: "Property Listing Requests", value: "property-listing-requests" },
 ];
 
 // Sub-tabs data
