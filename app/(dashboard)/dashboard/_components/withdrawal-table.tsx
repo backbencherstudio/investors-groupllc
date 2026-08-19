@@ -9,9 +9,9 @@ import {
   Column,
 } from "@/components/common/DashboardDataTable";
 import StatusBadge from "@/components/common/StatusBadges";
-import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
+import WithdrawalsDetails from "@/app/(dashboard)/dashboard/admin/financial/_components/details/WithdrawalsDetails";
 import { useGetWithdrawalsQuery } from "@/redux/features/dashboard/dashboardApi";
 import type {
   WithdrawalItem,
@@ -129,10 +129,6 @@ export default function WithdrawalTable() {
     refetch();
   }, [queryParams, refetch]);
 
-  const handleView = (id: string) => {
-    console.log("View withdrawal:", id);
-  };
-
   const columns: Column<WithdrawalTableData>[] = [
     { header: "Request Date", accessor: "requestDate" },
     {
@@ -175,12 +171,7 @@ export default function WithdrawalTable() {
       header: "Action",
       accessor: "id",
       render: (_value, row: WithdrawalTableData) => (
-        <button
-          className="text-gray-600 hover:text-primary transition-colors"
-          onClick={() => handleView(row.id)}
-        >
-          <EyeIcon className="w-5 h-5" />
-        </button>
+        <WithdrawalsDetails withdrawalId={row.id} />
       ),
     },
   ];

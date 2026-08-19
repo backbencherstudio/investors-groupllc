@@ -10,9 +10,9 @@ import {
 } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
+import InvestorTransactionDetails from "@/app/(dashboard)/dashboard/admin/financial/_components/details/InvestorTransationDetails";
 import { useGetInvestorTransactionsQuery } from "@/redux/features/dashboard/dashboardApi";
 import type {
   InvestorTransaction,
@@ -150,12 +150,6 @@ export default function InvestorTransactionTable() {
     recordStatus,
   ]);
 
-  // Handle view action
-  const handleView = (id: string) => {
-    console.log("View investor transaction:", id);
-    // Navigate to detail page or open modal
-  };
-
   const investorColumns: Column<InvestorTableData>[] = [
     {
       header: "Paid Date",
@@ -235,12 +229,7 @@ export default function InvestorTransactionTable() {
       header: "Action",
       accessor: "id",
       render: (_value, row: InvestorTableData) => (
-        <button
-          className="text-gray-600 hover:text-primary transition-colors"
-          onClick={() => handleView(row.id)}
-        >
-          <EyeIcon className="w-5 h-5" />
-        </button>
+        <InvestorTransactionDetails transactionId={row.id} />
       ),
     },
   ];
@@ -276,7 +265,7 @@ export default function InvestorTransactionTable() {
         <div className="">
           <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
             <h2 className="text-xl sm:text-2xl font-semibold">
-              Investor Transactions
+              Investor Transaction
             </h2>
             <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 md:mt-0 w-full md:w-auto">
               <div className="w-full sm:w-auto">

@@ -7,9 +7,9 @@ import React, { useState, useMemo, useEffect } from "react";
 import { DashboardDataTable, Column } from "@/components/common/DashboardDataTable";
 import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
-import { EyeIcon } from "lucide-react";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
+import InvestorTransactionDetails from "../details/InvestorTransationDetails";
 import { useGetInvestorTransactionsQuery } from "@/redux/features/dashboard/dashboardApi";
 import type {
   InvestorTransaction,
@@ -136,12 +136,6 @@ export default function InvestorTransactionList() {
     setCurrentPage(1);
   }, [investorStatus, investorSearch, investorDate, investmentType, recordStatus]);
 
-  // Handle view action
-  const handleView = (id: string) => {
-    console.log("View investor transaction:", id);
-    // Navigate to detail page or open modal
-  };
-
   const investorColumns: Column<InvestorTableData>[] = [
     { 
       header: "Paid Date", 
@@ -231,12 +225,7 @@ export default function InvestorTransactionList() {
       header: "Action",
       accessor: "id",
       render: (_value, row: InvestorTableData) => (
-        <button 
-          className="text-gray-600 hover:text-primary transition-colors"
-          onClick={() => handleView(row.id)}
-        >
-          <EyeIcon className="w-5 h-5" />
-        </button>
+        <InvestorTransactionDetails transactionId={row.id} />
       ),
     },
   ];
@@ -271,7 +260,7 @@ export default function InvestorTransactionList() {
       <Card className="w-full overflow-hidden p-6">
         <div className="">
           <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-            <h2 className="text-2xl font-semibold">Investor Transactions</h2>
+            <h2 className="text-2xl font-semibold">Investor Transaction</h2>
             <div className="flex flex-wrap gap-4 mt-4 md:mt-0">
               <div className="w-full md:w-auto">
                 <SearchInput 

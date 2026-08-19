@@ -15,6 +15,7 @@ import type {
     RentPaymentItem,
     RentPaymentsQueryParams,
 } from "@/redux/features/dashboard/dashboardTypes";
+import TenantRentPaymentDetails from "../details/TenantRentPaymentDetails";
 
 
 // Transform API data to match table format
@@ -157,17 +158,15 @@ export default function TenantTable() {
             accessor: "status",
             render: (value) => <StatusBadge status={value ?? ""} />,
         },
+               
+
         {
             header: "Action",
             accessor: "id",
-            render: (_value, row: TenantData) => (<button
-                className="text-gray-600 hover:text-primary transition-colors"
-                onClick={() => console.log("View tenant:", row.id)}
-            >
-                <EyeIcon className="w-5 h-5" />
-            </button>
+            render: (_value, row: TenantData) => (
+              <TenantRentPaymentDetails paymentId={row.id} />
             ),
-        },
+          },
     ];
 
     // Loading state
