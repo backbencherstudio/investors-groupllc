@@ -1,65 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
 
 import Tenants from "@/icons/Tenants";
 import React from "react";
 import { Landlords } from "@/icons/Landlords";
 import { Property } from "@/icons/Property";
 import { Vendors } from "@/icons/Vendors";
+import { PropertyListingRequestStats } from "@/redux/features/request/RequestTypes";
 
-// Mocked backend data
-const mockAnalyticsData = {
-  totalTenants: 1205,
-  totalProperties: 500,
-  totalLeases: 800,
-  totalIncome: 350000,
-};
-
-// Replace this function with your actual API call later
-async function fetchAnalyticsData() {
-  // Simulate network delay with a timeout
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockAnalyticsData); // Return the mocked data
-    }, 1000); // 1 second delay to simulate fetching
-  });
+interface PropertyListingStatsProps {
+  stats?: PropertyListingRequestStats;
+  isLoading?: boolean;
 }
 
-interface AnalyticsData {
-  totalTenants: number;
-  totalProperties: number;
-  totalLeases: number;
-  totalIncome: number;
-}
-
-    export default function PropertyListingStats() {
-  const [analyticsData, setAnalyticsData] = useState({
-    totalTenants: 0,
-    totalProperties: 0,
-    totalLeases: 0,
-    totalIncome: 0,
-  });
-  const [loading, setLoading] = useState(true);
-
-  // Fetch data when the component is mounted
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); 
-      try {
-        const data = await fetchAnalyticsData(); // Fetch the mocked data
-        setAnalyticsData(data as AnalyticsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Show a loading spinner while the data is being fetched
-  if (loading) {
+export default function PropertyListingStats({ stats, isLoading }: PropertyListingStatsProps) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -71,23 +25,23 @@ interface AnalyticsData {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Total Tenants"
-            value={analyticsData.totalTenants}
+            value={stats?.totalTenants ?? 0}
             icon={<Tenants />}
           />
           <StatCard
             title="Total Vendors"
-            value={analyticsData.totalIncome}
+            value={stats?.totalVendors ?? 0}
             icon={<Vendors />}
           />
 
           <StatCard
             title="Total Properties"
-            value={analyticsData.totalProperties}
+            value={stats?.totalProperties ?? 0}
             icon={<Landlords />}
           />
           <StatCard
             title="Total Leases"
-            value={analyticsData.totalLeases}
+            value={stats?.totalLeases ?? 0}
             icon={<Property />}
           />
         </div>

@@ -622,3 +622,150 @@ export interface ApartmentStatsResponse {
   message: string;
   data: ApartmentStats;
 }
+
+// ============================================
+// PROPERTY LISTING REQUEST STATS TYPES
+// ============================================
+
+export interface PropertyListingRequestStats {
+  totalTenants: number;
+  totalVendors: number;
+  totalProperties: number;
+  totalLeases: number;
+}
+
+export interface PropertyListingRequestStatsResponse {
+  success: boolean;
+  message: string;
+  data: PropertyListingRequestStats;
+}
+
+// ============================================
+// ADMIN ALL APARTMENTS TYPES
+// ============================================
+
+export interface ApartmentImage {
+  id: string;
+  url: string;
+  apartmentId: string;
+  createdAt: string;
+  investmentApartmentId: string | null;
+}
+
+export interface AdminAllApartment {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  builtYear: string;
+  price: number | null | string;
+  securityDeposit: number | null;
+  availabilityDate: string | null;
+  numberOffloors: number;
+  description: string;
+  utilitiesIncluded: string[];
+  petFriendly: boolean;
+  amenities: string[];
+  country: string;
+  video: string | null;
+  tourVideo: string | null;
+  isRented: boolean;
+  createdAt: string;
+  updatedAt: string;
+  landlordId: string;
+  adminaproved: boolean;
+  listingType: string;
+  isFeatured: boolean;
+  images: ApartmentImage[];
+  units?: AdminApartmentUnit[];
+  wishlisted?: boolean;
+}
+
+export interface AdminAllApartmentsResponse {
+  success: boolean;
+  message: string;
+  data: AdminAllApartment[];
+}
+
+export interface GetAllAdminApartmentsQueryParams {
+  search?: string;
+  listingType?: string;
+  city?: string;
+  state?: string;
+}
+
+// ============================================
+// ADMIN APARTMENT DETAILS TYPES
+// ============================================
+
+export interface AdminApartmentUnit {
+  id: string;
+  apartmentId: string;
+  unitNumber: string;
+  floor: number;
+  bedrooms: number;
+  bathrooms: number;
+  sizeSqFt: number;
+  price: number;
+  securityDeposit: number | null;
+  availabilityDate: string | null;
+  amenities: string[];
+  leaseTerm: string;
+  isRented: boolean;
+  rentalLock: boolean;
+  rentedById: string | null;
+  createdAt: string;
+  updatedAt: string;
+  availableNow: boolean;
+  availableFrom: string | null;
+  availableTo?: string | null;
+}
+
+export interface AdminApartmentLandlord {
+  id: string;
+  name: string;
+  avatar: string | null;
+}
+
+export interface AdminApartmentDetails {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  builtYear: string;
+  price: number | null;
+  securityDeposit: number | null;
+  availabilityDate: string | null;
+  numberOffloors: number;
+  description: string;
+  utilitiesIncluded: string[];
+  petFriendly: boolean;
+  amenities: string[];
+  country: string;
+  video: string | null;
+  tourVideo: string | null;
+  isRented: boolean;
+  createdAt: string;
+  updatedAt: string;
+  landlordId: string;
+  adminaproved: boolean;
+  listingType: string;
+  isFeatured: boolean;
+  units: AdminApartmentUnit[];
+  images: ApartmentImage[];
+  landlord: AdminApartmentLandlord;
+  wishlisted: boolean;
+  hasAvailabilityNow: boolean;
+  availability: string;
+  otherPropertiesByLandlord: AdminAllApartment[];
+}
+
+export interface AdminApartmentDetailsResponse {
+  success: boolean;
+  message: string;
+  data: AdminApartmentDetails;
+}

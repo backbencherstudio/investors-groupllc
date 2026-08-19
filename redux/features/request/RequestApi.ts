@@ -30,12 +30,24 @@ import type {
   // Apartment stats types
   ApartmentStats,
   ApartmentStatsResponse,
+  // Property listing request stats types
+  PropertyListingRequestStats,
+  PropertyListingRequestStatsResponse,
+  // Admin all apartments types
+  AdminAllApartment,
+  AdminAllApartmentsResponse,
+  GetAllAdminApartmentsQueryParams,
+  // Admin apartment details types
+  AdminApartmentDetails,
+  AdminApartmentDetailsResponse,
 } from "./RequestTypes";
 
 export const requestApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
-    getBookingRequests: builder.query<BookingRequestsData, GetBookingRequestsQueryParams>({
+    getBookingRequests: builder.query<
+      BookingRequestsData,
+      GetBookingRequestsQueryParams
+    >({
       query: (params) => ({
         url: "/dashboard/a/tenant-requests/booking",
         method: "GET",
@@ -54,7 +66,10 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
 
-    getMaintenanceRequests: builder.query<MaintenanceRequestsData, GetMaintenanceRequestsQueryParams>({
+    getMaintenanceRequests: builder.query<
+      MaintenanceRequestsData,
+      GetMaintenanceRequestsQueryParams
+    >({
       query: (params) => ({
         url: "/dashboard/a/tenant-requests/maintenance",
         method: "GET",
@@ -64,16 +79,21 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: ["Request"],
     }),
 
-    getMaintenanceRequestById: builder.query<MaintenanceRequestDetails, string>({
-      query: (id) => ({
-        url: `/dashboard/a/tenant-requests/maintenance/${id}`,
-        method: "GET",
-      }),
-      transformResponse: (res: MaintenanceRequestDetailsResponse) => res.data,
-      providesTags: (_result, _err, id) => [{ type: "Request", id }],
-    }),
+    getMaintenanceRequestById: builder.query<MaintenanceRequestDetails, string>(
+      {
+        query: (id) => ({
+          url: `/dashboard/a/tenant-requests/maintenance/${id}`,
+          method: "GET",
+        }),
+        transformResponse: (res: MaintenanceRequestDetailsResponse) => res.data,
+        providesTags: (_result, _err, id) => [{ type: "Request", id }],
+      },
+    ),
 
-    getPropertyTourRequests: builder.query<PropertyTourRequestsData, GetPropertyTourRequestsQueryParams>({
+    getPropertyTourRequests: builder.query<
+      PropertyTourRequestsData,
+      GetPropertyTourRequestsQueryParams
+    >({
       query: (params) => ({
         url: "/dashboard/a/tenant-requests/property-tour",
         method: "GET",
@@ -83,7 +103,10 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: ["Request"],
     }),
 
-    getPropertyTourRequestById: builder.query<PropertyTourRequestDetails, string>({
+    getPropertyTourRequestById: builder.query<
+      PropertyTourRequestDetails,
+      string
+    >({
       query: (id) => ({
         url: `/dashboard/a/tenant-requests/property-tour/${id}`,
         method: "GET",
@@ -92,8 +115,26 @@ export const requestApi = baseApi.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
 
+    updatePropertyTourRequestStatus: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; status: "approved" | "rejected" }
+    >({
+      query: ({ id, status }) => ({
+        url: `/dashboard/a/tenant-requests/property-tour/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (_result, _err, { id }) => [
+        { type: "Request", id },
+        "Request",
+      ],
+    }),
+
     // Get all investment applications with pagination and filtering
-    getInvestmentApplications: builder.query<InvestmentApplicationsData, GetInvestmentApplicationsQueryParams>({
+    getInvestmentApplications: builder.query<
+      InvestmentApplicationsData,
+      GetInvestmentApplicationsQueryParams
+    >({
       query: (params) => ({
         url: "/dashboard/a/investment-applications",
         method: "GET",
@@ -104,19 +145,25 @@ export const requestApi = baseApi.injectEndpoints({
     }),
 
     // Get investment application by ID
-    getInvestmentApplicationById: builder.query<InvestmentApplicationDetails, string>({
+    getInvestmentApplicationById: builder.query<
+      InvestmentApplicationDetails,
+      string
+    >({
       query: (id) => ({
         url: `/dashboard/a/investment-applications/${id}`,
         method: "GET",
       }),
-      transformResponse: (res: InvestmentApplicationDetailsResponse) => res.data,
-      providesTags: (_result, _err, id) => [{ type: "InvestmentApplication", id }],
+      transformResponse: (res: InvestmentApplicationDetailsResponse) =>
+        res.data,
+      providesTags: (_result, _err, id) => [
+        { type: "InvestmentApplication", id },
+      ],
     }),
 
     // Update investment application status
     updateInvestmentApplicationStatus: builder.mutation<
       { success: boolean; message: string },
-      { id: string; status: 'pending' | 'active' | 'cancelled' }
+      { id: string; status: "pending" | "active" | "cancelled" }
     >({
       query: ({ id, status }) => ({
         url: `/dashboard/a/investment-applications/${id}/status`,
@@ -134,7 +181,10 @@ export const requestApi = baseApi.injectEndpoints({
     // ============================================
 
     // Get all apartment requests with pagination and filtering
-    getApartmentRequests: builder.query<ApartmentRequestsData, GetApartmentRequestsQueryParams>({
+    getApartmentRequests: builder.query<
+      ApartmentRequestsData,
+      GetApartmentRequestsQueryParams
+    >({
       query: (params) => ({
         url: "/dashboard/a/tenant-requests/apartment-request",
         method: "GET",
@@ -148,15 +198,12 @@ export const requestApi = baseApi.injectEndpoints({
     getApartmentRequestById: builder.query<ApartmentRequestDetails, string>({
       query: (id) => ({
         url: `/dashboard/a/tenant-requests/apartment-request/${id}`,
-        // url: `/dashboard/a/tenant-requests/apartment-request/${id}`,  
+        // url: `/dashboard/a/tenant-requests/apartment-request/${id}`,
         method: "GET",
       }),
       transformResponse: (res: ApartmentRequestDetailsResponse) => res.data,
       providesTags: (_result, _err, id) => [{ type: "Request", id }],
     }),
-
-
-
 
     // Get apartment stats
     getApartmentStats: builder.query<ApartmentStats, void>({
@@ -166,6 +213,57 @@ export const requestApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res: ApartmentStatsResponse) => res.data,
       providesTags: ["Request"],
+    }),
+
+    // Get property listing request stats
+    getPropertyListingRequestStats: builder.query<
+      PropertyListingRequestStats,
+      void
+    >({
+      query: () => ({
+        url: "/apartments/admin-stats",
+        method: "GET",
+      }),
+      transformResponse: (res: PropertyListingRequestStatsResponse) => res.data,
+      providesTags: ["Request"],
+    }),
+
+    // Get all admin apartments
+    getAllAdminApartments: builder.query<
+      AdminAllApartment[],
+      GetAllAdminApartmentsQueryParams
+    >({
+      query: (params) => ({
+        url: "/apartments/admin-all-apartments",
+        method: "GET",
+        params,
+      }),
+      transformResponse: (res: AdminAllApartmentsResponse) => res.data,
+      providesTags: ["Request"],
+    }),
+
+    getPropertyListingRequestDetails: builder.query<AdminApartmentDetails, string>({
+      query: (id) => ({
+        url: `/apartments/admin-all-apartments/details/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (res: AdminApartmentDetailsResponse) => res.data,
+      providesTags: (_result, _err, id) => [{ type: "Request", id }],
+    }),
+
+    updatePropertyListingRequestStatus: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; status: "approved" | "rejected" }
+    >({
+      query: ({ id, status }) => ({
+        url: `/apartments/${id}/approve`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (_result, _err, { id }) => [
+        { type: "Request", id },
+        "Request",
+      ],
     }),
 
     // Update apartment request status (if applicable)
@@ -183,7 +281,6 @@ export const requestApi = baseApi.injectEndpoints({
     //     "Request",
     //   ],
     // }),
-
   }),
   overrideExisting: false,
 });
@@ -195,6 +292,7 @@ export const {
   useGetMaintenanceRequestByIdQuery,
   useGetPropertyTourRequestsQuery,
   useGetPropertyTourRequestByIdQuery,
+  useUpdatePropertyTourRequestStatusMutation,
   useGetInvestmentApplicationsQuery,
   useGetInvestmentApplicationByIdQuery,
   useUpdateInvestmentApplicationStatusMutation,
@@ -202,5 +300,9 @@ export const {
   useGetApartmentRequestsQuery,
   useGetApartmentRequestByIdQuery,
   useGetApartmentStatsQuery,
+  useGetPropertyListingRequestStatsQuery,
+  useGetAllAdminApartmentsQuery,
+  useGetPropertyListingRequestDetailsQuery,
+  useUpdatePropertyListingRequestStatusMutation,
   // useUpdateApartmentRequestStatusMutation,
 } = requestApi;

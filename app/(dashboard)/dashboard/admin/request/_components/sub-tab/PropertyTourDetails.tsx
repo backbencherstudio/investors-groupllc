@@ -9,7 +9,10 @@ import {
   DrawerClose,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useGetPropertyTourRequestByIdQuery } from "@/redux/features/request/RequestApi";
+import {
+  useGetPropertyTourRequestByIdQuery,
+  useUpdatePropertyTourRequestStatusMutation,
+} from "@/redux/features/request/RequestApi";
 import {
   Download,
   EyeIcon,
@@ -26,9 +29,12 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { toast } from "sonner";
 
 export default function PropertyTourDetails({ reqId }: { reqId: string }) {
   const { data: response, isLoading } = useGetPropertyTourRequestByIdQuery(reqId);
+  const [updateStatus, { isLoading: isUpdating }] =
+    useUpdatePropertyTourRequestStatusMutation();
 
   // Safely extract the item data whether it's nested in `data` or returned directly
   const tourData =  response;
@@ -36,6 +42,19 @@ export default function PropertyTourDetails({ reqId }: { reqId: string }) {
   const tenant = tourData?.requester;
   const property = tourData?.property;
   const unit = tourData?.unit;
+  const isInReview =
+    tourData?.statusRaw === "under_review" ||
+    tourData?.statusRaw === "in_review" ||
+    tourData?.status?.toLowerCase() === "in review";
+
+  const handleStatusUpdate = async (status: "approved" | "rejected") => {
+    try {
+      await updateStatus({ id: reqId, status }).unwrap();
+      toast.success(`Property tour request ${status}.`);
+    } catch {
+      toast.error("Failed to update property tour request status.");
+    }
+  };
 
   // Format date nicely if available
   const formattedDate = tourData?.tourDate
@@ -247,21 +266,26 @@ export default function PropertyTourDetails({ reqId }: { reqId: string }) {
                 <LeaseDoc />
               </div>
 
-              {/* Footer Actions */}
-              <DrawerFooter className="flex flex-col sm:flex-row gap-2 mt-auto p-0 pt-6">
-                <Button
-                  variant="default"
-                  className="w-full sm:w-auto bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
-                >
-                  Accept
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto text-black hover:bg-orange-50 cursor-pointer"
-                >
-                  Reject
-                </Button>
-              </DrawerFooter>
+              {isInReview && (
+                <DrawerFooter className="flex flex-col sm:flex-row gap-2 mt-auto p-0 pt-6">
+                  <Button
+                    variant="default"
+                    className="w-full sm:w-auto bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
+                    disabled={isUpdating}
+                    onClick={() => handleStatusUpdate("approved")}
+                  >
+                    {isUpdating ? "Updating..." : "Accept"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-auto text-black hover:bg-orange-50 cursor-pointer"
+                    disabled={isUpdating}
+                    onClick={() => handleStatusUpdate("rejected")}
+                  >
+                    {isUpdating ? "Updating..." : "Reject"}
+                  </Button>
+                </DrawerFooter>
+              )}
             </>
           )}
         </div>

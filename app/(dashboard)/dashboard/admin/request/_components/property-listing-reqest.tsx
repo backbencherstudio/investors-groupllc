@@ -6,185 +6,137 @@ import {
   DashboardDataTable,
   Column,
 } from "@/components/common/DashboardDataTable";
-// import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
 
 import Image from "next/image";
-import TenantRequestDetails from "./others/tenant-request-details";
-// import InvestmentApplicationStats from "./others/investment-application-stats";
 import PropertyListingStats from "./others/property-listing-stats";
+import {
+  useGetPropertyListingRequestStatsQuery,
+  useGetAllAdminApartmentsQuery,
+} from "@/redux/features/request/RequestApi";
+import type { AdminAllApartment } from "@/redux/features/request/RequestTypes";
+import PropertyListingDetails from "./others/PropertyListingDetails";
 
-interface MaintenanceData {
-  summitedDate: string;
-  name: string;
-  id: string;
-  investmentId: string;
-  planType: string; 
-  issueType: string;
-  property: string;
-  status: string;
-  action: string;
-  avatar: string;
-  phone: string;
-  propertyAddress: string;
-  requestId: string;
-}
-
-const investmentData: MaintenanceData[] = [
-  {
-    summitedDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00123",
-    investmentId: "#T-00123",
-    planType: "Basic",
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Pending",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00123",
-  },
-  {
-    summitedDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00124",
-    investmentId: "#T-00124",
-    planType: "Trial",
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00124",
-  },
-  {
-    summitedDate: "Apr 10, 2025",
-    name: "Audry hawq",
-    id: "#T-00125",
-    investmentId: "#T-00125",
-    planType: "Premium",
-    issueType: "Plumbing",
-    property: "Murphy House",
-    status: "Assigned",
-    action: "View",
-    avatar: "/placeholder-avatar.png",
-    phone: "+231 06-758207...",
-    propertyAddress: "4140 Parker Rd. Allentown",
-    requestId: "#R-00125",
-  },
-];
-
-function InvestmentApplicationsTable() {
-  const [tenantStatus, setTenantStatus] = useState("");
-  const [tenantSearch, setTenantSearch] = useState("");
-  const [tenantDate, setTenantDate] = useState<Date | undefined>(undefined);
+const PropertyListingRequestTable = () => {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(investmentData.length / itemsPerPage);
 
-  const tenantColumns: Column<MaintenanceData>[] = [
+  const { data: apartments, isLoading } = useGetAllAdminApartmentsQuery({
+    search: search || undefined,
+    listingType: status || undefined,
+  });
+
+  const totalPages = Math.ceil((apartments?.length ?? 0) / itemsPerPage);
+  const paginatedData = apartments?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  ) ?? [];
+
+  const columns: Column<AdminAllApartment>[] = [
     {
-      header: "Request ID",
-      accessor: "name" as keyof MaintenanceData,
-      render: (value: string, row: MaintenanceData) => (
+      header: "Name",
+      accessor: "name" as keyof AdminAllApartment,
+      render: (value: any, row: AdminAllApartment) => (
         <div className="flex items-center gap-2">
           <Image
-            src={row.avatar}
+            src={row.images?.[0]?.url || "/placeholder-avatar.png"}
             alt={value}
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-full object-cover"
           />
           <div>
-            <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.requestId}</div>
+            <div className="font-semibold max-w-[200px] truncate">{value}</div>
+            <div className="text-xs text-gray-500">{row.city}, {row.state}</div>
           </div>
         </div>
       ),
     },
     {
-      header: "Property",
-      accessor: "property" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
-        <div className="flex items-center gap-2">
-          <Image
-            src={row.avatar}
-            alt={value || ""}
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
-          <div>
-            <div className="font-semibold">{value}</div>
-            <div className="text-xs text-gray-500">{row.requestId}</div>
-          </div>
-        </div>
-      ),
+      header: "Address",
+      accessor: "address" as keyof AdminAllApartment,
     },
-    { header: "Summited Date", accessor: "summitedDate" as keyof MaintenanceData },
-
-
     {
-      header: "Plan Type",
-      accessor: "planType" as keyof MaintenanceData,
-      render: (value: string | undefined) => (
-        <StatusBadge status={value || ""} />
+      header: "City",
+      accessor: "city" as keyof AdminAllApartment,
+    },
+    {
+      header: "Listing Type",
+      accessor: "listingType" as keyof AdminAllApartment,
+      render: (value:any) => (
+        <StatusBadge status={value === "for_rent" ? "For Rent" : value === "for_sale" ? "For Sale" : value || ""} />
       ),
     },
     {
-      header: "Request ID",
-      accessor: "requestId" as keyof MaintenanceData,
-    },
-    // { header: "Issue Type", accessor: "issueType" as keyof MaintenanceData },
-
-    
-    {
-      header: "Status",
-      accessor: "status" as keyof MaintenanceData,
-      render: (value: string | undefined) => (
-        <StatusBadge status={value || ""} />
+      header: "Pet Friendly",
+      accessor: "petFriendly" as keyof AdminAllApartment,
+      render: (value: any) => (
+        <StatusBadge status={value ? "Yes" : "No"} />
       ),
     },
     {
-      header: "Action",
-      accessor: "action" as keyof MaintenanceData,
-      render: (value: string | undefined, row: MaintenanceData) => (
-        <TenantRequestDetails reqId={row.id} />
+      header: "Approved",
+      accessor: "adminaproved" as keyof AdminAllApartment,
+      render: (value: any) => (
+        <StatusBadge status={value ? "Approved" : "Pending"} />
       ),
     },
+    {
+      header: "Featured",
+      accessor: "isFeatured" as keyof AdminAllApartment,
+      render: (value: any) => (
+        <StatusBadge status={value ? "Yes" : "No"} />
+      ),
+    },
+    {
+          header: "Action",
+          accessor: "id",
+          render: (value: any, row: any) => (
+            <PropertyListingDetails 
+              applicationId={row.id}
+              requestId={row.requestId}
+            />
+          ),
+        },
   ];
 
   return (
     <div>
       <Card className="w-full overflow-hidden p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <h2 className="text-2xl font-semibold">Property Tour Requests</h2>
+          <h2 className="text-2xl font-semibold">Property Listing Requests</h2>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-auto">
-              <SearchInput value={tenantSearch} onChange={setTenantSearch} />
+              <SearchInput value={search} onChange={setSearch} />
             </div>
             <div className="w-[47.5%] md:w-auto">
               <SelectDropDown
-                value={tenantStatus}
-                onChange={setTenantStatus}
-                options={[{ label: "Pending", value: "Pending" }, { label: "Assigned", value: "Assigned" }, { label: "Completed", value: "Completed" }]}
+                value={status}
+                onChange={setStatus}
+                options={[
+                  { label: "For Rent", value: "for_rent" },
+                  { label: "For Sale", value: "for_sale" },
+                ]}
               />
             </div>
             <div className="w-[47.5%] md:w-auto">
-              <DatePicker value={tenantDate} onChange={setTenantDate} />
+              <DatePicker value={date} onChange={setDate} />
             </div>
           </div>
         </div>
 
         {/* Data Table */}
         <div className="w-full overflow-hidden">
-          <DashboardDataTable columns={tenantColumns} data={investmentData} />
+          {isLoading ? (
+            <div className="text-center py-8">Loading...</div>
+          ) : (
+            <DashboardDataTable columns={columns} data={paginatedData} />
+          )}
         </div>
 
         {/* Pagination */}
@@ -192,22 +144,24 @@ function InvestmentApplicationsTable() {
           totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
-          totalResults={investmentData.length}
+          totalResults={apartments?.length ?? 0}
           pageSize={itemsPerPage}
         />
       </Card>
     </div>
   );
-}
+};
 
 
 
 
 const InvestmentApplications = () => {
+  const { data: stats, isLoading: statsLoading } = useGetPropertyListingRequestStatsQuery();
+
   return (
     <div className="space-y-6">
-      <PropertyListingStats />
-      <InvestmentApplicationsTable />
+      <PropertyListingStats stats={stats} isLoading={statsLoading} />
+      <PropertyListingRequestTable />
     </div>
   );
 };
