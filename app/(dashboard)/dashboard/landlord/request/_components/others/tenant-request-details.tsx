@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Drawer,
   DrawerContent,
@@ -10,6 +13,7 @@ import {
 } from "@/components/ui/drawer";
 import { Download, EyeIcon, FileText, Mail, Phone, X } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 function formatDate(isoString: string): string {
   if (!isoString) return "";
@@ -30,10 +34,25 @@ interface DocumentItem {
 export default function TenantRequestDetails({
   data,
   onOpen,
+  onStatusChange,
+  isUpdatingStatus = false,
+  approveLabel = "Accept",
+  showRejectAction = true,
+  allowedActionStatuses = ["in review", "under review"],
 }: {
   data: any;
   onOpen?: () => void;
+  onStatusChange?: (
+    status: "approved" | "rejected",
+    reason: string,
+  ) => Promise<boolean>;
+  isUpdatingStatus?: boolean;
+  approveLabel?: string;
+  showRejectAction?: boolean;
+  allowedActionStatuses?: string[];
 }) {
+  const [reason, setReason] = useState("");
+  const [reasonError, setReasonError] = useState("");
   const tenantName = data?.name || "";
   const tenantAvatar = data?.tenant?.avatar_url || "";
   const tenantRole = data?.tenant?.type
@@ -60,6 +79,30 @@ export default function TenantRequestDetails({
   const propertyLeaseStart = tenantLeaseStart;
   const propertyLeaseEnd = tenantLeaseEnd;
   const status = data?.status;
+  const normalizedStatus = String(status || "")
+    .toLowerCase()
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .trim();
+  const canUpdateStatus = allowedActionStatuses.includes(normalizedStatus);
+
+  const updateStatus = async (nextStatus: "approved" | "rejected") => {
+    const trimmedReason = reason.trim();
+    if (nextStatus === "rejected" && !trimmedReason) {
+      setReasonError("Please enter a reason for rejecting this request.");
+      return;
+    }
+
+    setReasonError("");
+    const succeeded = await onStatusChange?.(
+      nextStatus,
+      trimmedReason ||
+        (nextStatus === "approved"
+          ? "Approved by landlord"
+          : "Rejected by landlord"),
+    );
+    if (succeeded) setReason("");
+  };
 
   const documents: DocumentItem[] = [];
   if (data?.doc?.idVerificationDocUrl) {
@@ -230,21 +273,48 @@ export default function TenantRequestDetails({
             <LeaseDoc documents={documents} />
           </div>
 
-          {/* Footer Actions */}
-          <DrawerFooter className="flex flex-col sm:flex-row gap-2 mt-auto">
-            <Button
-              variant="default"
-              className="w-full sm:w-auto bg-orange-500 text-white hover:bg-orange-600"
-            >
-              Accept
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto  text-black hover:bg-orange-50"
-            >
-              Reject
-            </Button>
-          </DrawerFooter>
+          {canUpdateStatus && onStatusChange && (
+            <div className="mt-auto space-y-2 pt-4">
+              {showRejectAction && (
+                <>
+                  <Textarea
+                    value={reason}
+                    onChange={(event) => {
+                      setReason(event.target.value);
+                      if (reasonError) setReasonError("");
+                    }}
+                    placeholder="Reason (required when rejecting)"
+                    disabled={isUpdatingStatus}
+                  />
+                  {reasonError && (
+                    <p className="text-sm text-red-500">{reasonError}</p>
+                  )}
+                </>
+              )}
+              <DrawerFooter className="flex flex-col gap-2 p-0 sm:flex-row">
+                <Button
+                  type="button"
+                  variant="default"
+                  className="w-full bg-orange-500 text-white hover:bg-orange-600 sm:w-auto"
+                  disabled={isUpdatingStatus}
+                  onClick={() => updateStatus("approved")}
+                >
+                  {isUpdatingStatus ? "Updating..." : approveLabel}
+                </Button>
+                {showRejectAction && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-black hover:bg-orange-50 sm:w-auto"
+                    disabled={isUpdatingStatus}
+                    onClick={() => updateStatus("rejected")}
+                  >
+                    {isUpdatingStatus ? "Updating..." : "Reject"}
+                  </Button>
+                )}
+              </DrawerFooter>
+            </div>
+          )}
         </div>
       </DrawerContent>
     </Drawer>

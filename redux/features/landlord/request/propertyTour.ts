@@ -11,7 +11,7 @@ export const propertyTourApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (res) => res.data,
-      providesTags: ["SubscriptionPlans"],
+      providesTags: [{ type: "Request", id: "LANDLORD_TOURS" }],
     }),
     // ============================================
     // GET Single Property Tour
@@ -22,7 +22,7 @@ export const propertyTourApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (res) => res.data,
-      providesTags: ["SubscriptionPlans"],
+      providesTags: (_result, _error, id) => [{ type: "Request", id }],
     }),
     // ============================================
     // Post Property Tour
@@ -35,6 +35,23 @@ export const propertyTourApi = baseApi.injectEndpoints({
       }),
       //   transformResponse: (res) => res.data,
     }),
+    // ============================================
+    // Confirm Property Tour
+    // ============================================
+    updateLandlordPropertyTourStatus: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; status: "confirmed" | "rejected" }
+    >({
+      query: ({ id, status }) => ({
+        url: `/tour/confirmed-tour/${id}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Request", id: "LANDLORD_TOURS" },
+        { type: "Request", id },
+      ],
+    }),
   }),
   overrideExisting: false,
 });
@@ -46,4 +63,5 @@ export const {
   useGetPropertyTourQuery,
   useGetSinglePropertyTourQuery,
   useSubscriptionCreateMutation,
+  useUpdateLandlordPropertyTourStatusMutation,
 } = propertyTourApi;

@@ -117,10 +117,10 @@ export const requestApi = baseApi.injectEndpoints({
 
     updatePropertyTourRequestStatus: builder.mutation<
       { success: boolean; message: string },
-      { id: string; status: "approved" | "rejected" }
+      { id: string; status: "confirmed" | "rejected" }
     >({
       query: ({ id, status }) => ({
-        url: `/dashboard/a/tenant-requests/property-tour/${id}/status`,
+        url: `/tour/confirmed-tour/${id}`,
         method: "PATCH",
         body: { status },
       }),

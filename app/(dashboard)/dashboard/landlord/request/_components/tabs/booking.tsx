@@ -10,11 +10,14 @@ import Image from "next/image";
 import StatusBadge from "@/components/common/StatusBadges";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
-import TenantRequestDetails from "../others/tenant-request-details";
+import BookingRequestDetails from "../others/booking-request-details";
 import {
+  type BookingRequestListItem,
   useGetBookingQuery,
   useGetSingleBookingQuery,
+  useUpdateBookingStatusMutation,
 } from "@/redux/features/landlord/request/booking";
+import { toast } from "sonner";
 
 interface BookingData {
   reqDate: string;
@@ -31,30 +34,6 @@ interface BookingData {
   propertyAddress: string;
 }
 
-interface BookingApiData {
-  id: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  tenant: {
-    id: string;
-    username: string | null;
-    first_name: string | null;
-    last_name: string | null;
-    type: string;
-    avatar_url: string | null;
-  };
-  apartment: {
-    id: string;
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    first_image_url: string;
-  };
-}
-
 export default function Booking() {
   const [tenantStatus, setTenantStatus] = useState("");
   const [tenantSearch, setTenantSearch] = useState("");
@@ -64,16 +43,36 @@ export default function Booking() {
     null,
   );
   const itemsPerPage = 5;
-  const { data } = useGetBookingQuery({});
-  const bookings: BookingApiData[] = data ?? [];
-  const { data: singleBooking } = useGetSingleBookingQuery(
+  const { data } = useGetBookingQuery();
+  const bookings: BookingRequestListItem[] = data ?? [];
+  const { data: singleBooking, isFetching: isLoadingBookingDetails } =
+    useGetSingleBookingQuery(
     selectedBookingId ?? "",
     {
       skip: !selectedBookingId,
     },
   );
+  const [updateBookingStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateBookingStatusMutation();
 
-  console.log(singleBooking);
+  const handleStatusChange = async (
+    id: string,
+    status: "approved" | "rejected",
+    reason: string,
+  ) => {
+    try {
+      await updateBookingStatus({ id, status, reason }).unwrap();
+      toast.success(
+        status === "approved"
+          ? "Booking request approved"
+          : "Booking request rejected",
+      );
+      return true;
+    } catch {
+      toast.error("Failed to update booking request");
+      return false;
+    }
+  };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -88,7 +87,7 @@ export default function Booking() {
     return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
-  const getUserName = (user: BookingApiData["tenant"]) => {
+  const getUserName = (user: BookingRequestListItem["tenant"]) => {
     if (user.first_name && user.last_name) {
       return `${user.first_name} ${user.last_name}`;
     }
@@ -97,7 +96,7 @@ export default function Booking() {
   };
 
   const bookingData: BookingData[] = (bookings || []).map(
-    (booking: BookingApiData) => ({
+    (booking: BookingRequestListItem) => ({
       reqDate: formatDate(booking.createdAt),
       name: getUserName(booking.tenant),
       id: `#${booking.id.slice(0, 7).toUpperCase()}`,
@@ -171,9 +170,14 @@ export default function Booking() {
       header: "Action",
       accessor: "action",
       render: (value: string | undefined, row: BookingData) => (
-        <TenantRequestDetails
+        <BookingRequestDetails
           data={singleBooking}
+          isLoading={isLoadingBookingDetails}
           onOpen={() => setSelectedBookingId(row.requestId)}
+          onStatusChange={(status, reason) =>
+            handleStatusChange(row.requestId, status, reason)
+          }
+          isUpdating={isUpdatingStatus}
         />
       ),
     },

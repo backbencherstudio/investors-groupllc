@@ -48,7 +48,7 @@ export default function PropertyTourDetails({ reqId }: { reqId: string }) {
     tourData?.statusRaw === "in_review" ||
     tourData?.status?.toLowerCase() === "in review";
 
-  const handleStatusUpdate = async (status: "approved" | "rejected") => {
+  const handleStatusUpdate = async (status: "confirmed" | "rejected") => {
     try {
       await updateStatus({ id: reqId, status }).unwrap();
       toast.success(`Property tour request ${status}.`);
@@ -271,7 +271,7 @@ export default function PropertyTourDetails({ reqId }: { reqId: string }) {
                     variant="default"
                     className="w-full sm:w-auto bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
                     disabled={isUpdating}
-                    onClick={() => handleStatusUpdate("approved")}
+                    onClick={() => handleStatusUpdate("confirmed")}
                   >
                     {isUpdating ? "Updating..." : "Accept"}
                   </Button>

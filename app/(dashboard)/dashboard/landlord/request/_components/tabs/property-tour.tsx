@@ -9,12 +9,14 @@ import {
 import StatusBadge from "@/components/common/StatusBadges";
 import DatePicker from "@/components/common/DatePicker";
 import { TablePagination } from "@/components/common/TablePagination";
-import TenantRequestDetails from "../others/tenant-request-details";
+import PropertyTourDetails from "../others/property-tour-details";
 import Image from "next/image";
 import {
   useGetPropertyTourQuery,
   useGetSinglePropertyTourQuery,
+  useUpdateLandlordPropertyTourStatusMutation,
 } from "@/redux/features/landlord/request/propertyTour";
+import { toast } from "sonner";
 
 interface PropertyTourData {
   id: string;
@@ -60,13 +62,33 @@ export default function PropertyTour() {
     null,
   );
 
-  const { data: singleProperty } =
+  const { data: singleProperty, isFetching: isLoadingPropertyDetails } =
     useGetSinglePropertyTourQuery(selectedPropertyId);
 
   const itemsPerPage = 5;
 
   const { data } = useGetPropertyTourQuery({});
   const tours: any[] = data ?? [];
+  const [updateTourStatus, { isLoading: isConfirming }] =
+    useUpdateLandlordPropertyTourStatusMutation();
+
+  const handleTourStatusChange = async (
+    id: string,
+    status: "confirmed" | "rejected",
+  ) => {
+    try {
+      await updateTourStatus({ id, status }).unwrap();
+      toast.success(
+        status === "confirmed"
+          ? "Property tour confirmed."
+          : "Property tour rejected.",
+      );
+      return true;
+    } catch {
+      toast.error("Failed to update property tour.");
+      return false;
+    }
+  };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -177,9 +199,14 @@ export default function PropertyTour() {
         value: PropertyTourData[keyof PropertyTourData],
         row: PropertyTourData,
       ) => (
-        <TenantRequestDetails
+        <PropertyTourDetails
           data={singleProperty}
+          isLoading={isLoadingPropertyDetails}
           onOpen={() => setSelectedPropertyId(row.requestId)}
+          onStatusChange={(status) =>
+            handleTourStatusChange(row.tourId, status)
+          }
+          isConfirming={isConfirming}
         />
       ),
     },
