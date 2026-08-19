@@ -18,6 +18,7 @@ import {
 import { useGetPropertyTourRequestsQuery } from "@/redux/features/request/RequestApi";
 import { PropertyTourRequest } from "@/redux/features/request/RequestTypes";
 import PropertyTourDetails from "./PropertyTourDetails";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 
 export default function PropertyTour() {
@@ -104,11 +105,7 @@ export default function PropertyTour() {
   ];
 
   if (isLoading || isFetching) {
-    return (
-      <Card className="p-6">
-        <div className="text-center py-10">Loading...</div>
-      </Card>
-    );
+    return <Loader />;
   }
 
   return (

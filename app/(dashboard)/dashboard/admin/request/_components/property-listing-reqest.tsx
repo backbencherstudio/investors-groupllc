@@ -18,6 +18,7 @@ import {
 } from "@/redux/features/request/RequestApi";
 import type { AdminAllApartment } from "@/redux/features/request/RequestTypes";
 import PropertyListingDetails from "./others/PropertyListingDetails";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 const PropertyListingRequestTable = () => {
   const [search, setSearch] = useState("");
@@ -133,7 +134,7 @@ const PropertyListingRequestTable = () => {
         {/* Data Table */}
         <div className="w-full overflow-hidden">
           {isLoading ? (
-            <div className="text-center py-8">Loading...</div>
+            <Loader />
           ) : (
             <DashboardDataTable columns={columns} data={paginatedData} />
           )}

@@ -14,6 +14,7 @@ import { TablePagination } from "@/components/common/TablePagination";
 import { useGetBookingRequestsQuery } from "@/redux/features/request/RequestApi";
 import { format } from "date-fns";
 import BookingRequestDetails from "./BookingRequestDetails";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 interface BookingData {
   id: string;
@@ -135,11 +136,7 @@ export default function Booking() {
   ];
 
   if (isLoading && currentPage === 1) {
-    return (
-      <div className="p-6 flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

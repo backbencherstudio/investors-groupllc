@@ -13,6 +13,7 @@ import {
   useGetPropertyTourRequestByIdQuery,
   useUpdatePropertyTourRequestStatusMutation,
 } from "@/redux/features/request/RequestApi";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 import {
   Download,
   EyeIcon,
@@ -96,9 +97,7 @@ export default function PropertyTourDetails({ reqId }: { reqId: string }) {
           </DrawerHeader>
 
           {isLoading ? (
-            <div className="flex items-center justify-center flex-1 py-12 text-gray-500">
-              Loading request details...
-            </div>
+            <Loader />
           ) : !tourData ? (
             <div className="flex items-center justify-center flex-1 py-12 text-red-500">
               Failed to load tour details.

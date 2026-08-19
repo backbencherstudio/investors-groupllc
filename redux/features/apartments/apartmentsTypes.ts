@@ -203,14 +203,85 @@ export interface GetInvestmentApartmentsResponse {
 }
 
 // ============================================================================
+// Single rental property detail (admin property request)
 
+export interface RentalPropertyRequestLandlord {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string | null;
+  phone: string;
+  email: string;
+}
+
+export interface RentalPropertySummary {
+  id: string;
+  name: string;
+  address: string;
+  imageUrl: string;
+  viewDetailsPath: string;
+}
+
+export interface RentalPropertyInformation {
+  currentAddress: string | null;
+  requestType: string;
+  listingType: ListingType;
+  description: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  priceRange: string;
+  amenities: string[];
+  utilitiesIncluded: string[];
+  petFriendly: boolean;
+  availabilityDate: string | null;
+  requestId: string;
+  status: string;
+  statusRaw: string;
+  requestDate: string;
+  rejectReason: string | null;
+}
+
+export interface RentalPropertyAction {
+  label: string;
+  method: string;
+  url: string;
+  enabled: boolean;
+}
+
+export interface RentalPropertyActions {
+  accept: RentalPropertyAction;
+  reject: RentalPropertyAction;
+}
+
+export interface RentalPropertyUnit {
+  id: string;
+  unitNumber: string;
+  price: number;
+  bedrooms: number;
+  bathrooms: number;
+}
+
+export interface RentalPropertyDetail {
+  id: string;
+  title: string;
+  requestId: string;
+  landlord: RentalPropertyRequestLandlord;
+  property: RentalPropertySummary;
+  information: RentalPropertyInformation;
+  attachments: unknown[];
+  units: RentalPropertyUnit[];
+  actions: RentalPropertyActions;
+}
 
 export interface RentalPropertyResponse {
   success: boolean;
   message: string;
-  data: ApartmentData;
+  data: RentalPropertyDetail;
 }
 
+// Legacy flat apartment detail (kept for reference / other endpoints)
 export interface ApartmentData {
   id: string;
   name: string;
@@ -244,6 +315,9 @@ export interface ApartmentData {
   hasAvailabilityNow: boolean;
   availability: 'available' | 'rented' | 'unavailable'; // assuming possible values
   otherPropertiesByLandlord: any[]; // define if structure is known
+  property?: {
+    imageUrl: string;
+  };
 }
 
 export interface Unit {

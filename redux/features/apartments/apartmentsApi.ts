@@ -1,6 +1,6 @@
 import { baseApi } from "../api/baseApi";
 import { ApiResponse, InvestmentApartmentItem } from "./apartmentsDetailsTypes";
-import { FetchApartmentsResponse, FetchApartmentStatsResponse, GetApartmentsQueryParams, GetInvestmentApartmentsQueryParams, GetInvestmentApartmentsResponse, InvestorStatsResponse, RentalPropertyResponse } from "./apartmentsTypes";
+import { FetchApartmentsResponse, FetchApartmentStatsResponse, GetApartmentsQueryParams, GetInvestmentApartmentsQueryParams, GetInvestmentApartmentsResponse, InvestorStatsResponse, RentalPropertyDetail, RentalPropertyResponse } from "./apartmentsTypes";
 import { CreateApiResponse, CreateInvestmentApartmentItem } from "./createPropertyTypes";
 
 export const apartmentsApi = baseApi.injectEndpoints({
@@ -50,32 +50,25 @@ export const apartmentsApi = baseApi.injectEndpoints({
 
     // ====================   Get single rental property    =============
 
-    getSingleRentalProperty: builder.query<
-    RentalPropertyResponse,
-      string
-    >({
+    getSingleRentalProperty: builder.query<RentalPropertyDetail, string>({
       query: (id: string) => ({
         url: `/apartments/admin-all-apartments/details/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: 'InvestmentApartment', id }],
+      providesTags: (result, error, id) => [{ type: "InvestmentApartment", id }],
+      transformResponse: (response: RentalPropertyResponse) => response.data,
+    }),
 
-    })
-
-    ,
     // ==================  Get single investment property =============
 
-    getSingleInvestmentProperty: builder.query<
-      InvestmentApartmentItem,
-      string
-    >({
+    getSingleInvestmentProperty: builder.query<InvestmentApartmentItem, string>({
       query: (id: string) => ({
         url: `/dashboard/a/investment-properties/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: 'InvestmentApartment', id }],
-      transformResponse: (response: InvestmentApartmentItem) =>
-        response,
+      providesTags: (result, error, id) => [{ type: "InvestmentApartment", id }],
+      transformResponse: (response: ApiResponse<InvestmentApartmentItem>) =>
+        response.data,
     }),
 
 

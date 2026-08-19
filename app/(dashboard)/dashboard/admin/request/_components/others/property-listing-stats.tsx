@@ -6,6 +6,7 @@ import { Landlords } from "@/icons/Landlords";
 import { Property } from "@/icons/Property";
 import { Vendors } from "@/icons/Vendors";
 import { PropertyListingRequestStats } from "@/redux/features/request/RequestTypes";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 interface PropertyListingStatsProps {
   stats?: PropertyListingRequestStats;
@@ -14,7 +15,7 @@ interface PropertyListingStatsProps {
 
 export default function PropertyListingStats({ stats, isLoading }: PropertyListingStatsProps) {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (

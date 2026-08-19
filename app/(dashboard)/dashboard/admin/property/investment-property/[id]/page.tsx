@@ -59,8 +59,6 @@ export default function PropertyDetails() {
     );
   }
 
-  console.log("this is property", propertyData)
-
   // Error state
   if (isError || !propertyData) {
     return (

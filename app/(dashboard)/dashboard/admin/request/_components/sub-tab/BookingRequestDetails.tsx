@@ -24,6 +24,7 @@ import {
   MapPin,
   Briefcase,
 } from "lucide-react";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 import Image from "next/image";
 import { useState } from "react";
 import { useGetBookingRequestByIdQuery } from "@/redux/features/request/RequestApi";
@@ -60,9 +61,7 @@ interface BookingRequestDetailsProps {
       <DrawerContent className="h-full w-full sm:w-[480px]">
         <div className="flex flex-col h-full bg-white">
           {isLoading ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
+            <Loader />
           ) : request ? (
             <>
               {/* Header */}

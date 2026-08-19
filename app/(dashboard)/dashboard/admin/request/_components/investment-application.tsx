@@ -14,7 +14,7 @@ import Image from "next/image";
 import InvestmentApplicationStats from "./others/investment-application-stats";
 
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 import { useGetInvestmentApplicationsQuery, useUpdateInvestmentApplicationStatusMutation } from "@/redux/features/request/RequestApi";
 import InvestmentApplicationDetails from "./others/InvestmentApplicationDetails";
 import { toast } from "sonner";
@@ -136,15 +136,10 @@ function InvestmentApplicationsTable() {
     },
   ];
 
-  // Loading state
   if (isLoading) {
     return (
       <Card className="w-full overflow-hidden p-6">
-        <div className="space-y-4">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-10 w-full" />
-        </div>
+        <Loader />
       </Card>
     );
   }

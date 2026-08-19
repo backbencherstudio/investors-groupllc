@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useGetMaintenanceRequestsQuery } from "@/redux/features/request/RequestApi";
 
 import { format } from "date-fns";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 interface MaintenanceData {
   id: string;
@@ -131,11 +132,7 @@ export default function MaintenanceRequests() {
   ];
 
   if (isLoading && currentPage === 1) {
-    return (
-      <div className="p-6 flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#DD8800]"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

@@ -17,6 +17,7 @@ import {
 import { useGetApartmentRequestsQuery } from "@/redux/features/request/RequestApi";
 import { ApartmentRequestItem } from "@/redux/features/request/RequestTypes";
 import ApartmentRequestDetails from "./ApartmentRequestDetails";
+import Loader from "@/app/(dashboard)/dashboard/_components/common/Loader";
 
 // You'll need to create this component
 
@@ -143,14 +144,7 @@ export default function ApartmentRequest() {
     ];
 
     if (isLoading || isFetching) {
-        return (
-            <Card className="p-6">
-                <div className="text-center py-10">
-                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-                    <p className="mt-2 text-gray-500">Loading apartment requests...</p>
-                </div>
-            </Card>
-        );
+        return <Loader />;
     }
 
     return (
