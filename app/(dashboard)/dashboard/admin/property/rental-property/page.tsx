@@ -68,6 +68,7 @@ export default function RentalProperty() {
     area: 950,
     owner: null,
     ownerLabel: null,
+    isFeatured: apt.isFeatured,
   }));
 
   return (

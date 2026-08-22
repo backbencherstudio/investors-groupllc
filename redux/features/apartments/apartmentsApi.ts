@@ -31,7 +31,7 @@ export const apartmentsApi = baseApi.injectEndpoints({
           ...(params?.listingType && { listingType: params.listingType }),
         },
       }),
-      providesTags: ["Apartments"], // Optional: add if you handle cache invalidation
+      providesTags: ["Apartment"],
     }),
 
     getInvestmentPropertiesList: builder.query<GetInvestmentApartmentsResponse, GetInvestmentApartmentsQueryParams | void>({
@@ -45,7 +45,7 @@ export const apartmentsApi = baseApi.injectEndpoints({
           ...(params?.investmentType && { investmentType: params.investmentType }),
         },
       }),
-      providesTags: ["Apartments"], // Optional: add if you handle cache invalidation
+      providesTags: ["Apartment"],
     }),
 
     // ====================   Get single rental property    =============
@@ -84,12 +84,21 @@ export const apartmentsApi = baseApi.injectEndpoints({
        formData: true,
      }),
      invalidatesTags: ['InvestmentApartment'],
-
-  
    }),
+
+    toggleFeaturedApartment: builder.mutation<
+      { success: boolean; message: string },
+      string
+    >({
+      query: (id) => ({
+        url: `/apartments/${id}/toggle-featured`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Apartment"],
+    }),
   }),
 
 })
 
 
-export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery, useGetSingleRentalPropertyQuery, useCreateInvestmentPropertyMutation } = apartmentsApi;   
+export const { useGetApartmentsStatsQuery, useGetRentalPropertiesListQuery, useGetInvestorsApartmentsStatsQuery, useGetInvestmentPropertiesListQuery, useGetSingleInvestmentPropertyQuery, useGetSingleRentalPropertyQuery, useCreateInvestmentPropertyMutation, useToggleFeaturedApartmentMutation } = apartmentsApi;   

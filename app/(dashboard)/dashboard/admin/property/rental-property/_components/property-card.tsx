@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+"use client";
+
+import type { MouseEvent } from "react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useToggleFeaturedApartmentMutation } from "@/redux/features/apartments/apartmentsApi";
 
 export function PropertyCard({ property }: { property: any }) {
   const imageUrl =
@@ -39,6 +45,25 @@ export function PropertyCard({ property }: { property: any }) {
     property?.shortDescription ||
     "No description available.";
 
+  const isFeatured = Boolean(property?.isFeatured);
+  const [toggleFeatured, { isLoading: isTogglingFeatured }] =
+    useToggleFeaturedApartmentMutation();
+
+  const handleToggleFeatured = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!property?.id || isTogglingFeatured) return;
+
+    try {
+      await toggleFeatured(property.id).unwrap();
+      toast.success(
+        isFeatured ? "Removed from featured properties" : "Marked as featured",
+      );
+    } catch {
+      toast.error("Failed to update featured status");
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow border overflow-hidden flex flex-col">
       <div className="relative">
@@ -60,6 +85,21 @@ export function PropertyCard({ property }: { property: any }) {
         >
           {statusText}
         </span>
+
+
+        <button
+          type="button"
+          onClick={handleToggleFeatured}
+          disabled={isTogglingFeatured}
+          aria-label={isFeatured ? "Remove featured" : "Mark as featured"}
+          className={`absolute top-3 right-3 rounded-full p-1.5 text-xs font-semibold transition-colors ${
+            isFeatured
+              ? "bg-yellow-100 text-yellow-600"
+              : "bg-gray-200 text-gray-700"
+          } ${isTogglingFeatured ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:opacity-80"}`}
+        >
+          <Star className="w-4 h-4" fill={isFeatured ? "currentColor" : "none"} />
+        </button>
       </div>
       <div className="p-4 flex-1 flex flex-col">
         <div className="flex justify-between items-center mb-1">
